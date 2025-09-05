@@ -8,6 +8,8 @@ import "sanitize.css/assets.css";
 import "./globals.css";
 import "sanitize.css/reduce-motion.css";
 
+import { ScrollListener } from "@/components/global/scroll-listener";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,7 +34,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
-        <div>test changed 2</div>
+        <ScrollListener />
       </body>
     </html>
   );
