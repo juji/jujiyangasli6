@@ -17,6 +17,7 @@ export function BgCanvas() {
 
   useMotionValueEvent(scrollYProgress, "change", () => {
     const value = scrollYProgress.get();
+    console.log("Scroll position:", value);
 
     // change --visibility in container
     containerRef.current?.style.setProperty("--visibility", `${value}`);
@@ -80,6 +81,15 @@ export function BgCanvas() {
           },
           [offscreen],
         );
+
+        console.log('scrollYProgress.get()', scrollYProgress.get())
+        if(scrollYProgress.get() === 0){
+          started.current = true;
+          workerRef.current?.postMessage({
+            type: "start",
+          });
+        }
+
         return;
       }
 
