@@ -9,17 +9,29 @@ export function BgCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const workerRef = useRef<Worker | null>(null);
   const canvasInit = useRef(false);
+  const started = useRef(false);
   const { scrollYProgress } = useScroll({
     target: scrollRef,
     offset: ["start end", "start start"],
   });
 
   useMotionValueEvent(scrollYProgress, "change", () => {
+    const value = scrollYProgress.get();
+
     // change --visibility in container
-    containerRef.current?.style.setProperty(
-      "--visibility",
-      `${scrollYProgress.get()}`,
-    );
+    containerRef.current?.style.setProperty("--visibility", `${value}`);
+
+    if (value < 1 && !started.current) {
+      started.current = true;
+      workerRef.current?.postMessage({
+        type: "start",
+      });
+    } else if (value === 1 && started.current) {
+      started.current = false;
+      workerRef.current?.postMessage({
+        type: "stop",
+      });
+    }
   });
 
   useEffect(() => {

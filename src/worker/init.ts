@@ -260,6 +260,14 @@ self.addEventListener("message", (event: MessageEvent) => {
     closeOperation();
     return;
   }
+
+  if (type === "start") {
+    return;
+  }
+
+  if (type === "stop") {
+    return;
+  }
 });
 
 // Optional: Handle worker termination
