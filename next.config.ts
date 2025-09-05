@@ -4,7 +4,7 @@ import withSerwistInit from "@serwist/next";
 
 
 const nextConfig: NextConfig = {
-  // output: "export",
+  output: "export",
 
   // Add any custom Next.js config here if needed
   devIndicators: false,
@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
 const withSerwist = withSerwistInit({
   // Note: This is only an example. If you use Pages Router,
   // use something else that works, such as "service-worker/index.ts".
-  swSrc: "app/sw.ts",
+  swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
 });
 
