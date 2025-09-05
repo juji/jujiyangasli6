@@ -35,28 +35,28 @@ const balls = [
     y: 150,
     vx: 1, // velocity x
     vy: 0.5, // velocity y
-    radius: 100
+    radius: 100,
   },
   {
     x: 250,
     y: 150,
     vx: -1, // velocity x
     vy: 0.5, // velocity y
-    radius: 80
+    radius: 80,
   },
   {
     x: 150,
     y: 250,
     vx: 1, // velocity x
     vy: -0.5, // velocity y
-    radius: 75
+    radius: 75,
   },
   {
     x: 250,
     y: 250,
     vx: -1, // velocity x
     vy: -0.5, // velocity y
-    radius: 150
+    radius: 150,
   },
 ];
 
@@ -227,12 +227,7 @@ async function createPipeline() {
   });
 
   // Create vertex buffer for quad (will be scaled by radius in shader)
-  const vertices = new Float32Array([
-    -1, -1,
-     1, -1,
-     1,  1,
-    -1,  1,
-  ]);
+  const vertices = new Float32Array([-1, -1, 1, -1, 1, 1, -1, 1]);
   vertexBuffer = device.createBuffer({
     size: vertices.byteLength,
     usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
@@ -259,10 +254,18 @@ async function createPipeline() {
   });
 
   // Update uniform buffer with initial screen size
-  device.queue.writeBuffer(uniformBuffer, 0, new Float32Array([width!, height!]));
+  if (uniformBuffer && width !== null && height !== null) {
+    device.queue.writeBuffer(
+      uniformBuffer,
+      0,
+      new Float32Array([width, height]),
+    );
+  }
 
   // Create instance buffer for balls
-  const instanceData = new Float32Array(balls.flatMap((ball) => [ball.x, ball.y, ball.radius]));
+  const instanceData = new Float32Array(
+    balls.flatMap((ball) => [ball.x, ball.y, ball.radius]),
+  );
   instanceBuffer = device.createBuffer({
     size: instanceData.byteLength,
     usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
@@ -273,7 +276,7 @@ async function createPipeline() {
 function draw() {
   console.log("Draw function called");
 
-  if(!ready){
+  if (!ready) {
     // Continue animation
     animationId = requestAnimationFrame(draw);
     return;
@@ -298,7 +301,9 @@ function draw() {
   update();
 
   // Update GPU buffer with all ball data (position + radius)
-  const instanceData = new Float32Array(balls.flatMap((ball) => [ball.x, ball.y, ball.radius]));
+  const instanceData = new Float32Array(
+    balls.flatMap((ball) => [ball.x, ball.y, ball.radius]),
+  );
   device.queue.writeBuffer(instanceBuffer, 0, instanceData);
 
   const commandEncoder = device.createCommandEncoder();
@@ -327,7 +332,13 @@ function draw() {
   boxBuffer.unmap();
 
   // Update uniform buffer with current screen size
-  device.queue.writeBuffer(uniformBuffer!, 0, new Float32Array([width!, height!]));
+  if (uniformBuffer && width !== null && height !== null) {
+    device.queue.writeBuffer(
+      uniformBuffer,
+      0,
+      new Float32Array([width, height]),
+    );
+  }
 
   // First render the balls
   renderPass.setPipeline(pipeline);
@@ -391,8 +402,7 @@ async function init(payload: PayloadInit) {
   // Create shaders and pipeline
   await createPipeline();
 
-  ready = true
-
+  ready = true;
 }
 
 function resize(payload: PayloadResize) {
@@ -441,14 +451,14 @@ self.addEventListener("message", (event: MessageEvent) => {
   }
 
   if (type === "start") {
-    console.log('start animation')
+    console.log("start animation");
     if (animationId) cancelAnimationFrame(animationId);
     draw();
     return;
   }
 
   if (type === "stop") {
-    console.log('stop animation')
+    console.log("stop animation");
     if (animationId) {
       cancelAnimationFrame(animationId);
       animationId = null;

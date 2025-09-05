@@ -52,6 +52,7 @@ export function BgCanvas() {
     };
   }, []);
 
+  // biome-ignore-start lint/correctness/useExhaustiveDependencies: scrollYProgress.get should not trigger re-runs
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -82,8 +83,7 @@ export function BgCanvas() {
           [offscreen],
         );
 
-        console.log('scrollYProgress.get()', scrollYProgress.get())
-        if(scrollYProgress.get() === 0){
+        if (scrollYProgress.get() === 0) {
           started.current = true;
           workerRef.current?.postMessage({
             type: "start",
@@ -99,6 +99,7 @@ export function BgCanvas() {
       }
     });
   }, []);
+  // biome-ignore-end lint/correctness/useExhaustiveDependencies: scrollYProgress.get should not trigger re-runs
 
   return (
     <>
