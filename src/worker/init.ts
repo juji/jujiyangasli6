@@ -14,12 +14,9 @@ const raf: number | null = null;
 let device: GPUDevice | null = null;
 let context: GPUCanvasContext | null = null;
 let pipeline: GPURenderPipeline | null = null;
-// biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-let vertexBuffer: any = null;
-// biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-let instanceBuffer: any = null;
-// biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-let indexBuffer: any = null;
+let vertexBuffer: GPUBuffer | null = null;
+let instanceBuffer: GPUBuffer | null = null;
+let indexBuffer: GPUBuffer | null = null;
 
 async function createPipeline() {
   if (!device) return;
@@ -57,7 +54,7 @@ async function createPipeline() {
     code: shaderCode,
   });
 
-  const pipelineDescriptor = {
+  const pipelineDescriptor: GPURenderPipelineDescriptor = {
     layout: "auto",
     vertex: {
       module: shaderModule,
@@ -69,18 +66,18 @@ async function createPipeline() {
             {
               shaderLocation: 0,
               offset: 0,
-              format: "float32x2",
+              format: "float32x2" as GPUVertexFormat,
             },
           ],
         },
         {
           arrayStride: 8,
-          stepMode: "instance",
+          stepMode: "instance" as GPUVertexStepMode,
           attributes: [
             {
               shaderLocation: 1,
               offset: 0,
-              format: "float32x2",
+              format: "float32x2" as GPUVertexFormat,
             },
           ],
         },
@@ -91,27 +88,22 @@ async function createPipeline() {
       entryPoint: "fragmentMain",
       targets: [
         {
-          // biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-          format: (navigator as any).gpu.getPreferredCanvasFormat(),
+          format: navigator.gpu.getPreferredCanvasFormat(),
         },
       ],
     },
     primitive: {
-      topology: "triangle-list",
+      topology: "triangle-list" as GPUPrimitiveTopology,
     },
   };
 
-  // biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-  pipeline = await (device as any).createRenderPipelineAsync(
-    // biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-    pipelineDescriptor as any,
-  );
+  pipeline = await device.createRenderPipelineAsync(pipelineDescriptor);
 
   // Create vertex buffer for quad
   const vertices = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
   vertexBuffer = device.createBuffer({
     size: vertices.byteLength,
-    usage: 0x20, // GPUBufferUsage.VERTEX
+    usage: GPUBufferUsage.VERTEX,
     mappedAtCreation: true,
   });
   new Float32Array(vertexBuffer.getMappedRange()).set(vertices);
@@ -121,7 +113,7 @@ async function createPipeline() {
   const centers = new Float32Array([(width || 800) / 2, (height || 600) / 2]);
   instanceBuffer = device.createBuffer({
     size: centers.byteLength,
-    usage: 0x20, // GPUBufferUsage.VERTEX
+    usage: GPUBufferUsage.VERTEX,
     mappedAtCreation: true,
   });
   new Float32Array(instanceBuffer.getMappedRange()).set(centers);
@@ -131,7 +123,7 @@ async function createPipeline() {
   const indices = new Uint16Array([0, 1, 2, 2, 1, 3]);
   indexBuffer = device.createBuffer({
     size: indices.byteLength,
-    usage: 0x10, // GPUBufferUsage.INDEX
+    usage: GPUBufferUsage.INDEX,
     mappedAtCreation: true,
   });
   new Uint16Array(indexBuffer.getMappedRange()).set(indices);
@@ -188,14 +180,12 @@ async function init(payload: PayloadInit) {
   offscreen.height = height;
 
   // Initialize WebGPU
-  // biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-  if (!(navigator as any).gpu) {
+  if (!navigator.gpu) {
     console.error("WebGPU not supported");
     return;
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-  const adapter = await (navigator as any).gpu.requestAdapter();
+  const adapter = await navigator.gpu.requestAdapter();
   if (!adapter) {
     console.error("No adapter found");
     return;
@@ -208,11 +198,9 @@ async function init(payload: PayloadInit) {
     return;
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-  const format = (navigator as any).gpu.getPreferredCanvasFormat();
+  const format = navigator.gpu.getPreferredCanvasFormat();
   context.configure({
-    // biome-ignore lint/suspicious/noExplicitAny: WebGPU types not available
-    device: device as any,
+    device,
     format,
     alphaMode: "premultiplied",
   });
