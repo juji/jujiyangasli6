@@ -35,28 +35,32 @@ const balls = [
     y: 150,
     vx: 1, // velocity x
     vy: 0.5, // velocity y
-    radius: 100,
+    radius: 200,
+    color: [1.0, 0.5, 0.0], // Orange
   },
   {
     x: 250,
     y: 150,
     vx: -1, // velocity x
     vy: 0.5, // velocity y
-    radius: 80,
+    radius: 180,
+    color: [0.0, 1.0, 0.5], // Cyan
   },
   {
     x: 150,
     y: 250,
     vx: 1, // velocity x
     vy: -0.5, // velocity y
-    radius: 75,
+    radius: 175,
+    color: [0.5, 0.0, 1.0], // Purple
   },
   {
     x: 250,
     y: 250,
     vx: -1, // velocity x
     vy: -0.5, // velocity y
-    radius: 150,
+    radius: 250,
+    color: [1.0, 1.0, 0.0], // Yellow
   },
 ];
 
@@ -93,12 +97,14 @@ async function createPipeline() {
       @location(0) position: vec2<f32>,
       @location(1) instance_pos: vec2<f32>,
       @location(2) radius: f32,
+      @location(3) color: vec3<f32>,
     };
 
     struct VertexOutput {
       @builtin(position) position: vec4<f32>,
       @location(0) uv: vec2<f32>,
       @location(1) radius: f32,
+      @location(2) color: vec3<f32>,
     };
 
     @vertex
@@ -117,6 +123,7 @@ async function createPipeline() {
       output.position = vec4<f32>(clipPos.x, -clipPos.y, 0.0, 1.0); // Flip Y for canvas coordinates
       output.uv = pos; // Use scaled position for UV
       output.radius = input.radius;
+      output.color = input.color;
       return output;
     }
   `;
@@ -124,14 +131,16 @@ async function createPipeline() {
   // Fragment shader for drawing circles (balls) and rectangles (box)
   const fragmentShaderCode = `
     @fragment
-    fn main(@location(0) uv: vec2<f32>, @location(1) radius: f32) -> @location(0) vec4<f32> {
+    fn main(@location(0) uv: vec2<f32>, @location(1) radius: f32, @location(2) color: vec3<f32>) -> @location(0) vec4<f32> {
       if (radius > 0.0) {
-        // Draw circle for balls
+        // Draw circle for balls with blur
         let dist = length(uv);
-        if (dist > radius) {
+        let blurWidth = 100.0; // Adjust this value to control blur intensity
+        let alpha = 1.0 - smoothstep(radius - blurWidth, radius, dist);
+        if (alpha <= 0.0) {
           discard;
         }
-        return vec4<f32>(1.0, 0.5, 0.0, 1.0); // Orange color for balls
+        return vec4<f32>(color.r, color.g, color.b, alpha); // Use instance color for balls with alpha
       } else {
         // Draw rectangle outline for box
         let halfWidth = ${box.width / 2}.0;
@@ -195,7 +204,7 @@ async function createPipeline() {
           ],
         },
         {
-          arrayStride: 3 * 4, // 3 floats * 4 bytes (x, y, radius)
+          arrayStride: 6 * 4, // 6 floats * 4 bytes (x, y, radius, r, g, b)
           stepMode: "instance",
           attributes: [
             {
@@ -208,6 +217,11 @@ async function createPipeline() {
               offset: 2 * 4,
               format: "float32",
             },
+            {
+              shaderLocation: 3,
+              offset: 3 * 4,
+              format: "float32x3",
+            },
           ],
         },
       ],
@@ -218,6 +232,18 @@ async function createPipeline() {
       targets: [
         {
           format: navigator.gpu.getPreferredCanvasFormat(),
+          blend: {
+            color: {
+              srcFactor: "src-alpha",
+              dstFactor: "one",
+              operation: "add",
+            },
+            alpha: {
+              srcFactor: "one",
+              dstFactor: "one-minus-src-alpha",
+              operation: "add",
+            },
+          },
         },
       ],
     },
@@ -264,7 +290,7 @@ async function createPipeline() {
 
   // Create instance buffer for balls
   const instanceData = new Float32Array(
-    balls.flatMap((ball) => [ball.x, ball.y, ball.radius]),
+    balls.flatMap((ball) => [ball.x, ball.y, ball.radius, ...ball.color]),
   );
   instanceBuffer = device.createBuffer({
     size: instanceData.byteLength,
@@ -300,9 +326,9 @@ function draw() {
   // Update box position
   update();
 
-  // Update GPU buffer with all ball data (position + radius)
+  // Update GPU buffer with all ball data (position + radius + color)
   const instanceData = new Float32Array(
-    balls.flatMap((ball) => [ball.x, ball.y, ball.radius]),
+    balls.flatMap((ball) => [ball.x, ball.y, ball.radius, ...ball.color]),
   );
   device.queue.writeBuffer(instanceBuffer, 0, instanceData);
 
@@ -319,10 +345,10 @@ function draw() {
     ],
   });
 
-  // Create a temporary buffer for box rendering (radius = 0)
+  // Create a temporary buffer for box rendering (radius = 0, with color padding)
   const boxCenterX = box.x + box.width / 2;
   const boxCenterY = box.y + box.height / 2;
-  const boxData = new Float32Array([boxCenterX, boxCenterY, 0]); // x, y, radius = 0
+  const boxData = new Float32Array([boxCenterX, boxCenterY, 0, 0, 0, 0]); // x, y, radius = 0, color padding
   const boxBuffer = device.createBuffer({
     size: boxData.byteLength,
     usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
