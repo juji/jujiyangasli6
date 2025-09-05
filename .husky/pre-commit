@@ -1,1 +1,3 @@
-# pnpm test
+# if you have tests
+# pnpm run test
+pnpm run lint-staged
