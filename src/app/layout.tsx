@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import 'sanitize.css';
-import 'sanitize.css/forms.css';
-import 'sanitize.css/typography.css';
-import 'sanitize.css/assets.css';
+import "sanitize.css";
+import "sanitize.css/forms.css";
+import "sanitize.css/typography.css";
+import "sanitize.css/assets.css";
 import "./globals.css";
-import 'sanitize.css/reduce-motion.css';
+import "sanitize.css/reduce-motion.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Juji | Web Developer",
-  description: "Welcome to my portfolio website."
+  description: "Welcome to my portfolio website.",
 };
 
 export default function RootLayout({
@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
-        <div>test changed</div>
+        <div>test changed 2</div>
       </body>
     </html>
   );
