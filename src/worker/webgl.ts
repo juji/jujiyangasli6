@@ -34,8 +34,9 @@ const enableBlending = true;
 const blurWidth = 1000;
 const drawBox = true;
 const outline = {
-  color: "#fa8072",
+  color: [250, 160, 114],
   width: 3,
+  draw: true,
 };
 
 const box = {
