@@ -51,6 +51,10 @@ let ready = false;
 const maxVelocity = 3;
 const radiusRange = [0, 0];
 
+const contrast = "5.0";
+const brightness = "1.0";
+const gamma = "4.2";
+
 const turnAccelDelta = 0.09;
 const blurWidth = 1200;
 const velocityRange = [-3, 3];
@@ -73,6 +77,17 @@ const colors = [
   [153, 128, 250], // '#9980FA',
 ];
 
+const box = {
+  width: 0,
+  height: 0,
+  x: 0,
+  y: 0,
+};
+
+const balls: Ball[] = [
+  // {"x":1019.5706044767663,"y":438.192647400654,"yInit":438.192647400654,"vx":-1.669198319132604,"vy":0.26029553680936246,"ax":-0.01,"ay":-0.01,"radius":829.4512132162898,"color":[0.9176470588235294,0.12549019607843137,0.15294117647058825],"colorIndex":4,"translateEffect":0},{"x":1270.3983753069715,"y":735.8526446472124,"yInit":735.8526446472124,"vx":2.9683667799690046,"vy":-0.8764287158035868,"ax":-0.01,"ay":-0.01,"radius":842.263273518769,"color":[0.9294117647058824,0.2980392156862745,0.403921568627451],"colorIndex":0,"translateEffect":1},{"x":1047.5046388433148,"y":663.0568886125682,"yInit":663.0568886125682,"vx":0.8791546093249947,"vy":1.0412336965114424,"ax":-0.01,"ay":-0.01,"radius":827.7206605374356,"color":[0.023529411764705882,0.3215686274509804,0.8666666666666667],"colorIndex":5,"translateEffect":2},{"x":837.2380260882485,"y":551.7837787706251,"yInit":551.7837787706251,"vx":-1.0101335351337053,"vy":1.4870102428971474,"ax":0.01,"ay":-0.01,"radius":536.7491560821566,"color":[0.9333333333333333,0.35294117647058826,0.1411764705882353],"colorIndex":2,"translateEffect":3}
+];
+
 function randomColor(current: Ball[]) {
   const index = Math.floor(Math.random() * colors.length);
   // check if the index is already used
@@ -91,6 +106,7 @@ function createBall(
   translateEffect?: number,
 ): Ball {
   const colorData = randomColor(current);
+
   const radius =
     Math.random() * (radiusRange[1] - radiusRange[0]) +
     radiusRange[0] * (small ? 0.6 : 1);
@@ -98,6 +114,7 @@ function createBall(
   return {
     x: 150,
     y: 150,
+    yInit: 150,
     vx:
       Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
     vy:
@@ -111,21 +128,10 @@ function createBall(
   } as Ball;
 }
 
-const box = {
-  width: 0,
-  height: 0,
-  x: 0,
-  y: 0,
-};
-
-const balls: Ball[] = [];
-
 function initializeBalls() {
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 7; i++) {
     balls.push(createBall(balls, i >= 3, i));
   }
-
-  console.log("Initialized balls:", balls);
 
   // Position balls randomly within the box
   for (const ball of balls) {
@@ -133,6 +139,11 @@ function initializeBalls() {
     ball.y = Math.random() * box.height + box.y;
     ball.yInit = ball.y;
   }
+
+  console.log(
+    "Initialized balls:",
+    balls.map((b) => b.radius),
+  );
 }
 
 function initializeBoxLocation() {
@@ -257,7 +268,14 @@ async function createPipeline() {
         if (alpha <= 0.0) {
           discard;
         }
-        gl_FragColor = vec4(v_color, alpha); // Use instance color for balls with alpha
+        vec4 color = vec4(v_color, alpha);
+        vec4 newColor = vec4(
+          pow(color.r * ${brightness}, ${gamma}) * ${contrast},
+          pow(color.g * ${brightness}, ${gamma}) * ${contrast},
+          pow(color.b * ${brightness}, ${gamma}) * ${contrast},
+          color.a
+        );
+        gl_FragColor = newColor;
       } else {
         // Draw rectangle outline for box or canvas
         if (u_draw_canvas_outline) {
