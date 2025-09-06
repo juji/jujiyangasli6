@@ -12,11 +12,13 @@ type PayloadInit = PayloadResize & {
 type Ball = {
   x: number;
   y: number;
+  yInit: number;
   vx: number;
   vy: number;
   ax: number;
   ay: number;
   radius: number;
+  translateEffect: number;
   color: [number, number, number];
   colorIndex?: number;
 };
@@ -43,9 +45,12 @@ let a_instance_pos: number;
 let a_radius: number;
 let a_color: number;
 
+// [0, 1]
+let translateY = 0;
+
 let ready = false;
 
-const turnAccelDelta = 0.09;
+const turnAccelDelta = 0.02;
 const blurWidth = 1000;
 const radiusRange = [0, 0];
 const velocityRange = [-3, 3];
@@ -53,9 +58,8 @@ const maxVelocity = 3;
 const enableBlending = true;
 const drawBox = true;
 const outline = {
-  // color: [ 250, 160, 114 ],
   color: [23, 23, 23],
-  width: 4,
+  width: 5,
   opacity: 1, // 0 - 1
 };
 
@@ -82,8 +86,16 @@ function randomColor(current: Ball[]) {
   };
 }
 
-function createBall(current: Ball[]): Ball {
+function createBall(
+  current: Ball[],
+  big?: boolean,
+  translateEffect?: number,
+): Ball {
   const colorData = randomColor(current);
+  const radius =
+    Math.random() * (radiusRange[1] - radiusRange[0]) +
+    radiusRange[0] * (big ? 1 : 0.6);
+
   return {
     x: 150,
     y: 150,
@@ -93,9 +105,10 @@ function createBall(current: Ball[]): Ball {
       Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
     ax: Math.random() < 0.5 ? 0.01 : -0.01, // acceleration x
     ay: Math.random() < 0.5 ? 0.01 : -0.01, // acceleration y
-    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
+    radius,
     color: colorData.color.flatMap((v) => v / 255) as [number, number, number],
     colorIndex: colorData.colorIndex,
+    translateEffect: translateEffect ?? 0,
   } as Ball;
 }
 
@@ -110,7 +123,7 @@ const balls: Ball[] = [];
 
 function initializeBalls() {
   for (let i = 0; i < 4; i++) {
-    balls.push(createBall(balls));
+    balls.push(createBall(balls, i >= 2, i));
   }
 
   console.log("Initialized balls:", balls);
@@ -119,22 +132,23 @@ function initializeBalls() {
   for (const ball of balls) {
     ball.x = Math.random() * box.width + box.x;
     ball.y = Math.random() * box.height + box.y;
+    ball.yInit = ball.y;
   }
 }
 
 function initializeBoxLocation() {
   if (width === null || height === null) return;
 
-  box.width = width / 2;
-  box.height = height / 2;
-  box.x = width - box.width;
-  box.y = height - box.height;
+  box.width = width * 0.5;
+  box.height = height * 0.5;
+  box.x = width - width / 2;
+  box.y = height - height / 2;
 }
 
 function initializeBallRadius() {
-  const radius = Math.min(width!, height!) * 0.9;
+  const radius = Math.min(width!, height!) * 1;
   const radiusMin = radius;
-  const radiusMax = radius + 100;
+  const radiusMax = radius + 50;
   radiusRange[0] = radiusMin;
   radiusRange[1] = radiusMax;
 }
@@ -150,11 +164,11 @@ function update() {
       ball.ax -= turnAccelDelta;
     }
 
-    if (ball.y >= box.y + box.height) {
+    if (ball.yInit >= box.y + box.height) {
       ball.ay -= turnAccelDelta;
     }
 
-    if (ball.y < box.y) {
+    if (ball.yInit < box.y) {
       ball.ay += turnAccelDelta;
     }
 
@@ -169,7 +183,8 @@ function update() {
 
     // Update position
     ball.x += speedX;
-    ball.y += speedY;
+    ball.yInit += speedY;
+    ball.y = ball.yInit - ball.translateEffect * translateY * 500;
   }
 }
 
@@ -604,6 +619,12 @@ self.addEventListener("message", (event: MessageEvent) => {
       cancelAnimationFrame(animationId);
       animationId = null;
     }
+    return;
+  }
+
+  if (type === "scroll") {
+    console.log("scroll animation");
+    translateY = payload.scrollY;
     return;
   }
 });

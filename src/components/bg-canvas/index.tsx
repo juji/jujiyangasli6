@@ -22,6 +22,13 @@ export function BgCanvas() {
     // change --visibility in container
     containerRef.current?.style.setProperty("--visibility", `${value}`);
 
+    workerRef.current?.postMessage({
+      type: "scroll",
+      payload: {
+        scrollY: value,
+      },
+    });
+
     if (value < 1 && !started.current) {
       started.current = true;
       workerRef.current?.postMessage({
