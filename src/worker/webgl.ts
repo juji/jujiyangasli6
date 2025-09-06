@@ -277,6 +277,11 @@ function draw() {
   gl.bindBuffer(gl.ARRAY_BUFFER, instanceBuffer);
   gl.bufferSubData(gl.ARRAY_BUFFER, 0, instanceData);
 
+  // Set viewport to match canvas size
+  if (width !== null && height !== null) {
+    gl.viewport(0, 0, width, height);
+  }
+
   // Clear the canvas
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -368,13 +373,16 @@ async function init(payload: PayloadInit) {
 function resize(payload: PayloadResize) {
   console.log("Worker resized with payload:", payload);
 
-  if (!offscreen) return;
+  if (!offscreen || !gl) return;
 
   width = payload.width;
   height = payload.height;
 
   offscreen.width = width;
   offscreen.height = height;
+
+  // Update WebGL viewport to match new canvas size
+  gl.viewport(0, 0, width, height);
 
   // Restart animation with new dimensions
   if (animationId) cancelAnimationFrame(animationId);
