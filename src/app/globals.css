@@ -1,21 +1,36 @@
 :root {
   --background: #171717;
+  /* --background: #ffffff; */
   --foreground: #ffffff;
   --page-width: 1024px;
   --page-padding: 2rem;
 
   --link-color: #9cff6a;
 
-  --shadow-color: rgb(36 36 36 / 0.8);
-  --drop-shadow: drop-shadow(
-      0px 0px 1px rgb(from var(--shadow-color) r g b / 1)
-    )
-    drop-shadow(-1px -1px 0px rgb(from var(--shadow-color) r g b / 1))
-    drop-shadow(1px 1px 0px rgb(from var(--shadow-color) r g b / 1))
-    drop-shadow(1px 1px 0px rgb(from var(--shadow-color) r g b / 1))
-    drop-shadow(1px 1px 0px rgb(from var(--shadow-color) r g b / 1))
-    drop-shadow(1px 1px 0px rgb(from var(--shadow-color) r g b / 1))
-    drop-shadow(1px 0px 0px rgb(from var(--shadow-color) r g b / 1));
+  --shadow-color: rgb(36 36 36);
+
+  --drop-shadow: drop-shadow(0px 0px 1px var(--shadow-color))
+    drop-shadow(-1px -1px 0px var(--shadow-color))
+    drop-shadow(1px 1px 0px var(--shadow-color))
+    drop-shadow(1px 1px 0px var(--shadow-color))
+    drop-shadow(1px 1px 0px var(--shadow-color))
+    drop-shadow(1px 1px 0px var(--shadow-color))
+    drop-shadow(1px 0px 0px var(--shadow-color));
+
+  --text-shadow:
+    0px 0px 1px var(--shadow-color), 0px 0px 2px var(--shadow-color), 0px 0px 3px var(
+      --shadow-color
+    ) /* ,0px 0px 0px var(--shadow-color) */, 0px 1px 0px var(--shadow-color), 0px 2px 0px var(
+      --shadow-color
+    ), 0px 3px 0px var(--shadow-color), 1px 0px 0px var(--shadow-color), 1px 1px 0px var(
+      --shadow-color
+    ), 1px 2px 0px var(--shadow-color), 1px 3px 0px var(--shadow-color), 2px 0px 0px var(
+      --shadow-color
+    ), 2px 1px 0px var(--shadow-color), 2px 2px 0px var(--shadow-color), 2px 3px 0px var(
+      --shadow-color
+    ), 3px 0px 0px var(--shadow-color), 3px 1px 0px var(--shadow-color), 3px 2px 0px var(
+      --shadow-color
+    ), 3px 3px 0px var(--shadow-color);
 }
 
 @media (min-width: 500px) {
@@ -24,42 +39,6 @@
   }
 }
 
-/* test changed */
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-*,
-::before,
-::after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* this is commented, but i don't want to forget */
-/* 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-} 
-*/
-
 * {
   scrollbar-color: var(--link-color) rgba(0, 0, 0, 0);
   scrollbar-width: thin;
@@ -67,7 +46,6 @@ a {
 
 *::-webkit-scrollbar {
   width: 8px;
-  /* background-color: rgba(0, 0, 0, 0); */
 }
 
 *::-webkit-scrollbar-track {
@@ -82,10 +60,44 @@ html {
   scroll-behavior: smooth;
 }
 
-/* add relative position to body */
+/* test changed */
+
+html,
 body {
+  width: 100vw;
   position: relative;
 }
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* 
+  WHY SHOULD I DO THIS?
+  this actually makes the width bound clear to the browser
+  when a child's width is 100%, it doesn't go offscreen
+  */
+  overflow-x: hidden;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* this is commented, but i don't want to forget */
+/* 
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+} 
+*/
 
 /* link styling */
 a {

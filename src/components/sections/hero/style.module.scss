@@ -28,7 +28,8 @@
 .hero {
   padding-top: 2rem;
   height: 100svh;
-  filter: var(--drop-shadow);
+  text-shadow: var(--text-shadow);
+  filter: drop-shadow(0px 0px 1px var(--shadow-color));
 
   .heading {
     display: block;
@@ -38,6 +39,9 @@
     when animating scaleY from 0 to 1
     */
     height: 200px;
+    svg{
+      filter: var(--drop-shadow);
+    }
 
     .logo {
       display: inline-block;
