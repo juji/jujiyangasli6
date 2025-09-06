@@ -16,12 +16,21 @@
   }
 }
 
+@keyframes typewriter {
+  0% {
+    display: none;
+  }
+  100% {
+    display: inline;
+  }
+}
+
 .hero {
   padding-top: 2rem;
   height: 100vh;
+  filter: var(--drop-shadow);
 
   .heading {
-    filter: var(--drop-shadow);
     display: block;
 
     /* 
@@ -58,6 +67,42 @@
       animation-duration: 1000ms;
       animation-fill-mode: both;
       animation-timing-function: var(--rubbery);
+    }
+  }
+
+  .subheading{
+
+
+    span{
+      display: block;
+      font-size: 2.1rem;
+      font-weight: 800;
+    } 
+
+    .big{
+      font-size: 3.3rem;
+      margin-bottom: 1rem;
+
+      span{
+        font-size: 3.3rem;
+        display: inline;
+        padding-left: 1rem;
+
+        span{
+          padding-left: 0rem;
+          animation-name: typewriter;
+          animation-duration: 0ms;
+          animation-fill-mode: both;
+
+          /* Typewriter effect */
+          /* set animation delay +50ms each */
+          @for $i from 1 through 13 {
+            &:nth-child(#{$i}) {
+              animation-delay: #{$i * 10}ms;
+            }
+          }
+        }
+      }
     }
   }
 }

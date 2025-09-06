@@ -34,6 +34,7 @@
     "@webgpu/types": "^0.1.64",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.6",
+    "sass": "^1.92.1",
     "serwist": "^9.2.1",
     "typescript": "^5"
   }
