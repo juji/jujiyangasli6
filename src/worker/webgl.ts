@@ -19,6 +19,7 @@ let instanceBuffer: WebGLBuffer | null = null;
 let indexBuffer: WebGLBuffer | null = null;
 let animationId: number | null = null;
 let u_screen_size: WebGLUniformLocation | null = null;
+let u_draw_box: WebGLUniformLocation | null = null;
 let a_position: number;
 let a_instance_pos: number;
 let a_radius: number;
@@ -27,15 +28,19 @@ let a_color: number;
 let ready = false;
 
 const turnAccelDelta = 0.09;
-const radiusRange = [200, 200];
+const radiusRange = [500, 600];
 const velocityRange = [-3, 3];
 const enableBlending = true;
-const blurWidth = 1_000;
+const blurWidth = 1000;
 const drawBox = true;
+const outline = {
+  color: "#fa8072",
+  width: 3,
+};
 
 const box = {
-  width: 200,
-  height: 200,
+  width: 300,
+  height: 300,
   x: 500,
   y: 500,
 };
@@ -44,46 +49,54 @@ const balls = [
   {
     x: 150,
     y: 150,
-    vx: velocityRange[0] + Math.random() * velocityRange[1], // velocity x
-    vy: velocityRange[0] + Math.random() * velocityRange[1], // velocity y
+    vx:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
+    vy:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
     ax: 0.01, // acceleration x
     ay: 0.01, // acceleration y
-    radius: radiusRange[0] + Math.random() * radiusRange[1],
+    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
     color: [1.0, 0.5, 0.0], // Orange
   },
   {
     x: 250,
     y: 150,
-    vx: Math.random() * 2 - 1, // velocity x
-    vy: Math.random() * 2 - 1, // velocity y
+    vx:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
+    vy:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
     ax: -0.01, // acceleration x
     ay: 0.01, // acceleration y
-    radius: radiusRange[0] + Math.random() * radiusRange[1],
+    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
     color: [0.0, 1.0, 0.5], // Cyan
   },
   {
     x: 150,
     y: 250,
-    vx: Math.random() * 2 - 1, // velocity x
-    vy: Math.random() * 2 - 1, // velocity y
+    vx:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
+    vy:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
     ax: 0.01, // acceleration x
     ay: -0.01, // acceleration y
-    radius: radiusRange[0] + Math.random() * radiusRange[1],
+    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
     color: [0.5, 0.0, 1.0], // Purple
   },
   {
     x: 250,
     y: 250,
-    vx: Math.random() * 2 - 1, // velocity x
-    vy: Math.random() * 2 - 1, // velocity y
+    vx:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
+    vy:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
     ax: -0.01, // acceleration x
     ay: -0.01, // acceleration y
-    radius: radiusRange[0] + Math.random() * radiusRange[1],
+    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
     color: [1.0, 1.0, 0.0], // Yellow
   },
 ];
 
-function initializePositions() {
+function initializeBalls() {
   // shuffle balls array
   for (let i = balls.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -97,7 +110,13 @@ function initializePositions() {
   }
 }
 
-initializePositions();
+function initializeBoxLocation() {
+  if (width === null || height === null) return;
+
+  // center
+  box.x = (width - box.width) / 2;
+  box.y = (height - box.height) / 2;
+}
 
 function update() {
   // Update all balls within box boundaries
@@ -134,6 +153,7 @@ async function createPipeline() {
     attribute float a_radius;
     attribute vec3 a_color;
     uniform vec2 u_screen_size;
+    uniform bool u_draw_box;
     varying vec2 v_uv;
     varying float v_radius;
     varying vec3 v_color;
@@ -161,6 +181,7 @@ async function createPipeline() {
   // Fragment shader for drawing circles (balls) and rectangles (box)
   const fragmentShaderCode = `
     precision mediump float;
+    uniform bool u_draw_box;
     varying vec2 v_uv;
     varying float v_radius;
     varying vec3 v_color;
@@ -177,6 +198,9 @@ async function createPipeline() {
         gl_FragColor = vec4(v_color, alpha); // Use instance color for balls with alpha
       } else {
         // Draw rectangle outline for box
+        if (!u_draw_box) {
+          discard;
+        }
         float halfWidth = ${box.width / 2}.0;
         float halfHeight = ${box.height / 2}.0;
         float thickness = 2.0; // Pixel thickness
@@ -230,6 +254,7 @@ async function createPipeline() {
   a_radius = gl.getAttribLocation(program, "a_radius");
   a_color = gl.getAttribLocation(program, "a_color");
   u_screen_size = gl.getUniformLocation(program, "u_screen_size");
+  u_draw_box = gl.getUniformLocation(program, "u_draw_box");
 
   // Create vertex buffer for quad
   const vertices = new Float32Array([-1, -1, 1, -1, 1, 1, -1, 1]);
@@ -299,6 +324,9 @@ function draw() {
   // Set uniform
   if (u_screen_size && width !== null && height !== null) {
     gl.uniform2f(u_screen_size, width, height);
+  }
+  if (u_draw_box) {
+    gl.uniform1i(u_draw_box, drawBox ? 1 : 0);
   }
 
   // Bind vertex buffer
@@ -375,6 +403,9 @@ async function init(payload: PayloadInit) {
   // Create shaders and program
   await createPipeline();
 
+  initializeBoxLocation();
+  initializeBalls();
+
   ready = true;
 }
 
@@ -394,6 +425,9 @@ function resize(payload: PayloadResize) {
 
   // Restart animation with new dimensions
   if (animationId) cancelAnimationFrame(animationId);
+
+  initializeBoxLocation();
+
   draw();
 }
 

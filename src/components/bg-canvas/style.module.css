@@ -10,6 +10,9 @@
   height: 100lvh;
   z-index: 0;
 
+  /* filter: contrast(200%) blur(55px); */
+  /* filter: contrast(200%); */
+
   .bg {
     position: absolute;
     top: 0;
