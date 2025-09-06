@@ -139,11 +139,6 @@ function initializeBalls() {
     ball.y = Math.random() * box.height + box.y;
     ball.yInit = ball.y;
   }
-
-  console.log(
-    "Initialized balls:",
-    balls.map((b) => b.radius),
-  );
 }
 
 function initializeBoxLocation() {
@@ -371,8 +366,6 @@ async function createPipeline() {
 }
 
 function draw() {
-  console.log("Draw function called");
-
   if (!ready) {
     // Continue animation
     animationId = requestAnimationFrame(draw);
@@ -387,7 +380,6 @@ function draw() {
     !instanceBuffer ||
     !indexBuffer
   ) {
-    console.log("Missing required objects for drawing");
     return;
   }
 
@@ -534,8 +526,6 @@ function draw() {
 }
 
 async function init(payload: PayloadInit) {
-  console.log("Worker initialized with payload:", payload);
-
   offscreen = payload.canvas;
   width = payload.width;
   height = payload.height;
@@ -544,13 +534,11 @@ async function init(payload: PayloadInit) {
   offscreen.height = height;
 
   // Initialize WebGL
-  console.log("Initializing WebGL");
   gl = offscreen.getContext("webgl2");
   if (!gl) {
     console.error("WebGL2 not supported");
     return;
   }
-  console.log("WebGL context created");
 
   // Create shaders and program
   await createPipeline();
@@ -576,8 +564,6 @@ async function init(payload: PayloadInit) {
 }
 
 function resize(payload: PayloadResize) {
-  console.log("Worker resized with payload:", payload);
-
   if (!offscreen || !gl) return;
 
   width = payload.width;
@@ -604,7 +590,6 @@ function closeOperation() {
     cancelAnimationFrame(animationId);
     animationId = null;
   }
-  console.log("Worker closing");
   if (!self.closed) self.close();
 }
 
@@ -628,14 +613,12 @@ self.addEventListener("message", (event: MessageEvent) => {
   }
 
   if (type === "start") {
-    console.log("start animation");
     if (animationId) cancelAnimationFrame(animationId);
     draw();
     return;
   }
 
   if (type === "stop") {
-    console.log("stop animation");
     if (animationId) {
       cancelAnimationFrame(animationId);
       animationId = null;
@@ -644,7 +627,6 @@ self.addEventListener("message", (event: MessageEvent) => {
   }
 
   if (type === "scroll") {
-    console.log("scroll animation");
     translateY = payload.scrollY;
     return;
   }
@@ -653,7 +635,6 @@ self.addEventListener("message", (event: MessageEvent) => {
 // Optional: Handle worker termination
 self.addEventListener("close", () => {
   closeOperation();
-  console.log("Worker is terminating");
 });
 
 self.postMessage({ type: "init" });

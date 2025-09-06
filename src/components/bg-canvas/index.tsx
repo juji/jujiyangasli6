@@ -17,7 +17,6 @@ export function BgCanvas() {
 
   useMotionValueEvent(scrollYProgress, "change", () => {
     const value = scrollYProgress.get();
-    console.log("Scroll position:", value);
 
     // change --visibility in container
     containerRef.current?.style.setProperty("--visibility", `${value}`);
@@ -76,7 +75,6 @@ export function BgCanvas() {
       const { type, payload } = event.data;
 
       if (type === "init") {
-        console.log("Worker initialized");
         canvasInit.current = true;
         worker.postMessage(
           {
@@ -101,7 +99,6 @@ export function BgCanvas() {
       }
 
       if (type === "error") {
-        console.log("Worker error:", payload);
         return;
       }
     });
