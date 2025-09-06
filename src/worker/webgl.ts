@@ -20,6 +20,12 @@ let indexBuffer: WebGLBuffer | null = null;
 let animationId: number | null = null;
 let u_screen_size: WebGLUniformLocation | null = null;
 let u_draw_box: WebGLUniformLocation | null = null;
+let u_draw_canvas_outline: WebGLUniformLocation | null = null;
+let u_canvas_size: WebGLUniformLocation | null = null;
+let u_box_size: WebGLUniformLocation | null = null;
+let u_outline_color: WebGLUniformLocation | null = null;
+let u_outline_width: WebGLUniformLocation | null = null;
+let u_outline_opacity: WebGLUniformLocation | null = null;
 let a_position: number;
 let a_instance_pos: number;
 let a_radius: number;
@@ -28,22 +34,23 @@ let a_color: number;
 let ready = false;
 
 const turnAccelDelta = 0.09;
-const radiusRange = [500, 600];
+const radiusRange = [600, 800];
 const velocityRange = [-3, 3];
 const enableBlending = true;
 const blurWidth = 1000;
 const drawBox = true;
 const outline = {
-  color: [250, 160, 114],
-  width: 3,
+  // color: [ 250, 160, 114 ],
+  color: [23, 23, 23],
+  width: 4,
   opacity: 1, // 0 - 1
 };
 
 const box = {
-  width: 300,
-  height: 300,
-  x: 500,
-  y: 500,
+  width: 0,
+  height: 0,
+  x: 0,
+  y: 0,
 };
 
 const balls = [
@@ -115,8 +122,12 @@ function initializeBoxLocation() {
   if (width === null || height === null) return;
 
   // center
-  box.x = (width - box.width) / 2;
-  box.y = (height - box.height) / 2;
+  // box.x = (width - box.width) / 2;
+  // box.y = (height - box.height) / 2;
+  box.width = width / 2;
+  box.height = height / 2;
+  box.x = width - box.width;
+  box.y = height - box.height;
 }
 
 function update() {
@@ -155,6 +166,9 @@ async function createPipeline() {
     attribute vec3 a_color;
     uniform vec2 u_screen_size;
     uniform bool u_draw_box;
+    uniform bool u_draw_canvas_outline;
+    uniform mediump vec2 u_canvas_size;
+    uniform mediump vec2 u_box_size;
     varying vec2 v_uv;
     varying float v_radius;
     varying vec3 v_color;
@@ -163,8 +177,13 @@ async function createPipeline() {
 
       vec2 pos = a_position;
       if (a_radius == 0.0) {
-        // Scale quad to box size for box drawing
-        pos *= vec2(${box.width / 2}.0, ${box.height / 2}.0);
+        if (u_draw_canvas_outline) {
+          // Scale quad to canvas size minus 4 pixels to ensure outline is within bounds
+          pos *= (u_canvas_size - vec2(4.0)) / 2.0;
+        } else {
+          // Scale quad to box size for box drawing
+          pos *= u_box_size;
+        }
       } else {
         // Scale quad to ball radius
         pos *= a_radius;
@@ -179,10 +198,16 @@ async function createPipeline() {
     }
   `;
 
-  // Fragment shader for drawing circles (balls) and rectangles (box)
+  // Fragment shader for drawing circles (balls) and rectangles (box/canvas outline)
   const fragmentShaderCode = `
     precision mediump float;
     uniform bool u_draw_box;
+    uniform bool u_draw_canvas_outline;
+    uniform vec2 u_canvas_size;
+    uniform mediump vec2 u_box_size;
+    uniform vec3 u_outline_color;
+    uniform float u_outline_width;
+    uniform float u_outline_opacity;
     varying vec2 v_uv;
     varying float v_radius;
     varying vec3 v_color;
@@ -198,16 +223,28 @@ async function createPipeline() {
         }
         gl_FragColor = vec4(v_color, alpha); // Use instance color for balls with alpha
       } else {
-        // Draw rectangle outline for box
-        if (!u_draw_box) {
-          discard;
-        }
-        float halfWidth = ${box.width / 2}.0;
-        float halfHeight = ${box.height / 2}.0;
-        float thickness = 2.0; // Pixel thickness
-        if (abs(v_uv.x) >= halfWidth - thickness ||
-            abs(v_uv.y) >= halfHeight - thickness) {
-          gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0); // White color for box outline
+        // Draw rectangle outline for box or canvas
+        if (u_draw_canvas_outline) {
+          float halfWidth = u_canvas_size.x / 2.0;
+          float halfHeight = u_canvas_size.y / 2.0;
+          float thickness = u_outline_width;
+          if (abs(v_uv.x) >= halfWidth - thickness - 1.0 ||
+              abs(v_uv.y) >= halfHeight - thickness - 1.0) {
+            vec3 color = u_outline_color / 255.0;
+            gl_FragColor = vec4(color, u_outline_opacity);
+          } else {
+            discard;
+          }
+        } else if (u_draw_box) {
+          float halfWidth = u_box_size.x;
+          float halfHeight = u_box_size.y;
+          float thickness = 2.0; // Pixel thickness
+          if (abs(v_uv.x) >= halfWidth - thickness ||
+              abs(v_uv.y) >= halfHeight - thickness) {
+            gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0); // White color for box outline
+          } else {
+            discard;
+          }
         } else {
           discard;
         }
@@ -256,6 +293,15 @@ async function createPipeline() {
   a_color = gl.getAttribLocation(program, "a_color");
   u_screen_size = gl.getUniformLocation(program, "u_screen_size");
   u_draw_box = gl.getUniformLocation(program, "u_draw_box");
+  u_draw_canvas_outline = gl.getUniformLocation(
+    program,
+    "u_draw_canvas_outline",
+  );
+  u_canvas_size = gl.getUniformLocation(program, "u_canvas_size");
+  u_box_size = gl.getUniformLocation(program, "u_box_size");
+  u_outline_color = gl.getUniformLocation(program, "u_outline_color");
+  u_outline_width = gl.getUniformLocation(program, "u_outline_width");
+  u_outline_opacity = gl.getUniformLocation(program, "u_outline_opacity");
 
   // Create vertex buffer for quad
   const vertices = new Float32Array([-1, -1, 1, -1, 1, 1, -1, 1]);
@@ -329,6 +375,12 @@ function draw() {
   if (u_draw_box) {
     gl.uniform1i(u_draw_box, drawBox ? 1 : 0);
   }
+  if (u_box_size) {
+    gl.uniform2f(u_box_size, box.width / 2, box.height / 2);
+  }
+  if (u_draw_canvas_outline) {
+    gl.uniform1i(u_draw_canvas_outline, 0); // Default to false
+  }
 
   // Bind vertex buffer
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -377,6 +429,59 @@ function draw() {
 
   // Clean up
   gl.deleteBuffer(boxBuffer);
+
+  // Draw canvas outline
+  const canvasCenterX = width! / 2;
+  const canvasCenterY = height! / 2;
+  const canvasOutlineData = new Float32Array([
+    canvasCenterX,
+    canvasCenterY,
+    0,
+    0,
+    0,
+    0,
+  ]);
+  const canvasOutlineBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, canvasOutlineBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, canvasOutlineData, gl.STATIC_DRAW);
+
+  // Set uniforms for canvas outline
+  if (u_draw_canvas_outline) {
+    gl.uniform1i(u_draw_canvas_outline, 1);
+  }
+  if (u_canvas_size && width !== null && height !== null) {
+    gl.uniform2f(u_canvas_size, width, height);
+  }
+  if (u_outline_color) {
+    gl.uniform3f(
+      u_outline_color,
+      outline.color[0],
+      outline.color[1],
+      outline.color[2],
+    );
+  }
+  if (u_outline_width) {
+    gl.uniform1f(u_outline_width, outline.width);
+  }
+  if (u_outline_opacity) {
+    gl.uniform1f(u_outline_opacity, outline.opacity);
+  }
+
+  // Update attributes for canvas outline
+  gl.vertexAttribPointer(a_instance_pos, 2, gl.FLOAT, false, 6 * 4, 0);
+  gl.vertexAttribPointer(a_radius, 1, gl.FLOAT, false, 6 * 4, 2 * 4);
+  gl.vertexAttribPointer(a_color, 3, gl.FLOAT, false, 6 * 4, 3 * 4);
+
+  // Draw canvas outline
+  gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+
+  // Clean up
+  gl.deleteBuffer(canvasOutlineBuffer);
+
+  // Reset uniform
+  if (u_draw_canvas_outline) {
+    gl.uniform1i(u_draw_canvas_outline, 0);
+  }
 
   // Continue animation
   animationId = requestAnimationFrame(draw);

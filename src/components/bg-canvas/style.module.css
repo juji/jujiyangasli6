@@ -11,7 +11,7 @@
   z-index: 0;
 
   /* filter: contrast(200%) blur(55px); */
-  /* filter: contrast(200%); */
+  filter: contrast(200%);
 
   .bg {
     position: absolute;
@@ -21,7 +21,6 @@
     bottom: 0;
     height: 100lvh;
     background-color: rgba(23, 23, 23, var(--visibility));
-    /* background-color: rgba(0,0,0, var(--visibility)); */
   }
 
   .canvas {
@@ -31,6 +30,8 @@
     right: 0;
     bottom: 0;
     height: 100lvh;
+    width: 100%;
+    border: none;
   }
 }
 
