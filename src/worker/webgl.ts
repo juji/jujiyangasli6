@@ -27,11 +27,15 @@ let a_color: number;
 let ready = false;
 
 const turnAccelDelta = 0.09;
-const radiusRange = [100, 300];
+const radiusRange = [200, 200];
+const velocityRange = [-3, 3];
+const enableBlending = true;
+const blurWidth = 1_000;
+const drawBox = true;
 
 const box = {
-  width: 100,
-  height: 100,
+  width: 200,
+  height: 200,
   x: 500,
   y: 500,
 };
@@ -40,10 +44,10 @@ const balls = [
   {
     x: 150,
     y: 150,
-    vx: Math.random() * 2 - 1, // velocity x
-    vy: Math.random() * 2 - 1, // velocity y
+    vx: velocityRange[0] + Math.random() * velocityRange[1], // velocity x
+    vy: velocityRange[0] + Math.random() * velocityRange[1], // velocity y
     ax: 0.01, // acceleration x
-    ay: 0.005, // acceleration y
+    ay: 0.01, // acceleration y
     radius: radiusRange[0] + Math.random() * radiusRange[1],
     color: [1.0, 0.5, 0.0], // Orange
   },
@@ -53,7 +57,7 @@ const balls = [
     vx: Math.random() * 2 - 1, // velocity x
     vy: Math.random() * 2 - 1, // velocity y
     ax: -0.01, // acceleration x
-    ay: 0.005, // acceleration y
+    ay: 0.01, // acceleration y
     radius: radiusRange[0] + Math.random() * radiusRange[1],
     color: [0.0, 1.0, 0.5], // Cyan
   },
@@ -63,7 +67,7 @@ const balls = [
     vx: Math.random() * 2 - 1, // velocity x
     vy: Math.random() * 2 - 1, // velocity y
     ax: 0.01, // acceleration x
-    ay: -0.005, // acceleration y
+    ay: -0.01, // acceleration y
     radius: radiusRange[0] + Math.random() * radiusRange[1],
     color: [0.5, 0.0, 1.0], // Purple
   },
@@ -73,7 +77,7 @@ const balls = [
     vx: Math.random() * 2 - 1, // velocity x
     vy: Math.random() * 2 - 1, // velocity y
     ax: -0.01, // acceleration x
-    ay: -0.005, // acceleration y
+    ay: -0.01, // acceleration y
     radius: radiusRange[0] + Math.random() * radiusRange[1],
     color: [1.0, 1.0, 0.0], // Yellow
   },
@@ -106,11 +110,11 @@ function update() {
       ball.ax -= turnAccelDelta;
     }
 
-    if (ball.y >= box.y) {
+    if (ball.y >= box.y + box.height) {
       ball.ay -= turnAccelDelta;
     }
 
-    if (ball.y < box.y - box.width) {
+    if (ball.y < box.y) {
       ball.ay += turnAccelDelta;
     }
 
@@ -135,6 +139,7 @@ async function createPipeline() {
     varying vec3 v_color;
 
     void main() {
+
       vec2 pos = a_position;
       if (a_radius == 0.0) {
         // Scale quad to box size for box drawing
@@ -143,6 +148,7 @@ async function createPipeline() {
         // Scale quad to ball radius
         pos *= a_radius;
       }
+
       // Convert pixel coordinates to clip space (-1 to 1)
       vec2 clipPos = (pos + a_instance_pos) / u_screen_size * 2.0 - vec2(1.0, 1.0);
       gl_Position = vec4(clipPos.x, -clipPos.y, 0.0, 1.0); // Flip Y for canvas coordinates
@@ -163,7 +169,7 @@ async function createPipeline() {
       if (v_radius > 0.0) {
         // Draw circle for balls with blur
         float dist = length(v_uv);
-        float blurWidth = 200.0; // Adjust this value to control blur intensity
+        float blurWidth = ${blurWidth}.0; // Adjust this value to control blur intensity
         float alpha = 1.0 - smoothstep(v_radius - blurWidth, v_radius, dist);
         if (alpha <= 0.0) {
           discard;
@@ -315,9 +321,11 @@ function draw() {
   // Bind index buffer
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-  // Enable blending
-  gl.enable(gl.BLEND);
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+  // Enable blending with screen blend mode
+  if (enableBlending) {
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+  }
 
   // Draw balls
   gl.drawElementsInstanced(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0, balls.length);
