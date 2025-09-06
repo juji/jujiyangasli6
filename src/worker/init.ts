@@ -22,63 +22,97 @@ let bindGroup: GPUBindGroup | null = null;
 
 let ready = false;
 
+const turnAccelDelta = 0.09;
+const radiusRange = [100, 300];
+
 const box = {
-  width: 200,
-  height: 200,
-  x: 100,
-  y: 100,
+  width: 100,
+  height: 100,
+  x: 500,
+  y: 500,
 };
 
-const balls = [
+let balls = [
   {
     x: 150,
     y: 150,
-    vx: 1, // velocity x
-    vy: 0.5, // velocity y
-    radius: 200,
+    vx: Math.random() - 1, // velocity x
+    vy: Math.random() - 1, // velocity y
+    ax: 0.01, // acceleration x
+    ay: 0.005, // acceleration y
+    radius: radiusRange[0] + Math.random() * radiusRange[1],
     color: [1.0, 0.5, 0.0], // Orange
   },
   {
     x: 250,
     y: 150,
-    vx: -1, // velocity x
-    vy: 0.5, // velocity y
-    radius: 180,
+    vx: Math.random() - 1, // velocity x
+    vy: Math.random() - 1, // velocity y
+    ax: -0.01, // acceleration x
+    ay: 0.005, // acceleration y
+    radius: radiusRange[0] + Math.random() * radiusRange[1],
     color: [0.0, 1.0, 0.5], // Cyan
   },
   {
     x: 150,
     y: 250,
-    vx: 1, // velocity x
-    vy: -0.5, // velocity y
-    radius: 175,
+    vx: Math.random() - 1, // velocity x
+    vy: Math.random() - 1, // velocity y
+    ax: 0.01, // acceleration x
+    ay: -0.005, // acceleration y
+    radius: radiusRange[0] + Math.random() * radiusRange[1],
     color: [0.5, 0.0, 1.0], // Purple
   },
   {
     x: 250,
     y: 250,
-    vx: -1, // velocity x
-    vy: -0.5, // velocity y
-    radius: 250,
+    vx: Math.random() - 1, // velocity x
+    vy: Math.random() - 1, // velocity y
+    ax: -0.01, // acceleration x
+    ay: -0.005, // acceleration y
+    radius: radiusRange[0] + Math.random() * radiusRange[1],
     color: [1.0, 1.0, 0.0], // Yellow
   },
 ];
 
+function initializePositions() {
+  // shuffle balls array
+  for (let i = balls.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [balls[i], balls[j]] = [balls[j], balls[i]];
+  }
+
+  // make the balls be inside the box
+  for (const ball of balls) {
+    ball.x = Math.random() * box.width + box.x;
+    ball.y = Math.random() * box.height + box.y;
+  }
+}
+
+initializePositions();
+
 function update() {
   // Update all balls within box boundaries
   for (const ball of balls) {
-    ball.x += ball.vx;
-    ball.y += ball.vy;
+    if (ball.x <= box.x) {
+      ball.ax += turnAccelDelta;
+    }
 
-    // Bounce off box walls
-    if (ball.x <= box.x || ball.x >= box.x + box.width) {
-      ball.vx *= -1;
-      ball.x = Math.max(box.x, Math.min(box.x + box.width, ball.x));
+    if (ball.x > box.x + box.width) {
+      ball.ax -= turnAccelDelta;
     }
-    if (ball.y <= box.y || ball.y >= box.y + box.height) {
-      ball.vy *= -1;
-      ball.y = Math.max(box.y, Math.min(box.y + box.height, ball.y));
+
+    if (ball.y >= box.y) {
+      ball.ay -= turnAccelDelta;
     }
+
+    if (ball.y < box.y - box.width) {
+      ball.ay += turnAccelDelta;
+    }
+
+    // Update position
+    ball.x += ball.vx + ball.ax;
+    ball.y += ball.vy + ball.ay;
   }
 }
 
@@ -135,7 +169,7 @@ async function createPipeline() {
       if (radius > 0.0) {
         // Draw circle for balls with blur
         let dist = length(uv);
-        let blurWidth = 100.0; // Adjust this value to control blur intensity
+        let blurWidth = 200.0; // Adjust this value to control blur intensity
         let alpha = 1.0 - smoothstep(radius - blurWidth, radius, dist);
         if (alpha <= 0.0) {
           discard;
