@@ -36,7 +36,7 @@ const drawBox = true;
 const outline = {
   color: [250, 160, 114],
   width: 3,
-  draw: true,
+  opacity: 1, // 0 - 1
 };
 
 const box = {
