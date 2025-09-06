@@ -17,7 +17,7 @@
   right: 0;
   bottom: 0;
   overflow: hidden;
-  height: 100lvh;
+  height: 100svh;
   z-index: 0;
 
   animation-name: anim;
@@ -26,7 +26,7 @@
   animation-play-state: var(--running);
 
   /* filter: contrast(200%) blur(55px); */
-  filter: contrast(200%);
+  /* filter: contrast(200%); */
 
   .bg {
     position: absolute;
@@ -34,7 +34,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100lvh;
+    height: 100svh;
     background-color: rgba(23, 23, 23, var(--visibility));
   }
 
@@ -44,7 +44,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100lvh;
+    height: 100svh;
     width: 100%;
     border: none;
   }
