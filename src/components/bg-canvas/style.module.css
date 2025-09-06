@@ -11,7 +11,7 @@
   z-index: 0;
 
   /* filter: contrast(200%) blur(55px); */
-  filter: contrast(200%);
+  /* filter: contrast(200%); */
 
   .bg {
     position: absolute;

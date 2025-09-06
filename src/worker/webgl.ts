@@ -36,6 +36,7 @@ let ready = false;
 const turnAccelDelta = 0.09;
 const radiusRange = [600, 800];
 const velocityRange = [-3, 3];
+const maxVelocity = 4;
 const enableBlending = true;
 const blurWidth = 1000;
 const drawBox = true;
@@ -45,6 +46,8 @@ const outline = {
   width: 4,
   opacity: 1, // 0 - 1
 };
+
+const contrastPerc = 200; // percentage
 
 const box = {
   width: 0,
@@ -149,9 +152,18 @@ function update() {
       ball.ay += turnAccelDelta;
     }
 
+    let speedX = ball.vx + ball.ax;
+    let speedY = ball.vy + ball.ay;
+    if (Math.abs(speedX) > maxVelocity) {
+      speedX = (speedX > 0 ? 1 : -1) * maxVelocity;
+    }
+    if (Math.abs(speedY) > maxVelocity) {
+      speedY = (speedY > 0 ? 1 : -1) * maxVelocity;
+    }
+
     // Update position
-    ball.x += ball.vx + ball.ax;
-    ball.y += ball.vy + ball.ay;
+    ball.x += speedX;
+    ball.y += speedY;
   }
 }
 
