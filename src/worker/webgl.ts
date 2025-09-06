@@ -47,16 +47,15 @@ let a_color: number;
 
 // [0, 1]
 let translateY = 0;
-
 let ready = false;
-
-const turnAccelDelta = 0.02;
-const blurWidth = 1000;
-const radiusRange = [0, 0];
-const velocityRange = [-3, 3];
 const maxVelocity = 3;
+const radiusRange = [0, 0];
+
+const turnAccelDelta = 0.09;
+const blurWidth = 1200;
+const velocityRange = [-3, 3];
 const enableBlending = true;
-const drawBox = true;
+const drawBox = false;
 const outline = {
   color: [23, 23, 23],
   width: 5,
@@ -88,13 +87,13 @@ function randomColor(current: Ball[]) {
 
 function createBall(
   current: Ball[],
-  big?: boolean,
+  small?: boolean,
   translateEffect?: number,
 ): Ball {
   const colorData = randomColor(current);
   const radius =
     Math.random() * (radiusRange[1] - radiusRange[0]) +
-    radiusRange[0] * (big ? 1 : 0.6);
+    radiusRange[0] * (small ? 0.6 : 1);
 
   return {
     x: 150,
@@ -123,12 +122,12 @@ const balls: Ball[] = [];
 
 function initializeBalls() {
   for (let i = 0; i < 4; i++) {
-    balls.push(createBall(balls, i >= 2, i));
+    balls.push(createBall(balls, i >= 3, i));
   }
 
   console.log("Initialized balls:", balls);
 
-  // make the balls be inside the box
+  // Position balls randomly within the box
   for (const ball of balls) {
     ball.x = Math.random() * box.width + box.x;
     ball.y = Math.random() * box.height + box.y;
@@ -146,7 +145,11 @@ function initializeBoxLocation() {
 }
 
 function initializeBallRadius() {
-  const radius = Math.min(width!, height!) * 1;
+  if (!width || !height) return;
+  const radius =
+    width > height
+      ? Math.min(width!, height!)
+      : Math.max(width!, height!) * 0.85;
   const radiusMin = radius;
   const radiusMax = radius + 50;
   radiusRange[0] = radiusMin;
