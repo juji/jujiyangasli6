@@ -7,6 +7,7 @@ import "sanitize.css/typography.css";
 import "sanitize.css/assets.css";
 import "./globals.css";
 import "sanitize.css/reduce-motion.css";
+import "./rubbery.css";
 
 import { ScrollListener } from "@/components/global/scroll-listener";
 
