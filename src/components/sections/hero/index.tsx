@@ -54,6 +54,40 @@ export function Hero() {
         <span>My name is Tri Rahmat Gunadi,</span>
         <span>but people call me juji..</span>
       </p>
+
+      <p className={styles.links}>
+        <Link href="/#works" className={styles.link}>
+          Works
+        </Link>
+        <Link href="/#play" className={styles.link}>
+          Play
+        </Link>
+        <Link href="/#techs" className={styles.link}>
+          Techs
+        </Link>
+        <Link href="/#contact" className={styles.link}>
+          Contact
+        </Link>
+        <Link
+          href="https://blog.jujiyangasli.com"
+          className={`${styles.link} outgoing`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Blog
+        </Link>
+      </p>
+
+      <p className={styles.note}>
+        <a
+          href="https://github.com/juji/jujiyangasli6"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`outgoing`}
+        >
+          Checkout the source of this site on GitHub.
+        </a>
+      </p>
     </div>
   );
 }

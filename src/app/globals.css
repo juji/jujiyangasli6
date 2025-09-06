@@ -4,6 +4,8 @@
   --page-width: 1024px;
   --page-padding: 2rem;
 
+  --link-color: #9cff6a;
+
   --shadow-color: rgb(36 36 36 / 0.8);
   --drop-shadow: drop-shadow(
       0px 0px 1px rgb(from var(--shadow-color) r g b / 1)
@@ -58,7 +60,55 @@ a {
 } 
 */
 
+* {
+  scrollbar-color: var(--link-color) rgba(0, 0, 0, 0);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  /* background-color: rgba(0, 0, 0, 0); */
+}
+
+*::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--link-color);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 /* add relative position to body */
 body {
   position: relative;
+}
+
+/* link styling */
+a {
+  color: var(--link-color);
+  text-decoration: underline dotted;
+  text-underline-offset: 5px;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 5px;
+  }
+}
+
+/* outgoind links styling */
+a.outgoing {
+  position: relative;
+  &:after {
+    position: absolute;
+    display: inline-block;
+    rotate: -45deg;
+    margin-left: 2px;
+    scale: 0.8;
+    content: "➔";
+    text-decoration: none;
+  }
 }

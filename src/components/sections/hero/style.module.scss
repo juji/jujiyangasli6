@@ -27,7 +27,7 @@
 
 .hero {
   padding-top: 2rem;
-  height: 100vh;
+  height: 100svh;
   filter: var(--drop-shadow);
 
   .heading {
@@ -102,6 +102,27 @@
             }
           }
         }
+      }
+    }
+  }
+
+  .links{
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    font-weight: 700;
+  }
+
+  .note{
+    margin-top: 1.5rem;
+    a{
+      text-decoration: none;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+
+      &:hover{
+        text-decoration: underline;
       }
     }
   }
