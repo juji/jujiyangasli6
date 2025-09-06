@@ -60,7 +60,7 @@ export function BgCanvas() {
     canvasRef.current.width = window.innerWidth;
     canvasRef.current.height = window.innerHeight;
     const offscreen = canvasRef.current.transferControlToOffscreen();
-    const worker = new Worker(new URL("../../worker/init", import.meta.url), {
+    const worker = new Worker(new URL("../../worker/webgl", import.meta.url), {
       type: "module",
     });
     workerRef.current = worker;
