@@ -72,7 +72,14 @@ export function BgCanvas() {
     workerRef.current = worker;
 
     worker.addEventListener("message", (event) => {
-      const { type, payload } = event.data;
+      const { type } = event.data;
+
+      if (type === "started") {
+        // set animation-play-state to running
+        if (containerRef.current) {
+          containerRef.current.style.setProperty("--running", "running");
+        }
+      }
 
       if (type === "init") {
         canvasInit.current = true;

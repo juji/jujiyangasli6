@@ -23,6 +23,7 @@ type Ball = {
   colorIndex?: number;
 };
 
+let notifiedInit = false;
 let offscreen: OffscreenCanvas | null = null;
 let width: number | null = null;
 let height: number | null = null;
@@ -519,6 +520,12 @@ function draw() {
   // Reset uniform
   if (u_draw_canvas_outline) {
     gl.uniform1i(u_draw_canvas_outline, 0);
+  }
+
+  // on initialization, notify main thread that we're ready
+  if (!notifiedInit) {
+    self.postMessage({ type: "started" });
+    notifiedInit = true;
   }
 
   // Continue animation
