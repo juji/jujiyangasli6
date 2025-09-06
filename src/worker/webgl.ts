@@ -9,6 +9,18 @@ type PayloadInit = PayloadResize & {
   canvas: OffscreenCanvas;
 };
 
+type Ball = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  ax: number;
+  ay: number;
+  radius: number;
+  color: [number, number, number];
+  colorIndex?: number;
+};
+
 let offscreen: OffscreenCanvas | null = null;
 let width: number | null = null;
 let height: number | null = null;
@@ -34,11 +46,11 @@ let a_color: number;
 let ready = false;
 
 const turnAccelDelta = 0.09;
-const radiusRange = [600, 800];
-const velocityRange = [-3, 3];
-const maxVelocity = 4;
-const enableBlending = true;
 const blurWidth = 1000;
+const radiusRange = [0, 0];
+const velocityRange = [-3, 3];
+const maxVelocity = 3;
+const enableBlending = true;
 const drawBox = true;
 const outline = {
   // color: [ 250, 160, 114 ],
@@ -47,7 +59,45 @@ const outline = {
   opacity: 1, // 0 - 1
 };
 
-const contrastPerc = 200; // percentage
+const colors = [
+  [237, 76, 103], // '#ED4C67',
+  [163, 203, 56], // '#A3CB38',
+  [238, 90, 36], // '#EE5A24',
+  [0, 148, 50], // '#009432',
+  [234, 32, 39], // '#EA2027',
+  [6, 82, 221], // '#0652DD',
+  [217, 128, 250], // '#D980FA',
+  [153, 128, 250], // '#9980FA',
+];
+
+function randomColor(current: Ball[]) {
+  const index = Math.floor(Math.random() * colors.length);
+  // check if the index is already used
+  if (current.find((ball) => ball.colorIndex === index) !== undefined) {
+    return randomColor(current);
+  }
+  return {
+    color: colors[index],
+    colorIndex: index,
+  };
+}
+
+function createBall(current: Ball[]): Ball {
+  const colorData = randomColor(current);
+  return {
+    x: 150,
+    y: 150,
+    vx:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
+    vy:
+      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
+    ax: Math.random() < 0.5 ? 0.01 : -0.01, // acceleration x
+    ay: Math.random() < 0.5 ? 0.01 : -0.01, // acceleration y
+    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
+    color: colorData.color.flatMap((v) => v / 255) as [number, number, number],
+    colorIndex: colorData.colorIndex,
+  } as Ball;
+}
 
 const box = {
   width: 0,
@@ -56,63 +106,14 @@ const box = {
   y: 0,
 };
 
-const balls = [
-  {
-    x: 150,
-    y: 150,
-    vx:
-      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
-    vy:
-      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
-    ax: 0.01, // acceleration x
-    ay: 0.01, // acceleration y
-    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
-    color: [1.0, 0.5, 0.0], // Orange
-  },
-  {
-    x: 250,
-    y: 150,
-    vx:
-      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
-    vy:
-      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
-    ax: -0.01, // acceleration x
-    ay: 0.01, // acceleration y
-    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
-    color: [0.0, 1.0, 0.5], // Cyan
-  },
-  {
-    x: 150,
-    y: 250,
-    vx:
-      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
-    vy:
-      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
-    ax: 0.01, // acceleration x
-    ay: -0.01, // acceleration y
-    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
-    color: [0.5, 0.0, 1.0], // Purple
-  },
-  {
-    x: 250,
-    y: 250,
-    vx:
-      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
-    vy:
-      Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
-    ax: -0.01, // acceleration x
-    ay: -0.01, // acceleration y
-    radius: Math.random() * (radiusRange[1] - radiusRange[0]) + radiusRange[0],
-    color: [1.0, 1.0, 0.0], // Yellow
-  },
-];
+const balls: Ball[] = [];
 
 function initializeBalls() {
-  // shuffle balls array
-  for (let i = balls.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [balls[i], balls[j]] = [balls[j], balls[i]];
+  for (let i = 0; i < 4; i++) {
+    balls.push(createBall(balls));
   }
+
+  console.log("Initialized balls:", balls);
 
   // make the balls be inside the box
   for (const ball of balls) {
@@ -124,13 +125,18 @@ function initializeBalls() {
 function initializeBoxLocation() {
   if (width === null || height === null) return;
 
-  // center
-  // box.x = (width - box.width) / 2;
-  // box.y = (height - box.height) / 2;
   box.width = width / 2;
   box.height = height / 2;
   box.x = width - box.width;
   box.y = height - box.height;
+}
+
+function initializeBallRadius() {
+  const radius = Math.min(width!, height!) * 0.9;
+  const radiusMin = radius;
+  const radiusMax = radius + 100;
+  radiusRange[0] = radiusMin;
+  radiusRange[1] = radiusMax;
 }
 
 function update() {
@@ -326,14 +332,6 @@ async function createPipeline() {
   indexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-
-  // Create instance buffer for balls
-  const instanceData = new Float32Array(
-    balls.flatMap((ball) => [ball.x, ball.y, ball.radius, ...ball.color]),
-  );
-  instanceBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, instanceBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, instanceData, gl.DYNAMIC_DRAW);
 }
 
 function draw() {
@@ -522,7 +520,21 @@ async function init(payload: PayloadInit) {
   await createPipeline();
 
   initializeBoxLocation();
+  initializeBallRadius();
   initializeBalls();
+
+  // Create instance buffer after balls are initialized
+  const instanceData = new Float32Array(
+    balls.flatMap((ball) => [
+      ball.x,
+      ball.y,
+      ball.radius,
+      ...ball.color.map((c) => c / 255),
+    ]),
+  );
+  instanceBuffer = gl!.createBuffer();
+  gl!.bindBuffer(gl!.ARRAY_BUFFER, instanceBuffer);
+  gl!.bufferData(gl!.ARRAY_BUFFER, instanceData, gl!.DYNAMIC_DRAW);
 
   ready = true;
 }
@@ -545,6 +557,7 @@ function resize(payload: PayloadResize) {
   if (animationId) cancelAnimationFrame(animationId);
 
   initializeBoxLocation();
+  initializeBallRadius();
 
   draw();
 }
