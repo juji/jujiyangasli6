@@ -14,6 +14,11 @@
       color: var(--text-color);
     }
 
+    .workText {
+      --top-sticky-offset: 0px;
+      --top-sticky: calc(var(--header-height) + 48px + var(--top-sticky-offset));
+    }
+
     .workContentText {
       max-width: 500px;
       font-size: 1.125rem;
@@ -48,6 +53,19 @@
         height: auto;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    @media (min-width: 768px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      position: relative;
+
+      .workText {
+        position: sticky;
+        top: var(--top-sticky);
+        align-self: start;
       }
     }
   }
