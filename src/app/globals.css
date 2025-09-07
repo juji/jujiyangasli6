@@ -3,6 +3,7 @@
   --foreground: #ffffff;
   --link-color: #9cff6a;
   --shadow-color: rgb(36 36 36);
+  --project-color: transparent;
 
   --header-transform-y: -100%;
   --header-height: 60px;

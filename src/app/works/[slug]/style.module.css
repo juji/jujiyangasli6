@@ -1,5 +1,4 @@
 .workPage {
-  --project-color: transparent;
   padding-top: calc(var(--page-padding) + var(--header-height));
   background: linear-gradient(75deg, transparent 76%, var(--project-color) 100%);
 
