@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Markdown from "react-markdown";
 import type { Work } from "@/data/works/types";
 import { setHeaderShown } from "@/lib/headerVisibility";
@@ -22,6 +22,11 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
       setHeaderShown(false, false);
     };
   }, [work.gradientColor]);
+
+  useEffect(() => {
+    // scroll to top on mount
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className={styles.workPage}>
