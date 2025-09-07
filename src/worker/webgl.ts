@@ -41,6 +41,17 @@ let u_box_size: WebGLUniformLocation | null = null;
 let u_outline_color: WebGLUniformLocation | null = null;
 let u_outline_width: WebGLUniformLocation | null = null;
 let u_outline_opacity: WebGLUniformLocation | null = null;
+let u_white_balance_temp: WebGLUniformLocation | null = null;
+let u_white_balance_tint: WebGLUniformLocation | null = null;
+let u_contrast: WebGLUniformLocation | null = null;
+let u_brightness: WebGLUniformLocation | null = null;
+let u_gamma: WebGLUniformLocation | null = null;
+let u_saturation: WebGLUniformLocation | null = null;
+let u_vibrance: WebGLUniformLocation | null = null;
+let u_lift: WebGLUniformLocation | null = null;
+let u_gain: WebGLUniformLocation | null = null;
+let u_exposure: WebGLUniformLocation | null = null;
+let u_clarity: WebGLUniformLocation | null = null;
 let a_position: number;
 let a_instance_pos: number;
 let a_radius: number;
@@ -52,9 +63,22 @@ let ready = false;
 const maxVelocity = 3;
 const radiusRange = [0, 0];
 
-const contrast = "5.0";
-const brightness = "1.0";
-const gamma = "4.2";
+// Image adjustment controls
+let contrast = 1.0;
+let brightness = 1.0;
+let gamma = 1.0;
+
+// White balance controls (0.0 = neutral, range: -1.0 to 1.0)
+let whiteBalanceTemp = 0.0; // Temperature: negative = cooler, positive = warmer
+let whiteBalanceTint = 0.0; // Tint: negative = green, positive = magenta
+
+// Advanced color correction controls
+let saturation = 1.0; // 0.0 = grayscale, 1.0 = normal, >1.0 = oversaturated
+let vibrance = 0.0; // Smart saturation that preserves skin tones (-1.0 to 1.0)
+let lift = 0.0; // Shadow adjustment (-1.0 to 1.0)
+let gain = 1.0; // Highlight adjustment (0.0 to 2.0)
+let exposure = 0.0; // Overall exposure adjustment (-4.0 to 4.0)
+let clarity = 0.0; // Local contrast enhancement (-1.0 to 1.0)
 
 const turnAccelDelta = 0.09;
 const blurWidth = 1200;
@@ -131,7 +155,7 @@ function createBall(
 
 function initializeBalls() {
   for (let i = 0; i < 7; i++) {
-    balls.push(createBall(balls, i >= 3, i));
+    balls.push(createBall(balls, i >= 3, i + 1));
   }
 
   // Position balls randomly within the box
@@ -155,8 +179,8 @@ function initializeBallRadius() {
   if (!width || !height) return;
   const radius =
     width > height
-      ? Math.min(width!, height!)
-      : Math.max(width!, height!) * 0.85;
+      ? Math.min(width ?? 0, height ?? 0)
+      : Math.max(width ?? 0, height ?? 0) * 0.85;
   const radiusMin = radius;
   const radiusMax = radius + 50;
   radiusRange[0] = radiusMin;
@@ -251,6 +275,17 @@ async function createPipeline() {
     uniform vec3 u_outline_color;
     uniform float u_outline_width;
     uniform float u_outline_opacity;
+    uniform float u_white_balance_temp;
+    uniform float u_white_balance_tint;
+    uniform float u_contrast;
+    uniform float u_brightness;
+    uniform float u_gamma;
+    uniform float u_saturation;
+    uniform float u_vibrance;
+    uniform float u_lift;
+    uniform float u_gain;
+    uniform float u_exposure;
+    uniform float u_clarity;
     varying vec2 v_uv;
     varying float v_radius;
     varying vec3 v_color;
@@ -265,12 +300,81 @@ async function createPipeline() {
           discard;
         }
         vec4 color = vec4(v_color, alpha);
-        vec4 newColor = vec4(
-          pow(color.r * ${brightness}, ${gamma}) * ${contrast},
-          pow(color.g * ${brightness}, ${gamma}) * ${contrast},
-          pow(color.b * ${brightness}, ${gamma}) * ${contrast},
-          color.a
+
+        // Apply white balance adjustments
+        float r = color.r;
+        float g = color.g;
+        float b = color.b;
+
+        // Temperature adjustment (warmer/cooler)
+        // Positive temp = warmer (more red/yellow), negative = cooler (more blue)
+        r += u_white_balance_temp * 0.1;
+        b -= u_white_balance_temp * 0.1;
+
+        // Tint adjustment (green/magenta)
+        // Positive tint = magenta (more red/blue), negative = green (more green)
+        r += u_white_balance_tint * 0.05;
+        b += u_white_balance_tint * 0.05;
+        g -= u_white_balance_tint * 0.1;
+
+        // Clamp values to valid range
+        r = clamp(r, 0.0, 1.0);
+        g = clamp(g, 0.0, 1.0);
+        b = clamp(b, 0.0, 1.0);
+
+        vec4 balancedColor = vec4(r, g, b, color.a);
+
+        // Apply exposure
+        vec4 exposedColor = vec4(
+          balancedColor.r * pow(2.0, u_exposure),
+          balancedColor.g * pow(2.0, u_exposure),
+          balancedColor.b * pow(2.0, u_exposure),
+          balancedColor.a
         );
+
+        // Apply lift/gain (shadows/highlights adjustment)
+        vec4 liftGainColor = vec4(
+          exposedColor.r * (1.0 - u_lift) + u_gain * u_lift,
+          exposedColor.g * (1.0 - u_lift) + u_gain * u_lift,
+          exposedColor.b * (1.0 - u_lift) + u_gain * u_lift,
+          exposedColor.a
+        );
+
+        // Apply saturation
+        float luminance = dot(liftGainColor.rgb, vec3(0.299, 0.587, 0.114));
+        vec4 saturatedColor = vec4(
+          mix(vec3(luminance), liftGainColor.rgb, u_saturation),
+          liftGainColor.a
+        );
+
+        // Apply vibrance (smart saturation that preserves skin tones)
+        float maxColor = max(max(saturatedColor.r, saturatedColor.g), saturatedColor.b);
+        float minColor = min(min(saturatedColor.r, saturatedColor.g), saturatedColor.b);
+        float colorSaturation = maxColor - minColor;
+        float vibranceAdjustment = u_vibrance * (1.0 - colorSaturation);
+        vec4 vibrancedColor = vec4(
+          saturatedColor.r + vibranceAdjustment * (saturatedColor.r - luminance),
+          saturatedColor.g + vibranceAdjustment * (saturatedColor.g - luminance),
+          saturatedColor.b + vibranceAdjustment * (saturatedColor.b - luminance),
+          saturatedColor.a
+        );
+
+        // Apply clarity (local contrast enhancement)
+        vec4 clarityColor = vibrancedColor;
+        if (u_clarity != 0.0) {
+          // Simple clarity approximation using midtone contrast
+          float midtone = dot(clarityColor.rgb, vec3(0.333));
+          clarityColor.rgb = mix(clarityColor.rgb, clarityColor.rgb * (1.0 + u_clarity * (midtone - 0.5) * 2.0), abs(u_clarity));
+        }
+
+        // Apply brightness, gamma, and contrast
+        vec4 newColor = vec4(
+          pow(clarityColor.r * u_brightness, u_gamma) * u_contrast,
+          pow(clarityColor.g * u_brightness, u_gamma) * u_contrast,
+          pow(clarityColor.b * u_brightness, u_gamma) * u_contrast,
+          clarityColor.a
+        );
+
         gl_FragColor = newColor;
       } else {
         // Draw rectangle outline for box or canvas
@@ -352,6 +456,17 @@ async function createPipeline() {
   u_outline_color = gl.getUniformLocation(program, "u_outline_color");
   u_outline_width = gl.getUniformLocation(program, "u_outline_width");
   u_outline_opacity = gl.getUniformLocation(program, "u_outline_opacity");
+  u_white_balance_temp = gl.getUniformLocation(program, "u_white_balance_temp");
+  u_white_balance_tint = gl.getUniformLocation(program, "u_white_balance_tint");
+  u_contrast = gl.getUniformLocation(program, "u_contrast");
+  u_brightness = gl.getUniformLocation(program, "u_brightness");
+  u_gamma = gl.getUniformLocation(program, "u_gamma");
+  u_saturation = gl.getUniformLocation(program, "u_saturation");
+  u_vibrance = gl.getUniformLocation(program, "u_vibrance");
+  u_lift = gl.getUniformLocation(program, "u_lift");
+  u_gain = gl.getUniformLocation(program, "u_gain");
+  u_exposure = gl.getUniformLocation(program, "u_exposure");
+  u_clarity = gl.getUniformLocation(program, "u_clarity");
 
   // Create vertex buffer for quad
   const vertices = new Float32Array([-1, -1, 1, -1, 1, 1, -1, 1]);
@@ -420,6 +535,39 @@ function draw() {
   if (u_draw_canvas_outline) {
     gl.uniform1i(u_draw_canvas_outline, 0); // Default to false
   }
+  if (u_white_balance_temp) {
+    gl.uniform1f(u_white_balance_temp, whiteBalanceTemp);
+  }
+  if (u_white_balance_tint) {
+    gl.uniform1f(u_white_balance_tint, whiteBalanceTint);
+  }
+  if (u_contrast) {
+    gl.uniform1f(u_contrast, contrast);
+  }
+  if (u_brightness) {
+    gl.uniform1f(u_brightness, brightness);
+  }
+  if (u_gamma) {
+    gl.uniform1f(u_gamma, gamma);
+  }
+  if (u_saturation) {
+    gl.uniform1f(u_saturation, saturation);
+  }
+  if (u_vibrance) {
+    gl.uniform1f(u_vibrance, vibrance);
+  }
+  if (u_lift) {
+    gl.uniform1f(u_lift, lift);
+  }
+  if (u_gain) {
+    gl.uniform1f(u_gain, gain);
+  }
+  if (u_exposure) {
+    gl.uniform1f(u_exposure, exposure);
+  }
+  if (u_clarity) {
+    gl.uniform1f(u_clarity, clarity);
+  }
 
   // Bind vertex buffer
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -470,7 +618,7 @@ function draw() {
   gl.deleteBuffer(boxBuffer);
 
   // Draw canvas outline
-  const canvasCenterX = width! / 2;
+  const canvasCenterX = (width ?? 0) / 2;
   const canvasCenterY = height! / 2;
   const canvasOutlineData = new Float32Array([
     canvasCenterX,
@@ -635,6 +783,23 @@ self.addEventListener("message", (event: MessageEvent) => {
 
   if (type === "scroll") {
     translateY = payload.scrollY;
+    return;
+  }
+
+  if (type === "params") {
+    // Update parameters if they are provided
+    if (payload.temperature !== undefined)
+      whiteBalanceTemp = payload.temperature;
+    if (payload.tint !== undefined) whiteBalanceTint = payload.tint;
+    if (payload.contrast !== undefined) contrast = payload.contrast;
+    if (payload.brightness !== undefined) brightness = payload.brightness;
+    if (payload.gamma !== undefined) gamma = payload.gamma;
+    if (payload.saturation !== undefined) saturation = payload.saturation;
+    if (payload.vibrance !== undefined) vibrance = payload.vibrance;
+    if (payload.lift !== undefined) lift = payload.lift;
+    if (payload.gain !== undefined) gain = payload.gain;
+    if (payload.exposure !== undefined) exposure = payload.exposure;
+    if (payload.clarity !== undefined) clarity = payload.clarity;
     return;
   }
 });
