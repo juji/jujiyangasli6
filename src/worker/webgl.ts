@@ -79,10 +79,10 @@ let gain = 1.0; // Highlight adjustment (0.0 to 2.0)
 let exposure = 0.0; // Overall exposure adjustment (-4.0 to 4.0)
 let clarity = 0.0; // Local contrast enhancement (-1.0 to 1.0)
 
-const turnAccelDelta = 0.1;
+const turnAccelDelta = 0.09;
 const blurWidth = 1200;
 const velocityRange = [-3, 3];
-const maxVelocity = 5;
+const maxVelocity = 3;
 const enableBlending = true;
 const drawBox = false;
 const outline = {
