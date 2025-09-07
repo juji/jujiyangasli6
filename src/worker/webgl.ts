@@ -619,7 +619,7 @@ function draw() {
 
   // Draw canvas outline
   const canvasCenterX = (width ?? 0) / 2;
-  const canvasCenterY = height! / 2;
+  const canvasCenterY = (height ?? 0) / 2;
   const canvasOutlineData = new Float32Array([
     canvasCenterX,
     canvasCenterY,
@@ -711,9 +711,9 @@ async function init(payload: PayloadInit) {
       ...ball.color.map((c) => c / 255),
     ]),
   );
-  instanceBuffer = gl!.createBuffer();
-  gl!.bindBuffer(gl!.ARRAY_BUFFER, instanceBuffer);
-  gl!.bufferData(gl!.ARRAY_BUFFER, instanceData, gl!.DYNAMIC_DRAW);
+  instanceBuffer = gl?.createBuffer();
+  gl?.bindBuffer(gl?.ARRAY_BUFFER, instanceBuffer);
+  gl?.bufferData(gl?.ARRAY_BUFFER, instanceData, gl?.DYNAMIC_DRAW);
 
   ready = true;
 }
