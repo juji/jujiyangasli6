@@ -25,8 +25,8 @@
     "sanitize.css": "^13.0.0"
   },
   "lint-staged": {
-    "src/**/*.{js,ts,tsx,css,scss}": [
-      "biome check --fix",
+    "src/**/*.{js,ts,tsx,css}": [
+      "biome check --write --unsafe",
       "biome format --write"
     ]
   },
