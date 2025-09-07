@@ -4,11 +4,11 @@ import workDetails from "@/data/works/details";
 import { WorkPage as WorkPageChild } from "./work";
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export function generateMetadata({ params }: PageProps) {
-  const { slug } = params;
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
   return {
     title: `Work - ${slug}`,
     description: `Details about the work ${slug}`,
@@ -19,8 +19,8 @@ export function generateStaticParams() {
   return works.map((work) => ({ slug: work.id }));
 }
 
-export default function WorkPage({ params }: PageProps) {
-  const { slug } = params;
+export default async function WorkPage({ params }: PageProps) {
+  const { slug } = await params;
   const content = workDetails[slug];
   const work = works.find((w) => w.id === slug);
   if (!work || !content) {
