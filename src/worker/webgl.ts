@@ -60,7 +60,6 @@ let a_color: number;
 // [0, 1]
 let translateY = 0;
 let ready = false;
-const maxVelocity = 3;
 const radiusRange = [0, 0];
 
 // Image adjustment controls
@@ -80,9 +79,10 @@ let gain = 1.0; // Highlight adjustment (0.0 to 2.0)
 let exposure = 0.0; // Overall exposure adjustment (-4.0 to 4.0)
 let clarity = 0.0; // Local contrast enhancement (-1.0 to 1.0)
 
-const turnAccelDelta = 0.09;
+const turnAccelDelta = 0.1;
 const blurWidth = 1200;
 const velocityRange = [-3, 3];
+const maxVelocity = 5;
 const enableBlending = true;
 const drawBox = false;
 const outline = {
@@ -179,8 +179,10 @@ function initializeBallRadius() {
   if (!width || !height) return;
   const radius =
     width > height
-      ? Math.min(width ?? 0, height ?? 0)
-      : Math.max(width ?? 0, height ?? 0) * 0.85;
+      ? // If the width is greater than the height, use the height to calculate the radius
+        Math.min(width ?? 0, height ?? 0) * 1.1
+      : // Otherwise, use the width to calculate the radius
+        Math.max(width ?? 0, height ?? 0) * 0.85;
   const radiusMin = radius;
   const radiusMax = radius + 50;
   radiusRange[0] = radiusMin;
