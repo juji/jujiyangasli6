@@ -4,7 +4,8 @@ import PhotoSwipeLightbox from "photoswipe/lightbox";
 import { useEffect, useRef } from "react";
 import type { WorkImage } from "@/data/works/types";
 import "photoswipe/style.css";
-import styles from "./lightgallery.module.css";
+import styles from "./lightgallery.pswp.module.css";
+import "./pswp.css";
 
 interface PhotoSwipeGalleryProps {
   images: WorkImage[];

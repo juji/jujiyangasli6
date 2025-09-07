@@ -1,32 +1,32 @@
 /**
  * Image Resizing Utility using Sharp
- * 
+ *
  * This script resizes images using the Sharp library.
- * 
+ *
  * Usage:
  * ts-node resize-image.ts <source> <destination> <width> <height> [options]
- * 
+ *
  * Options:
  *  --fit=<fit>: How the image should be resized (cover, contain, fill, inside, outside)
  *  --format=<format>: Output format (jpeg, png, webp, avif)
  *  --quality=<number>: Output quality (1-100)
  */
 
-import sharp from 'sharp';
-import path from 'path';
-import fs from 'fs';
+import sharp from "sharp";
+import path from "path";
+import fs from "fs";
 
 interface ResizeOptions {
   width?: number;
   height?: number;
-  fit?: 'cover' | 'contain' | 'fill' | 'inside' | 'outside';
-  format?: 'jpeg' | 'png' | 'webp' | 'avif';
+  fit?: "cover" | "contain" | "fill" | "inside" | "outside";
+  format?: "jpeg" | "png" | "webp" | "avif";
   quality?: number;
 }
 
 /**
  * Resize a single image
- * 
+ *
  * @param {string} inputPath - Path to the source image
  * @param {string} outputPath - Path where the resized image will be saved
  * @param {ResizeOptions} options - Resizing options
@@ -35,7 +35,7 @@ interface ResizeOptions {
 async function resizeImage(
   inputPath: string,
   outputPath: string,
-  options: ResizeOptions
+  options: ResizeOptions,
 ): Promise<void> {
   try {
     // Create output directory if it doesn't exist
@@ -46,12 +46,12 @@ async function resizeImage(
 
     // Initialize Sharp with the input image
     let image = sharp(inputPath);
-    
+
     // Apply resizing
     image = image.resize({
       width: options.width,
       height: options.height === undefined ? undefined : options.height, // Allow undefined height for auto aspect ratio
-      fit: options.fit || 'cover',
+      fit: options.fit || "cover",
     });
 
     // Set output format if specified
@@ -63,7 +63,7 @@ async function resizeImage(
 
     // Save the processed image
     await image.toFile(outputPath);
-    
+
     console.info(`✅ Successfully resized image: ${outputPath}`);
   } catch (error) {
     console.error(`❌ Error resizing image ${inputPath}:`, error);
@@ -73,7 +73,7 @@ async function resizeImage(
 
 /**
  * Batch resize images in a directory
- * 
+ *
  * @param {string} inputDir - Directory containing source images
  * @param {string} outputDir - Directory where resized images will be saved
  * @param {ResizeOptions} options - Resizing options
@@ -82,7 +82,7 @@ async function resizeImage(
 async function batchResizeImages(
   inputDir: string,
   outputDir: string,
-  options: ResizeOptions
+  options: ResizeOptions,
 ): Promise<void> {
   try {
     // Create output directory if it doesn't exist
@@ -92,10 +92,18 @@ async function batchResizeImages(
 
     // Get all files in the input directory
     const files = fs.readdirSync(inputDir);
-    
+
     // Filter for image files (simple extension check)
-    const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif', '.svg'];
-    const imageFiles = files.filter(file => {
+    const imageExtensions = [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".webp",
+      ".avif",
+      ".gif",
+      ".svg",
+    ];
+    const imageFiles = files.filter((file) => {
       const ext = path.extname(file).toLowerCase();
       return imageExtensions.includes(ext);
     });
@@ -106,17 +114,17 @@ async function batchResizeImages(
     }
 
     console.info(`Found ${imageFiles.length} images to process...`);
-    
+
     // Process each image
-    const promises = imageFiles.map(file => {
+    const promises = imageFiles.map((file) => {
       const inputPath = path.join(inputDir, file);
       let outputFilename = file;
-      
+
       // Update extension if format is specified
       if (options.format) {
         outputFilename = `${path.parse(file).name}.${options.format}`;
       }
-      
+
       const outputPath = path.join(outputDir, outputFilename);
       return resizeImage(inputPath, outputPath, options);
     });
@@ -124,7 +132,7 @@ async function batchResizeImages(
     await Promise.all(promises);
     console.info(`✅ Successfully processed ${imageFiles.length} images`);
   } catch (error) {
-    console.error('❌ Error in batch processing:', error);
+    console.error("❌ Error in batch processing:", error);
     throw error;
   }
 }
@@ -138,7 +146,7 @@ function parseArgs(): {
   options: ResizeOptions;
 } {
   const args = process.argv.slice(2);
-  
+
   if (args.length < 2) {
     printUsage();
     process.exit(1);
@@ -153,19 +161,19 @@ function parseArgs(): {
   if (args.length > 3) options.height = parseInt(args[3], 10);
 
   // Parse named options
-  args.slice(4).forEach(arg => {
-    if (arg.startsWith('--fit=')) {
-      const fit = arg.split('=')[1] as any;
-      if (['cover', 'contain', 'fill', 'inside', 'outside'].includes(fit)) {
+  args.slice(4).forEach((arg) => {
+    if (arg.startsWith("--fit=")) {
+      const fit = arg.split("=")[1] as any;
+      if (["cover", "contain", "fill", "inside", "outside"].includes(fit)) {
         options.fit = fit;
       }
-    } else if (arg.startsWith('--format=')) {
-      const format = arg.split('=')[1] as any;
-      if (['jpeg', 'png', 'webp', 'avif'].includes(format)) {
+    } else if (arg.startsWith("--format=")) {
+      const format = arg.split("=")[1] as any;
+      if (["jpeg", "png", "webp", "avif"].includes(format)) {
         options.format = format;
       }
-    } else if (arg.startsWith('--quality=')) {
-      options.quality = parseInt(arg.split('=')[1], 10);
+    } else if (arg.startsWith("--quality=")) {
+      options.quality = parseInt(arg.split("=")[1], 10);
     }
   });
 
@@ -214,7 +222,7 @@ async function main(): Promise<void> {
 
     // Determine if it's a single file or directory
     const sourceStats = fs.statSync(source);
-    
+
     if (sourceStats.isFile()) {
       // Process single file
       await resizeImage(source, destination, options);
@@ -222,11 +230,11 @@ async function main(): Promise<void> {
       // Process directory
       await batchResizeImages(source, destination, options);
     } else {
-      console.error('❌ Source is neither a file nor a directory');
+      console.error("❌ Source is neither a file nor a directory");
       process.exit(1);
     }
   } catch (error) {
-    console.error('❌ An error occurred:', error);
+    console.error("❌ An error occurred:", error);
     process.exit(1);
   }
 }
