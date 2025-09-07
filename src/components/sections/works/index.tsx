@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { works } from "@/data/works";
 import styles from "./style.module.css";
-// import Image from "next/image";
 
 export function Works() {
   return (

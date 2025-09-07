@@ -1,0 +1,45 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background-color: rgba(from var(--background) r g b / 0.7);
+  backdrop-filter: blur(20px);
+  z-index: 1000;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgb(from var(--background) r g b / 0.2);
+  translate: 0 var(--header-transform-y);
+  transition: translate 0.3s ease;
+  height: var(--header-height);
+
+  a {
+    text-decoration: none;
+    color: inherit;
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+
+      svg {
+        height: 21px;
+        width: auto;
+      }
+
+      &:nth-child(2) svg {
+        margin-left: 6px;
+      }
+
+      &:nth-child(3) svg {
+        height: 15px;
+      }
+    }
+  }
+
+  .content {
+    width: var(--page-width);
+    padding: 0 var(--page-padding);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+  }
+}

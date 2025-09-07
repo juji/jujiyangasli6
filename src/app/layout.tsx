@@ -10,6 +10,7 @@ import "sanitize.css/reduce-motion.css";
 import "./rubbery.css";
 
 import { ScrollListener } from "@/components/global/scroll-listener";
+import { Header } from "@/components/header";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable}`}>
+        <Header />
         {children}
         <ScrollListener />
       </body>

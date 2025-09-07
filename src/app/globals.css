@@ -1,13 +1,13 @@
 :root {
   --background: #171717;
-  /* --background: #ffffff; */
   --foreground: #ffffff;
+  --link-color: #9cff6a;
+  --shadow-color: rgb(36 36 36);
+
+  --header-transform-y: -100%;
+  --header-height: 60px;
   --page-width: 1024px;
   --page-padding: 2rem;
-
-  --link-color: #9cff6a;
-
-  --shadow-color: rgb(36 36 36);
 
   --drop-shadow: drop-shadow(0px 0px 1px var(--shadow-color))
     drop-shadow(-1px -1px 0px var(--shadow-color))
@@ -31,6 +31,25 @@
     ), 3px 0px 0px var(--shadow-color), 3px 1px 0px var(--shadow-color), 3px 2px 0px var(
       --shadow-color
     ), 3px 3px 0px var(--shadow-color);
+}
+
+/* Prevent browsers from automatically changing color */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #171717;
+    --foreground: #ffffff;
+    --link-color: #9cff6a;
+    --shadow-color: rgb(36 36 36);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #171717;
+    --foreground: #ffffff;
+    --link-color: #9cff6a;
+    --shadow-color: rgb(36 36 36);
+  }
 }
 
 @media (min-width: 500px) {
