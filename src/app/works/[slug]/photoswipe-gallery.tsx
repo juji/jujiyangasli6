@@ -24,11 +24,9 @@ export function PhotoSwipeGallery({ images, title }: PhotoSwipeGalleryProps) {
       });
 
       lightboxRef.current.on("openingAnimationEnd", () => {
-        console.log("openingAnimationEnd");
         document.querySelector(".pswp__container")?.classList.add("stabilized");
       });
       lightboxRef.current.on("closingAnimationStart", () => {
-        console.log("closingAnimationStart");
         document
           .querySelector(".pswp__container")
           ?.classList.remove("stabilized");
