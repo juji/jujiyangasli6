@@ -16,8 +16,8 @@ What a noble task...
 
 
 
-Shamir asked me to work with Roderick for this, 
-so I helped Roderick on the frontend and it's API.
+Shamir and Roderick was the guys I worked with for this, 
+I helped Roderick on the frontend and it's API.
 
 
 Techs used on my side of the job:
