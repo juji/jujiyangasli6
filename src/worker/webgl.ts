@@ -154,7 +154,7 @@ function createBall(
 }
 
 function initializeBalls() {
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 3; i++) {
     balls.push(createBall(balls, i >= 3, i + 1));
   }
 

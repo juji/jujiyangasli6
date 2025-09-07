@@ -1,9 +1,9 @@
 export const DEFAULT_PARAMS = {
   temperature: 0,
   tint: 0,
-  contrast: 1.0,
+  contrast: 1.6,
   brightness: 1.0,
-  gamma: 1.0,
+  gamma: 2.5,
   // saturation: 1.0,
   saturation: 5.0,
   vibrance: 0.0,
