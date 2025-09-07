@@ -66,13 +66,15 @@ export function BgCanvas() {
 
   useEffect(() => {
     function onResize() {
-      workerRef.current?.postMessage({
-        type: "resize",
-        payload: {
-          width: window.innerWidth,
-          height: window.innerHeight,
-        },
-      });
+      if (canvasInit.current && workerRef.current) {
+        workerRef.current.postMessage({
+          type: "resize",
+          payload: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+          },
+        });
+      }
     }
     window.addEventListener("resize", onResize);
 
@@ -83,62 +85,86 @@ export function BgCanvas() {
 
   // biome-ignore-start lint/correctness/useExhaustiveDependencies: scrollYProgress.get should not trigger re-runs
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || canvasInit.current) return;
 
-    // transfer to offscreen canvas
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
-    const offscreen = canvasRef.current.transferControlToOffscreen();
-    const worker = new Worker(new URL("../../worker/webgl", import.meta.url), {
-      type: "module",
-    });
-    workerRef.current = worker;
+    try {
+      // transfer to offscreen canvas
+      canvasRef.current.width = window.innerWidth;
+      canvasRef.current.height = window.innerHeight;
+      const offscreen = canvasRef.current.transferControlToOffscreen();
+      const worker = new Worker(
+        new URL("../../worker/webgl", import.meta.url),
+        {
+          type: "module",
+        },
+      );
+      workerRef.current = worker;
 
-    worker.addEventListener("message", (event) => {
-      const { type } = event.data;
+      worker.addEventListener("message", (event) => {
+        const { type } = event.data;
 
-      if (type === "started") {
-        // set animation-play-state to running
-        if (containerRef.current) {
-          containerRef.current.style.setProperty("--running", "running");
+        if (type === "started") {
+          // set animation-play-state to running
+          if (containerRef.current) {
+            containerRef.current.style.setProperty("--running", "running");
+          }
         }
-      }
 
-      if (type === "init") {
-        canvasInit.current = true;
-        worker.postMessage(
-          {
-            type: "init",
-            payload: {
-              canvas: offscreen,
-              width: canvasRef.current?.width,
-              height: canvasRef.current?.height,
+        if (type === "init") {
+          canvasInit.current = true;
+          worker.postMessage(
+            {
+              type: "init",
+              payload: {
+                canvas: offscreen,
+                width: canvasRef.current?.width,
+                height: canvasRef.current?.height,
+              },
             },
-          },
-          [offscreen],
-        );
+            [offscreen],
+          );
 
-        if (scrollYProgress.get() === 0) {
-          started.current = true;
-          workerRef.current?.postMessage({
-            type: "start",
-          });
+          if (scrollYProgress.get() === 0) {
+            started.current = true;
+            workerRef.current?.postMessage({
+              type: "start",
+            });
+          }
+
+          return;
         }
 
-        return;
-      }
+        if (type === "error") {
+          return;
+        }
+      });
+    } catch (error) {
+      console.warn(
+        "Canvas transfer failed, canvas may already be transferred:",
+        error,
+      );
+      return;
+    }
 
-      if (type === "error") {
-        return;
+    return () => {
+      if (workerRef.current) {
+        workerRef.current.terminate();
+        workerRef.current = null;
       }
-    });
+      canvasInit.current = false;
+      started.current = false;
+    };
   }, []);
   // biome-ignore-end lint/correctness/useExhaustiveDependencies: scrollYProgress.get should not trigger re-runs
 
   return (
     <>
       <div className={styles.container} ref={containerRef}>
-        <canvas className={styles.canvas} ref={canvasRef} />
+        <canvas
+          key={`canvas-${Date.now()}`}
+          className={styles.canvas}
+          ref={canvasRef}
+        />
         <div className={styles.bg} />
       </div>
       <div className={styles.scrollPos} ref={scrollRef}></div>
