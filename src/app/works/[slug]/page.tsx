@@ -3,19 +3,20 @@ import { works } from "@/data/works";
 import workDetails from "@/data/works/details";
 import { WorkPage as WorkPageChild } from "./work";
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
   return {
-    title: `Work - ${params.slug}`,
-    description: `Details about the work ${params.slug}`,
+    title: `Work - ${slug}`,
+    description: `Details about the work ${slug}`,
   };
 }
 
 export function generateStaticParams() {
   return works.map((work) => ({ slug: work.id }));
-}
-
-interface PageProps {
-  params: Promise<{ slug: string }>;
 }
 
 export default async function WorkPage({ params }: PageProps) {
