@@ -56,10 +56,6 @@
   background-color: var(--link-color);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 /* test changed */
 
 html,

@@ -36,6 +36,7 @@
     "lint-staged": "^16.1.6",
     "sass": "^1.92.1",
     "serwist": "^9.2.1",
+    "sharp": "^0.34.3",
     "typescript": "^5"
   }
 }
