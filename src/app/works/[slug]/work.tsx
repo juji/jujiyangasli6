@@ -39,13 +39,11 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
         window.innerHeight || 0,
       );
       if (rect.bottom > vh) {
-        console.log("setting top sticky", rect.bottom, vh);
         workTextRef.current.style.setProperty(
           "--top-sticky-offset",
           `-${rect.bottom - vh + 48}px`,
         );
       } else {
-        console.log("resetting top sticky", rect.bottom, vh);
         workTextRef.current.style.setProperty("--top-sticky-offset", `0px`);
       }
     }
