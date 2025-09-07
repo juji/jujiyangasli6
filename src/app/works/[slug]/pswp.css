@@ -121,8 +121,8 @@
   stroke: transparent;
 }
 
-.pswp__container {
-  transition: transform 700ms ease-out !important;
+.pswp__container.stabilized {
+  transition: transform 500ms ease !important;
   @media screen and (hover: none) {
     transition: none !important;
   }
