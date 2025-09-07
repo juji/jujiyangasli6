@@ -10,6 +10,7 @@ import "sanitize.css/reduce-motion.css";
 import "./rubbery.css";
 
 import { ScrollListener } from "@/components/global/scroll-listener";
+import { VersionPrinter } from "@/components/global/version-printer";
 import { Header } from "@/components/header";
 
 const inter = Inter({
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Header />
         {children}
         <ScrollListener />
+        <VersionPrinter />
       </body>
     </html>
   );
