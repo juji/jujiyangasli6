@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Markdown from "react-markdown";
 import type { Work } from "@/data/works/types";
 import { setHeaderShown } from "@/lib/headerVisibility";
-import { LightGallery } from "./lightgallery";
+import { PhotoSwipeGallery } from "./photoswipe-gallery";
 
 import styles from "./style.module.css";
 
@@ -17,6 +17,10 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
       "--project-color",
       work.gradientColor,
     );
+
+    return () => {
+      setHeaderShown(false, false);
+    };
   }, [work.gradientColor]);
 
   return (
@@ -32,7 +36,7 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
           <Markdown>{content}</Markdown>
         </div>
 
-        <LightGallery images={work.images} title={work.title} />
+        <PhotoSwipeGallery images={work.images} title={work.title} />
       </div>
     </div>
   );

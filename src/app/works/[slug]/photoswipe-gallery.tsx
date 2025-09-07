@@ -1,0 +1,78 @@
+"use client";
+
+import PhotoSwipeLightbox from "photoswipe/lightbox";
+import { useEffect, useRef } from "react";
+import type { WorkImage } from "@/data/works/types";
+import "photoswipe/style.css";
+import styles from "./lightgallery.module.css";
+
+interface PhotoSwipeGalleryProps {
+  images: WorkImage[];
+  title: string;
+}
+
+export function PhotoSwipeGallery({ images, title }: PhotoSwipeGalleryProps) {
+  const lightboxRef = useRef<PhotoSwipeLightbox | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      lightboxRef.current = new PhotoSwipeLightbox({
+        gallery: "#photoswipe-gallery",
+        children: "a",
+        pswpModule: () => import("photoswipe"),
+      });
+
+      lightboxRef.current.init();
+    }
+
+    return () => {
+      if (lightboxRef.current) {
+        lightboxRef.current.destroy();
+        lightboxRef.current = null;
+      }
+    };
+  }, []);
+
+  return (
+    <div id="photoswipe-gallery" className={styles.lightgallery}>
+      {images.map((img, idx) => (
+        <a
+          key={img.url}
+          href={img.url}
+          data-pswp-width={img.dimension.image.width}
+          data-pswp-height={img.dimension.image.height}
+          data-cropped="true"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <picture>
+            <source
+              media="(width < 500px)"
+              srcSet={img.small}
+              width={img.dimension.small.width}
+              height={img.dimension.small.height}
+            />
+            <source
+              media="(width < 700px)"
+              srcSet={img.thumbnail}
+              width={img.dimension.thumb.width}
+              height={img.dimension.thumb.height}
+            />
+            <source
+              media="(width >= 700px)"
+              srcSet={img.url}
+              width={img.dimension.image.width}
+              height={img.dimension.image.height}
+            />
+            <img
+              src={img.url}
+              alt={`${title} - ${img.title || `Image ${idx + 1}`}`}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </a>
+      ))}
+    </div>
+  );
+}
