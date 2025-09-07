@@ -14,9 +14,14 @@ export function generateStaticParams() {
   return works.map((work) => ({ slug: work.id }));
 }
 
-export default function WorkPage({ params }: { params: { slug: string } }) {
-  const content = workDetails[params.slug];
-  const work = works.find((w) => w.id === params.slug);
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function WorkPage({ params }: PageProps) {
+  const { slug } = await params;
+  const content = workDetails[slug];
+  const work = works.find((w) => w.id === slug);
   if (!work || !content) {
     return notFound();
   }
