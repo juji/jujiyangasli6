@@ -11,7 +11,7 @@ export function Works() {
         {works.map((work) => (
           <div key={work.id} className={styles.workItem}>
             <Link
-              href={"/work/" + work.id}
+              href={`/works/${work.id}`}
               className={styles.workLink}
               aria-label={work.title}
             ></Link>

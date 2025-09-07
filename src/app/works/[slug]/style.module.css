@@ -1,0 +1,55 @@
+.workPage {
+  --project-color: transparent;
+  padding-top: calc(var(--page-padding) + var(--header-height));
+  background: linear-gradient(75deg, transparent 76%, var(--project-color) 100%);
+
+  .workPageContent {
+    max-width: var(--page-width);
+    padding: 0 var(--page-padding);
+    margin: 0 auto;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
+    .workContentText {
+      max-width: 500px;
+      font-size: 1.125rem;
+      line-height: 1.8;
+      color: var(--text-color);
+      margin-bottom: 2rem;
+
+      p {
+        margin-bottom: 1.5rem;
+      }
+
+      a {
+        color: var(--link-color);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--link-hover-color);
+        }
+      }
+    }
+
+    .workImages {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 4rem;
+
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}
