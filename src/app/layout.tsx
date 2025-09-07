@@ -9,6 +9,7 @@ import "./globals.css";
 import "sanitize.css/reduce-motion.css";
 import "./rubbery.css";
 
+import { Footer } from "@/components/footer";
 import { ScrollListener } from "@/components/global/scroll-listener";
 import { VersionPrinter } from "@/components/global/version-printer";
 import { Header } from "@/components/header";
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className={`${inter.variable}`}>
         <Header />
         {children}
+        <Footer />
         <ScrollListener />
         <VersionPrinter />
       </body>
