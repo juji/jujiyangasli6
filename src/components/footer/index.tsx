@@ -14,6 +14,7 @@ export function Footer() {
   });
 
   const start = useCallback(() => {
+    if (glowState.current.rid) cancelAnimationFrame(glowState.current.rid);
     glowState.current.rid = requestAnimationFrame(function anim() {
       if (!glowState.current.started) return;
       if (!footerRef.current) return;
