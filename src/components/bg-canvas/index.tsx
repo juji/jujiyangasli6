@@ -1,8 +1,10 @@
 "use client";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { useEffect, useRef } from "react";
-import { ParamsControls } from "./params-controls";
 import styles from "./style.module.css";
+
+// Uncomment to enable parameter controls
+// import { ParamsControls } from "./params-controls";
 
 export function BgCanvas() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -16,24 +18,25 @@ export function BgCanvas() {
     offset: ["start end", "start start"],
   });
 
-  const handleParamsChange = (params: {
-    temperature?: number;
-    tint?: number;
-    contrast?: number;
-    brightness?: number;
-    gamma?: number;
-    saturation?: number;
-    vibrance?: number;
-    lift?: number;
-    gain?: number;
-    exposure?: number;
-    clarity?: number;
-  }) => {
-    workerRef.current?.postMessage({
-      type: "params",
-      payload: params,
-    });
-  };
+  // Handle parameter changes from controls (if enabled)
+  // const handleParamsChange = (params: {
+  //   temperature?: number;
+  //   tint?: number;
+  //   contrast?: number;
+  //   brightness?: number;
+  //   gamma?: number;
+  //   saturation?: number;
+  //   vibrance?: number;
+  //   lift?: number;
+  //   gain?: number;
+  //   exposure?: number;
+  //   clarity?: number;
+  // }) => {
+  //   workerRef.current?.postMessage({
+  //     type: "params",
+  //     payload: params,
+  //   });
+  // };
 
   useMotionValueEvent(scrollYProgress, "change", () => {
     const value = scrollYProgress.get();
@@ -139,7 +142,7 @@ export function BgCanvas() {
         <div className={styles.bg} />
       </div>
       <div className={styles.scrollPos} ref={scrollRef}></div>
-      <ParamsControls onParamsChange={handleParamsChange} />
+      {/* <ParamsControls onParamsChange={handleParamsChange} /> */}
     </>
   );
 }
