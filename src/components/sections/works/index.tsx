@@ -12,7 +12,7 @@ export function Works() {
         {works.map((work) => (
           <div key={work.id} className={styles.workItem}>
             <Link
-              href={work.id}
+              href={"/work/" + work.id}
               className={styles.workLink}
               aria-label={work.title}
             ></Link>
