@@ -9,9 +9,10 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
+  const work = works.find((w) => w.id === slug);
   return {
-    title: `Work - ${slug}`,
-    description: `Details about the work ${slug}`,
+    title: `Juji - ${work ? work.title : "Work Not Found"}`,
+    description: `View ${work ? work.title : "Work Not Found"} details.`,
   };
 }
 
