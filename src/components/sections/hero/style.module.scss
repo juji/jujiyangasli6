@@ -38,7 +38,8 @@
     to make it not wiggle due to the bouncy dimension
     when animating scaleY from 0 to 1
     */
-    height: 200px;
+    height: 130px;
+    
     svg{
       filter: var(--drop-shadow);
     }
@@ -50,6 +51,11 @@
       animation-duration: 1500ms;
       animation-fill-mode: both;
       animation-timing-function: var(--rubbery);
+
+      svg{
+        width: 5rem;
+        height: auto;
+      }
     }
 
     .brace {
@@ -61,6 +67,11 @@
       animation-duration: 1000ms;
       animation-fill-mode: both;
       animation-timing-function: var(--rubbery);
+
+      svg{
+        width: 1.3rem;
+        height: auto;
+      }
     }
 
     .semicolon {
@@ -71,6 +82,42 @@
       animation-duration: 1000ms;
       animation-fill-mode: both;
       animation-timing-function: var(--rubbery);
+
+      svg{
+        width: 1.2rem;
+        height: auto;
+      }
+    }
+
+    @media (min-width: 320px) {
+      .logo svg{
+        width: 8rem;
+      }
+
+      .brace svg {
+        width: 2.5rem;
+      }
+
+      .semicolon svg{
+        width: 2rem;
+      }
+    }
+
+    @media (min-width: 420px) {
+      
+      height: 210px;
+
+      .logo svg{
+        width: 14rem;
+      }
+
+      .brace svg {
+        width: 3.6rem;
+      }
+
+      .semicolon svg{
+        width: 3rem;
+      }
     }
   }
 
@@ -79,18 +126,19 @@
 
     span{
       display: block;
-      font-size: 2.1rem;
+      font-size: 1rem;
       font-weight: 800;
     } 
 
     .big{
-      font-size: 3.3rem;
+      font-size: 2rem;
+      line-height: 2.7rem;
       margin-bottom: 1rem;
 
       span{
-        font-size: 3.3rem;
-        display: inline;
-        padding-left: 1rem;
+        font-size: 2rem;
+        display: block;
+
 
         span{
           padding-left: 0rem;
@@ -102,9 +150,53 @@
           /* set animation delay +50ms each */
           @for $i from 1 through 13 {
             &:nth-child(#{$i}) {
-              animation-delay: #{$i * 10}ms;
+              animation-delay: #{$i * 70}ms;
             }
           }
+        }
+      }
+    }
+
+    @media (min-width: 420px) {
+
+      span{
+        font-size: 1.5rem;
+      }
+
+      .big{
+        font-size: 3rem;
+        line-height: 3.7rem;
+
+        span{
+          font-size: 3rem;
+          display: block;
+        }
+      }
+    }
+
+    @media (min-width: 560px) {
+
+      span{
+        font-size: 1.8rem;
+      }
+
+      .big{
+        font-size: 4rem;
+        line-height: 4.7rem;
+
+        span{
+          font-size: 4rem;
+          display: block;
+        }
+      }
+    }
+
+    @media (min-width: 807px) {
+      .big{
+
+        &>span{
+          padding-left: 1rem;
+          display: inline;
         }
       }
     }
@@ -112,9 +204,15 @@
 
   .links{
     margin-top: 2rem;
-    display: flex;
-    gap: 1rem;
     font-weight: 700;
+
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+
+    @media screen and (min-width: 420px) {
+      grid-template-columns: auto auto auto auto auto;
+    }
   }
 
   .note{

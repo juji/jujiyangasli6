@@ -34,24 +34,50 @@ export function Hero() {
       <p className={styles.subheading}>
         <span className={styles.big}>
           Hi, I'm a
-          <span className={color ? styles.hasColor : ""} style={{ color }}>
-            <span>w</span>
-            <span>e</span>
-            <span>b</span>
-            <span> </span>
-            <span>d</span>
-            <span>e</span>
-            <span>v</span>
-            <span>e</span>
-            <span>l</span>
-            <span>o</span>
-            <span>p</span>
-            <span>e</span>
-            <span>r</span>
+          <span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              w
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              e
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              b
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              {" "}
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              d
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              e
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              v
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              e
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              l
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              o
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              p
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              e
+            </span>
+            <span className={color ? styles.hasColor : ""} style={{ color }}>
+              r
+            </span>
+            .
           </span>
-          .
         </span>
-        <span>My name is Tri Rahmat Gunadi,</span>
+        <span>My name is Tri&nbsp;Rahmat&nbsp;Gunadi,</span>
         <span>but people call me juji..</span>
       </p>
 
