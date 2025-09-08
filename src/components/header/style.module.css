@@ -7,10 +7,12 @@
   backdrop-filter: blur(20px);
   z-index: 1000;
   padding: 1rem 0;
-  border-bottom: 1px solid rgb(from var(--background) r g b / 0.2);
+  border-bottom: 1px solid rgb(from var(--foreground) r g b / 0.1);
   translate: 0 var(--header-transform-y);
   transition: translate 0.3s ease;
   height: var(--header-height);
+  display: flex;
+  align-items: space-between;
 
   a {
     text-decoration: none;
@@ -41,5 +43,33 @@
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+
+    .left {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+
+      .backButton {
+        border-radius: 5px;
+        padding: 0 0.3rem;
+        align-items: center;
+        cursor: pointer;
+        opacity: 0.7;
+        rotate: 180deg;
+        display: none;
+
+        &.visible {
+          display: flex;
+        }
+
+        &:hover {
+          opacity: 1;
+        }
+
+        &:active {
+          opacity: 0.5;
+        }
+      }
+    }
   }
 }
