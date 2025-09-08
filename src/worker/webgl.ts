@@ -95,19 +95,6 @@ function initializeBalls() {
     balls.push(createBall(balls, i >= 2, i + 1));
   }
 
-  console.log(
-    "Initialized ball radiuses",
-    balls.map((b) => b.radius),
-  );
-  console.log(
-    "Initialized ball colors",
-    balls.map((b) => b.color),
-  );
-  console.log(
-    "Initialized ball color indexes",
-    balls.map((b) => b.colorIndex),
-  );
-
   // Position balls randomly within the box
   for (const ball of balls) {
     ball.x = Math.random() * box.width + box.x;
