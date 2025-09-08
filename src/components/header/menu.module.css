@@ -122,7 +122,7 @@
       display: grid;
 
       @starting-style {
-        /* biome-ignore lint/suspicious/noDuplicateProperties: because */
+        /* biome-ignore lint/suspicious/noDuplicateProperties: because this is definitely not a duplicate */
         opacity: 0;
         border-color: transparent;
       }

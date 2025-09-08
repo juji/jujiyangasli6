@@ -54,7 +54,7 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
   }, []);
 
   return (
-    <div className={styles.workPage}>
+    <main className={styles.workPage}>
       <div className={styles.workPageContent}>
         <div className={styles.workText} ref={workTextRef}>
           <h1>{work.title}</h1>
@@ -71,6 +71,6 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
           <BlockGallery images={work.images} title={work.title} />
         </div>
       </div>
-    </div>
+    </main>
   );
 }
