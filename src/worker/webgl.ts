@@ -26,6 +26,7 @@ let height: number | null = null;
 // [0, 1]
 let translateY = 0;
 let ready = false;
+let bigBallNumber = 2;
 const radiusRange = [0, 0];
 const velocityRange = [-3, 3];
 
@@ -92,7 +93,7 @@ function createBall(
 
 function initializeBalls() {
   for (let i = 0; i < 3; i++) {
-    balls.push(createBall(balls, i >= 2, i + 1));
+    balls.push(createBall(balls, i >= bigBallNumber, i + 1));
   }
 
   // Position balls randomly within the box
@@ -133,6 +134,8 @@ async function init(payload: PayloadInit) {
 
   offscreen.width = width;
   offscreen.height = height;
+
+  bigBallNumber = width > height ? 2 : 3;
 
   initializeBoxLocation();
   initializeBallRadius();
