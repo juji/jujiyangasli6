@@ -3,8 +3,6 @@
   top: 0;
   left: 0;
   width: 100vw;
-  background-color: rgba(from var(--background) r g b / 0.7);
-  backdrop-filter: blur(20px);
   z-index: 1000;
   padding: 1rem 0;
   border-bottom: 1px solid rgb(from var(--foreground) r g b / 0.1);
@@ -13,6 +11,19 @@
   height: var(--header-height);
   display: flex;
   align-items: space-between;
+
+  /* apply this on :before to let children have the same backdrop filter */
+  &:before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(from var(--background) r g b / 0.7);
+    backdrop-filter: blur(20px);
+  }
 
   a {
     text-decoration: none;
@@ -57,6 +68,7 @@
         opacity: 0.7;
         rotate: 180deg;
         display: none;
+        border: 1px solid rgb(from var(--foreground) r g b / 0.6);
 
         &.visible {
           display: flex;

@@ -32,6 +32,8 @@
     ), 3px 0px 0px var(--shadow-color), 3px 1px 0px var(--shadow-color), 3px 2px 0px var(
       --shadow-color
     ), 3px 3px 0px var(--shadow-color);
+
+  interpolate-size: allow-keywords;
 }
 
 /* Prevent browsers from automatically changing color */

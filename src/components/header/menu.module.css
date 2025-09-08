@@ -4,7 +4,6 @@
   position: relative;
 
   .menuButton {
-    display: block;
     width: 1rem;
     cursor: pointer;
     opacity: 0.7;
@@ -30,7 +29,89 @@
     }
   }
 
-  &.opened {
-    /* styles for opened state will be added here */
+  /* to find the anchor position */
+  /* .menuListAnchor{
+    top: -8px;
+    right: -16px;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    translate: -23px 21px;
+    display: none;
+  } */
+
+  .menuList {
+    --transition-duration: 5700ms;
+
+    top: -8px;
+    right: -16px;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    background-color: rgb(from var(--background) r g b / 0.72);
+    backdrop-filter: blur(20px);
+
+    border: 2px solid rgb(from var(--foreground) r g b / 0.5);
+    border-radius: 2rem;
+    border-top-right-radius: 1rem;
+    padding: 1.6rem 2rem;
+    rotate: -210deg;
+    opacity: 0;
+    transition:
+      rotate var(--transition-duration) var(--rubbery),
+      opacity 300ms ease;
+    transform-origin: calc(100% - 23px) 21px;
+    overflow: hidden;
+    pointer-events: none;
+
+    h3 {
+      margin: 0;
+      padding: 0;
+      line-height: 1.4rem;
+      font-size: larger;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      padding-right: 5rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid rgb(from var(--foreground) r g b / 0.4);
+      margin: 0.5rem 0;
+    }
+
+    a {
+      padding: 0.3rem 0;
+      display: block;
+
+      &:hover {
+        text-decoration: dotted underline;
+        color: var(--accent);
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      &.opened {
+        --transition-duration: 2700ms;
+        display: block;
+        rotate: 0deg;
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      .menuList {
+        --transition-duration: 2700ms;
+        display: block;
+        rotate: 0deg;
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
   }
 }
