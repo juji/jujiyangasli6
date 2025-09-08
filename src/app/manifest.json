@@ -1,6 +1,20 @@
 {
   "name": "Juji",
   "short_name": "Juji",
+  "description": "Web Developer",
+  "screenshots": [
+    {
+      "src": "/screenshot-2025-09-08-16-27-03.png",
+      "sizes": "372x818",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshot-2025-09-08-16-27-21.png",
+      "sizes": "1075x818",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
