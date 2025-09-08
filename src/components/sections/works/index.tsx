@@ -50,17 +50,6 @@ export function Works() {
     }
     document.addEventListener("mousemove", updateMousePosition);
 
-    // Initialize positions
-    const items = document.querySelectorAll(`.${styles.workContainer}`);
-    items.forEach((item: Element) => {
-      const i = item as HTMLElement;
-      const rect = i.getBoundingClientRect();
-      const x = 0 - rect.left;
-      const y = 0 - rect.top;
-      i.style.setProperty("--circle-pos-x", `${x}px`);
-      i.style.setProperty("--circle-pos-y", `${y}px`);
-    });
-
     return () => {
       document.removeEventListener("mousemove", updateMousePosition);
     };

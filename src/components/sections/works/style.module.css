@@ -24,14 +24,17 @@
       position: relative;
       overflow: hidden;
 
-      --circle-pos-x: 0px;
-      --circle-pos-y: 0px;
+      --circle-pos-x: 1000px;
+      --circle-pos-y: 1000px;
 
       &:before {
         content: "";
         position: absolute;
+
+        /* initialize */
         top: 0;
         left: 0;
+
         width: 100%;
         height: 100%;
         opacity: var(--circle-opacity);
