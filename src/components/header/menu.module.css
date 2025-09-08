@@ -14,6 +14,9 @@
       display: block;
       height: 2px;
       background-color: var(--foreground);
+      transform-origin: center center;
+      transition: all 0.3s ease;
+      rotate: 0deg;
     }
 
     span:nth-child(2) {
@@ -27,46 +30,49 @@
     &:active {
       opacity: 0.7;
     }
+
+    &.opened {
+      span:nth-child(1) {
+        rotate: 45deg;
+        translate: 0 5px;
+      }
+
+      span:nth-child(2) {
+        opacity: 0;
+      }
+
+      span:nth-child(3) {
+        rotate: -45deg;
+        translate: 0 -5px;
+      }
+    }
   }
 
-  /* to find the anchor position */
-  /* .menuListAnchor{
-    top: -8px;
-    right: -16px;
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background-color: red;
-    translate: -23px 21px;
-    display: none;
-  } */
-
   .menuList {
-    --transition-duration: 5700ms;
-
     top: -8px;
     right: -16px;
     position: absolute;
-    display: grid;
     grid-template-columns: 1fr;
 
     background-color: rgb(from var(--background) r g b / 0.72);
     backdrop-filter: blur(20px);
 
-    border: 2px solid rgb(from var(--foreground) r g b / 0.5);
     border-radius: 2rem;
-    border-top-right-radius: 1rem;
+    border-top-right-radius: 0.6rem;
     padding: 1.6rem 2rem;
-    rotate: -210deg;
-    opacity: 0;
-    transition:
-      rotate var(--transition-duration) var(--rubbery),
-      opacity 300ms ease;
     transform-origin: calc(100% - 23px) 21px;
+    font-size: 0.9rem;
     overflow: hidden;
-    pointer-events: none;
 
-    h3 {
+    transition:
+      display 500ms allow-discrete,
+      opacity 300ms ease 200ms,
+      border-color 300ms ease;
+    border: 1px solid transparent;
+    opacity: 0;
+    display: none;
+
+    & > h3 {
       margin: 0;
       padding: 0;
       line-height: 1.4rem;
@@ -74,43 +80,52 @@
       margin-bottom: 0.5rem;
       font-weight: 700;
       padding-right: 5rem;
+      color: var(--link-color);
     }
 
-    hr {
+    & > hr {
       border: none;
       border-top: 1px solid rgb(from var(--foreground) r g b / 0.4);
       margin: 0.5rem 0;
     }
 
-    a {
+    & > a {
       padding: 0.3rem 0;
       display: block;
 
+      /* biome-ignore lint/style/noDescendingSpecificity: because */
       &:hover {
         text-decoration: dotted underline;
         color: var(--accent);
       }
     }
 
-    @media (hover: none) and (pointer: coarse) {
-      &.opened {
-        --transition-duration: 2700ms;
-        display: block;
-        rotate: 0deg;
-        opacity: 1;
-        pointer-events: all;
-      }
+    & > h3,
+    & > hr,
+    & > a {
+      transition: opacity 200ms ease calc(50ms * var(--i, 0));
+      opacity: 0;
     }
-  }
 
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      .menuList {
-        --transition-duration: 2700ms;
-        display: block;
-        rotate: 0deg;
+    &.opened {
+      & > h3,
+      & > hr,
+      & > a {
         opacity: 1;
-        pointer-events: all;
+      }
+
+      transition:
+        display 0ms allow-discrete,
+        opacity 300ms ease,
+        border-color 300ms ease 200ms;
+      opacity: 1;
+      border-color: rgb(from var(--foreground) r g b / 0.2);
+      display: grid;
+
+      @starting-style {
+        /* biome-ignore lint/suspicious/noDuplicateProperties: because */
+        opacity: 0;
+        border-color: transparent;
       }
     }
   }
