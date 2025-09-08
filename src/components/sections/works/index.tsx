@@ -12,6 +12,7 @@ export function Works() {
   });
 
   const mouseInside = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let frm: null | number = null;
@@ -54,17 +55,24 @@ export function Works() {
     };
   }, []);
 
+  function handleMouseEnter() {
+    mouseInside.current = true;
+    containerRef.current?.style.setProperty("--circle-opacity", "1");
+  }
+
+  function handleMouseLeave() {
+    mouseInside.current = false;
+    containerRef.current?.style.setProperty("--circle-opacity", "0");
+  }
+
   return (
     <div
       className={styles.works}
       id="works"
       role="listbox"
-      onMouseEnter={() => {
-        mouseInside.current = true;
-      }}
-      onMouseLeave={() => {
-        mouseInside.current = false;
-      }}
+      ref={containerRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <h2>Works</h2>
 

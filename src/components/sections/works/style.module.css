@@ -1,4 +1,6 @@
 .works {
+  --circle-opacity: 0;
+
   padding: 1rem 0rem;
 
   h2 {
@@ -32,13 +34,15 @@
         left: 0;
         width: 100%;
         height: 100%;
+        opacity: var(--circle-opacity);
+        pointer-events: none;
+        transition: opacity 500ms;
         background: radial-gradient(
           circle at var(--circle-pos-x) var(--circle-pos-y),
           rgba(255, 255, 255, 0.8) 80px,
           transparent 210px,
           transparent 100%
         );
-        /* opacity: 0.1; */
       }
     }
 
