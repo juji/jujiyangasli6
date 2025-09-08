@@ -16,7 +16,12 @@
 
     .workText {
       --top-sticky-offset: 0px;
-      --top-sticky: calc(var(--header-height) + 48px + var(--top-sticky-offset));
+      --top-sticky-margin: 3rem;
+      --top-sticky: calc(
+        var(--header-height) +
+        var(--top-sticky-margin) +
+        var(--top-sticky-offset)
+      );
     }
 
     .workContentText {

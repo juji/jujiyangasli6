@@ -41,7 +41,7 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
       if (rect.bottom > vh) {
         workTextRef.current.style.setProperty(
           "--top-sticky-offset",
-          `-${rect.bottom - vh + 48}px`,
+          `calc(-${rect.bottom - vh}px + var(--top-sticky-margin))`,
         );
       } else {
         workTextRef.current.style.setProperty("--top-sticky-offset", `0px`);
