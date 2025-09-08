@@ -5,9 +5,12 @@ import { useEffect, useState } from "react";
 import { Brace } from "@/components/svgs/brace";
 import { Juji } from "@/components/svgs/juji";
 import { Semicolon } from "@/components/svgs/semicolon";
-import styles from "./style.module.scss";
+import styles from "./style.module.css";
 
 const colors = ["#bfe600", "#00dee6", "#fb0", "#ff67e9", "#57bcff", "#fcf122"];
+const webDeveloper = "web developer"
+  .split("")
+  .map((v) => ({ char: v, id: Math.random().toString(36).substring(2, 9) }));
 
 export function Hero() {
   const [color, setColor] = useState("");
@@ -35,45 +38,15 @@ export function Hero() {
         <span className={styles.big}>
           Hi, I'm a
           <span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              w
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              e
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              b
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              {" "}
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              d
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              e
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              v
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              e
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              l
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              o
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              p
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              e
-            </span>
-            <span className={color ? styles.hasColor : ""} style={{ color }}>
-              r
-            </span>
+            {webDeveloper.map((char, index) => (
+              <span
+                key={`${char.id}`}
+                className={color ? styles.hasColor : ""}
+                style={{ color, "--index": index + 1 } as React.CSSProperties}
+              >
+                {char.char}
+              </span>
+            ))}{" "}
             .
           </span>
         </span>
