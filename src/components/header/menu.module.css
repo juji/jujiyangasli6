@@ -102,7 +102,7 @@
     & > h3,
     & > hr,
     & > a {
-      transition: opacity 200ms ease calc(50ms * var(--i, 0));
+      transition: opacity 100ms ease calc(50ms * var(--i, 0));
       opacity: 0;
     }
 
@@ -111,6 +111,10 @@
       & > hr,
       & > a {
         opacity: 1;
+        /* let this run without transition on opened */
+        /* @starting-style {
+          opacity: 0;
+        } */
       }
 
       transition:
