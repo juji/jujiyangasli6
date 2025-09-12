@@ -1,0 +1,36 @@
+.play {
+  padding: 2rem 0;
+
+  h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .playGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+
+    .playItem {
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 12px;
+      background-color: var(--background);
+      border: 1px solid rgb(from var(--foreground) r g b / 0.3);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+        transition: all 2s var(--rubbery);
+        scale: 1.5;
+      }
+
+      @media (hover: hover) {
+        &:hover img {
+          scale: 2;
+        }
+      }
+    }
+  }
+}

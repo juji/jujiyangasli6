@@ -2,11 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import Markdown from "react-markdown";
+import rehypeExternalLinks from "rehype-external-links";
 import type { Work } from "@/data/works/types";
 import { setHeaderShown } from "@/lib/headerVisibility";
 import { BlockGallery } from "./block-gallery";
 
 import styles from "./style.module.css";
+
+const externalLinks = () =>
+  rehypeExternalLinks({ target: "_blank", rel: ["noopener", "noreferrer"] });
 
 export function WorkPage({ content, work }: { content: string; work: Work }) {
   useEffect(() => {
@@ -64,8 +68,9 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
           <br />
           <br />
           <div className={styles.workContentText}>
-            <Markdown>{content}</Markdown>
+            <Markdown rehypePlugins={[externalLinks]}>{content}</Markdown>
           </div>
+          ``
         </div>
         <div className={styles.workGallery}>
           <BlockGallery images={work.images} title={work.title} />
