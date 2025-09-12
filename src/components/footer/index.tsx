@@ -21,12 +21,8 @@ export function Footer() {
 
       // draw
       footerRef.current.style.setProperty(
-        "background",
-        `radial-gradient(
-          ellipse at 40% 100%,
-          rgb(0 255 0 / ${glowState.current.minAlpha + glowState.current.deltaAlpha}) 0%,
-          rgb(0 0 0 / 0) 100%
-        ), rgb(from var(--background) r g b / 0.2)`,
+        "--gradient-glow",
+        `${glowState.current.minAlpha + glowState.current.deltaAlpha}`,
       );
 
       // done
