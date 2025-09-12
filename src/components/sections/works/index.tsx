@@ -16,7 +16,7 @@ export function Works() {
 
   useEffect(() => {
     let frm: null | number = null;
-    const factor = 0.05;
+    const factor = 0.03;
     function updateFrame() {
       mousePos.current.current.x +=
         (mousePos.current.realtime.x - mousePos.current.current.x) * factor;
