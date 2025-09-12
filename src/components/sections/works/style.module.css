@@ -1,3 +1,15 @@
+@property --circle-pos-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 100px;
+}
+
+@property --circle-pos-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 100px;
+}
+
 .works {
   --circle-opacity: 0;
 
@@ -24,8 +36,12 @@
       position: relative;
       overflow: hidden;
 
-      --circle-pos-x: 1000px;
-      --circle-pos-y: 1000px;
+      --circle-pos-x: 0px;
+      --circle-pos-y: 0px;
+
+      transition:
+        --circle-pos-x 500ms,
+        --circle-pos-y 500ms;
 
       &:before {
         content: "";

@@ -52,6 +52,7 @@
       animation-duration: 1500ms;
       animation-fill-mode: both;
       animation-timing-function: var(--rubbery);
+      color: var(--foreground);
 
       svg {
         width: 5rem;
@@ -68,6 +69,7 @@
       animation-duration: 1000ms;
       animation-fill-mode: both;
       animation-timing-function: var(--rubbery);
+      color: var(--foreground);
 
       svg {
         width: 1.3rem;
@@ -83,6 +85,7 @@
       animation-duration: 1000ms;
       animation-fill-mode: both;
       animation-timing-function: var(--rubbery);
+      color: var(--foreground);
 
       svg {
         width: 1.2rem;

@@ -6,47 +6,21 @@ import { works } from "@/data/works";
 import styles from "./style.module.css";
 
 export function Works() {
-  const mousePos = useRef({
-    realtime: { x: 0, y: 0 },
-    current: { x: 0, y: 0 },
-  });
-
   const mouseInside = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let frm: null | number = null;
-    const factor = 0.05;
-    function updateFrame() {
-      mousePos.current.current.x +=
-        (mousePos.current.realtime.x - mousePos.current.current.x) * factor;
-      mousePos.current.current.y +=
-        (mousePos.current.realtime.y - mousePos.current.current.y) * factor;
-      if (
-        Math.abs(mousePos.current.realtime.x - mousePos.current.current.x) >
-          0.1 ||
-        Math.abs(mousePos.current.realtime.y - mousePos.current.current.y) > 0.1
-      ) {
-        frm = requestAnimationFrame(updateFrame);
-      }
-
+    function updateMousePosition(e: MouseEvent) {
+      if (!mouseInside.current) return;
       const items = document.querySelectorAll(`.${styles.workContainer}`);
       items.forEach((item: Element) => {
         const i = item as HTMLElement;
         const rect = i.getBoundingClientRect();
-        const x = mousePos.current.current.x - rect.left;
-        const y = mousePos.current.current.y - rect.top;
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         i.style.setProperty("--circle-pos-x", `${x}px`);
         i.style.setProperty("--circle-pos-y", `${y}px`);
       });
-    }
-
-    function updateMousePosition(e: MouseEvent) {
-      if (!mouseInside.current) return;
-      mousePos.current.realtime.x = e.clientX;
-      mousePos.current.realtime.y = e.clientY;
-      if (frm) cancelAnimationFrame(frm);
-      updateFrame();
     }
     document.addEventListener("mousemove", updateMousePosition);
 

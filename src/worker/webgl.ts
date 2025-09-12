@@ -22,6 +22,8 @@ const notifiedInit = false;
 let offscreen: OffscreenCanvas | null = null;
 let width: number | null = null;
 let height: number | null = null;
+const maxWidth: number = 1920;
+const maxHeight: number = 1080;
 
 // [0, 1]
 let translateY = 0;
@@ -107,20 +109,24 @@ function initializeBalls() {
 function initializeBoxLocation() {
   if (width === null || height === null) return;
 
-  box.width = width * 0.5;
-  box.height = height * 0.5;
+  box.width = Math.min(maxWidth, width) * 0.5;
+  box.height = Math.min(maxHeight, height) * 0.5;
   box.x = width - width / 2;
   box.y = height - height / 2;
 }
 
 function initializeBallRadius() {
   if (!width || !height) return;
+
+  const w = Math.min(maxWidth, width);
+  const h = Math.min(maxHeight, height);
+
   const radius =
-    width > height
+    w > h
       ? // If the width is greater than the height, use the height to calculate the radius
-        Math.min(width ?? 0, height ?? 0) * 1.1
+        Math.min(w ?? 0, h ?? 0) * 1.1
       : // Otherwise, use the width to calculate the radius
-        Math.max(width ?? 0, height ?? 0) * 0.85;
+        Math.max(w ?? 0, h ?? 0) * 0.85;
   const radiusMin = radius;
   const radiusMax = radius + 50;
   radiusRange[0] = radiusMin;

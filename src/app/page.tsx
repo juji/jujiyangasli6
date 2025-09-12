@@ -14,7 +14,6 @@ export default function Home() {
       <main className={styles.main}>
         <Hero />
         <Works />
-        {/* <p>More content coming soon...</p> */}
       </main>
     </>
   );

@@ -1,6 +1,6 @@
 :root {
   --background: #171717;
-  --foreground: #ffffff;
+  --foreground: #ededed;
   --link-color: #9cff6a;
   --shadow-color: rgb(36 36 36);
   --project-color: transparent;
@@ -37,21 +37,24 @@
 }
 
 /* Prevent browsers from automatically changing color */
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #171717;
-    --foreground: #ffffff;
+    --foreground: #ededed;
     --link-color: #9cff6a;
     --shadow-color: rgb(36 36 36);
+    --project-color: transparent;
   }
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     --background: #171717;
-    --foreground: #ffffff;
+    --foreground: #ededed;
     --link-color: #9cff6a;
     --shadow-color: rgb(36 36 36);
+    --project-color: transparent;
   }
 }
 
