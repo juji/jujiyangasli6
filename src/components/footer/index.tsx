@@ -93,7 +93,7 @@ export function Footer() {
 
   return (
     <footer className={styles.footer} ref={footerRef}>
-      <div className={styles.content}>© 2024 Juji</div>
+      <div className={styles.content}>© 2025 Juji</div>
     </footer>
   );
 }
