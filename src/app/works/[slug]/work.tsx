@@ -31,7 +31,7 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
     // scroll to top on mount
     setTimeout(() => {
       window.scrollTo(0, 0);
-    }, 100);
+    }, 200);
   }, []);
 
   const workTextRef = useRef<HTMLDivElement>(null);
