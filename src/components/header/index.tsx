@@ -22,7 +22,7 @@ export function Header() {
       return;
     }
 
-    if (latest >= 1) {
+    if (latest >= 0.5) {
       setHeaderShown(true);
     } else {
       setHeaderShown(false);
