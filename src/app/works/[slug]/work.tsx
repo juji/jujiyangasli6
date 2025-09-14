@@ -29,7 +29,9 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
 
   useEffect(() => {
     // scroll to top on mount
-    window.scrollTo(0, 0);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
   }, []);
 
   const workTextRef = useRef<HTMLDivElement>(null);
