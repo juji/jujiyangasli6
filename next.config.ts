@@ -36,7 +36,6 @@ const withSerwist = withSerwistInit({
   swDest: "public/sw.js",
 });
 
-// remove serwist
-// export default withSerwist(nextConfig);
+export default withSerwist(nextConfig);
 
-export default nextConfig;
+// export default nextConfig;
