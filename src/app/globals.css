@@ -191,3 +191,9 @@ h5 {
 small {
   font-size: var(--text-size-xs);
 }
+
+/* scroll margins */
+
+section {
+  scroll-margin-top: calc(var(--header-height) + 2rem);
+}

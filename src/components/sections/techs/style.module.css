@@ -1,0 +1,119 @@
+.svgFilter {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.techs {
+  margin: 3rem 0;
+
+  --border-color: rgb(from var(--foreground) r g b / 0.8);
+
+  .techGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 0.6rem;
+    margin-top: 2rem;
+
+    .techItem {
+      display: flex;
+      border: 2px solid rgb(from var(--foreground) r g b / 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 1 / 1;
+      position: relative;
+
+      transition: border-color 3s ease;
+
+      &:hover {
+        transition: border-color 0s;
+        border-color: var(--border-color);
+      }
+
+      img {
+        display: block;
+        height: 50%;
+        width: auto;
+
+        /* display: none;; */
+      }
+
+      span {
+        filter: url(#gootech);
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        /* border: 1px solid yellow; */
+
+        &:before {
+          content: "";
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 100%;
+          height: 100%;
+          background-image: var(--mask-image);
+          background-position: center center;
+          background-size: auto 50%;
+          opacity: 0.3;
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 200%; /* this just feels right. width = speed */
+          height: 100%;
+          transform: translateX(calc(var(--relative-mouse-x) * 75%));
+        }
+
+        /* 
+          so, these are something.. 
+          matte, spotuv and metallic
+          I'm just gonna keep these
+        */
+
+        &:global(.matte:before) {
+          /* light should make things bigger */
+          top: -2px;
+          left: -2px;
+          width: calc(100% + 4px);
+          height: calc(100% + 4px);
+          /* give some blur for the matte effect */
+          filter: blur(3px);
+        }
+
+        &:global(.spotuv:after) {
+          background: linear-gradient(
+            111deg,
+            rgb(0 0 0 / 0) 0%,
+            rgb(0 0 0 / 0) 30%,
+            rgb(255 255 255 / 0.2) 31%,
+            rgb(255 255 255 / 0.3) 41%,
+            rgb(255 255 255 / 0.2) 59%,
+            rgb(0 0 0 / 0) 60%,
+            rgb(0 0 0 / 0) 100%
+          );
+        }
+
+        &:global(.metalic:after) {
+          background: linear-gradient(
+            111deg,
+            rgb(0 0 0 / 0) 0%,
+            rgb(0 0 0 / 0) 30%,
+            rgb(255 255 255 / 0.2) 39%,
+            rgb(255 255 255 / 0.3) 41%,
+            rgb(255 255 255 / 0.2) 43%,
+            rgb(0 0 0 / 0) 60%,
+            rgb(0 0 0 / 0) 100%
+          );
+        }
+      }
+    }
+  }
+}

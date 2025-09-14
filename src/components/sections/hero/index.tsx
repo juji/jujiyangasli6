@@ -19,7 +19,7 @@ export function Hero() {
   }, []);
 
   return (
-    <div className={styles.hero}>
+    <section className={styles.hero}>
       <h1 className={styles.heading} aria-label="Juji, Web Developer">
         <Link href="/" aria-label="Home">
           <span className={styles.logo}>
@@ -87,6 +87,6 @@ export function Hero() {
           Checkout the source of this site on GitHub.
         </a>
       </p>
-    </div>
+    </section>
   );
 }

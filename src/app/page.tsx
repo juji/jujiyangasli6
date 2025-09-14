@@ -4,6 +4,7 @@ import { BgCanvas } from "@/components/bg-canvas";
 // import { GrainyThing } from "@/components/grainy-thing";
 import { Hero } from "@/components/sections/hero";
 import { Play } from "@/components/sections/play";
+import { Techs } from "@/components/sections/techs";
 import { Works } from "@/components/sections/works";
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
         <Hero />
         <Works />
         <Play />
-        {/* <p>More content coming soon...</p> */}
+        <Techs />
       </main>
     </>
   );

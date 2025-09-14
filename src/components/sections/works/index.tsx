@@ -66,37 +66,38 @@ export function Works() {
   }
 
   return (
-    <div
-      className={styles.works}
-      id="works"
-      role="listbox"
-      ref={containerRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <h2>Works</h2>
-
-      <div className={styles.worksContainer}>
-        {works.map((work) => (
-          <div key={work.id} className={styles.workContainer}>
-            <div className={styles.workItem}>
-              <Link
-                href={`/works/${work.id}`}
-                className={styles.workLink}
-                aria-label={work.title}
-              ></Link>
-              <img
-                src={work.images[0].small}
-                alt={work.title}
-                width={work.images[0].dimension.small.width}
-                height={work.images[0].dimension.small.height}
-                loading="lazy"
-                decoding="async"
-              />
+    <>
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */}
+      <section
+        className={styles.works}
+        id="works"
+        ref={containerRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <h2>Works</h2>
+        <div className={styles.worksContainer}>
+          {works.map((work) => (
+            <div key={work.id} className={styles.workContainer}>
+              <div className={styles.workItem}>
+                <Link
+                  href={`/works/${work.id}`}
+                  className={styles.workLink}
+                  aria-label={work.title}
+                ></Link>
+                <img
+                  src={work.images[0].small}
+                  alt={work.title}
+                  width={work.images[0].dimension.small.width}
+                  height={work.images[0].dimension.small.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

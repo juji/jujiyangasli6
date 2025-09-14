@@ -15,7 +15,7 @@
       overflow: hidden;
       border-radius: 12px;
       background-color: var(--background);
-      border: 1px solid rgb(from var(--foreground) r g b / 0.3);
+      border: 3px solid rgb(from var(--foreground) r g b / 0.3);
 
       img {
         width: 100%;

@@ -33,20 +33,4 @@ export const play: Play[] = [
     height: 340,
     url: "https://boids.jujiplay.com/",
   },
-  {
-    title: "Circular Orbit",
-    id: "CircularOrbit",
-    image: "/images/play/circular-600.avif",
-    width: 600,
-    height: 276,
-    url: "https://circular.jujiplay.com/",
-  },
-  {
-    title: "Attractors",
-    id: "Attractors",
-    image: "/images/play/attractor-600.avif",
-    width: 600,
-    height: 338,
-    url: "https://attractors.jujiplay.com//",
-  },
 ];
