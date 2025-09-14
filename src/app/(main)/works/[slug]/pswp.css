@@ -122,8 +122,8 @@
 }
 
 .pswp__container.stabilized {
-  transition: transform 500ms ease !important;
+  transition: transform 500ms ease;
   @media screen and (hover: none) {
-    transition: none !important;
+    transition: none;
   }
 }
