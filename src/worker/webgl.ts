@@ -4,19 +4,6 @@ import { WebGLHandler } from "./WebGLHandler";
 // WebGL Handler instance
 let webglHandler: WebGLHandler | null = null;
 
-// Initialize handler
-function initializeHandler() {
-  if (!webglHandler) {
-    webglHandler = new WebGLHandler(
-      balls,
-      box,
-      translateY,
-      ready,
-      notifiedInit,
-    );
-  }
-}
-
 // Global variables that need to be shared between functions
 const notifiedInit = false;
 let offscreen: OffscreenCanvas | null = null;
@@ -27,17 +14,33 @@ let height: number | null = null;
 let translateY = 0;
 let ready = false;
 let bigBallNumber = 2;
+const acceleration = 0.09;
 const radiusRange = [0, 0];
 const velocityRange = [-3, 3];
+const maxVelocity = 3;
+
+// Initialize handler
+function initializeHandler() {
+  if (!webglHandler) {
+    webglHandler = new WebGLHandler(
+      balls,
+      box,
+      translateY,
+      ready,
+      notifiedInit,
+      acceleration, // Pass the acceleration variable
+      maxVelocity, // Pass the maxVelocity variable
+    );
+  }
+}
 
 const colors = [
-  [237, 76, 103], // '#ED4C67',
-  [163, 203, 56], // '#A3CB38',
-  [238, 90, 36], // '#EE5A24',
-  [234, 32, 39], // '#EA2027',
-  [6, 82, 221], // '#0652DD',
-  [217, 128, 250], // '#D980FA',
-  [153, 128, 250], // '#9980FA',
+  [255, 0, 0],
+  [0, 255, 0],
+  [0, 0, 255],
+  [0, 255, 255],
+  [255, 255, 0],
+  [255, 0, 255],
 ];
 
 const box = {
@@ -64,11 +67,13 @@ function randomColor(current: Ball[]) {
 }
 
 function createBall(
-  current: Ball[],
+  colorIndex: number,
   small?: boolean,
   translateEffect?: number,
 ): Ball {
-  const colorData = randomColor(current);
+  const colorData = colors[colorIndex]
+    ? { color: colors[colorIndex], colorIndex }
+    : randomColor(balls);
 
   const radius =
     Math.random() * (radiusRange[1] - radiusRange[0]) +
@@ -91,10 +96,37 @@ function createBall(
   } as Ball;
 }
 
+const BallColorCombinations = [
+  [5, 2, 4],
+  [0, 2, 4],
+  [0, 4, 5],
+  [2, 5, 0],
+  [0, 5, 1],
+  [5, 2, 1],
+  [3, 2, 5],
+];
+
 function initializeBalls() {
-  for (let i = 0; i < 3; i++) {
-    balls.push(createBall(balls, i >= bigBallNumber, i + 1));
+  const combination =
+    BallColorCombinations[
+      Math.floor(Math.random() * BallColorCombinations.length)
+    ];
+  // randomly shuffle the combination
+  // combination = combination.sort(() => Math.random() - 0.5);
+
+  for (let i = 0; i < combination.length; i++) {
+    balls.push(createBall(combination[i], i >= bigBallNumber, i + 1));
   }
+
+  // 5, 2, 4
+  // 0, 2, 4
+  // 0, 4, 5
+  // 2, 5, 0
+  // 0, 5, 1
+  // 5, 2, 1
+  // 3, 2, 5
+
+  // console.log(balls.map(v => v.colorIndex));
 
   // Position balls randomly within the box
   for (const ball of balls) {

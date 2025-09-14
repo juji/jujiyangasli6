@@ -55,6 +55,8 @@ export class WebGLHandler {
   private gain: number;
   private exposure: number;
   private clarity: number;
+  private acceleration: number;
+  private maxVelocity: number;
 
   constructor(
     balls: Ball[],
@@ -62,6 +64,8 @@ export class WebGLHandler {
     translateY: number,
     ready: boolean,
     notifiedInit: boolean,
+    acceleration: number = 0.09, // Default to 0.09 for backward compatibility
+    maxVelocity: number = 3, // Default to 3 for backward compatibility
   ) {
     this.balls = balls;
     this.box = box;
@@ -82,6 +86,8 @@ export class WebGLHandler {
     this.gain = 1.0;
     this.exposure = 0.0;
     this.clarity = 0.0;
+    this.acceleration = acceleration;
+    this.maxVelocity = maxVelocity;
   }
 
   setOffscreen(offscreen: OffscreenCanvas | null) {
@@ -737,28 +743,28 @@ export class WebGLHandler {
     // Update all balls within box boundaries
     for (const ball of this.balls) {
       if (ball.x <= this.box.x) {
-        ball.ax += 0.09;
+        ball.ax += this.acceleration;
       }
 
       if (ball.x > this.box.x + this.box.width) {
-        ball.ax -= 0.09;
+        ball.ax -= this.acceleration;
       }
 
       if (ball.yInit >= this.box.y + this.box.height) {
-        ball.ay -= 0.09;
+        ball.ay -= this.acceleration;
       }
 
       if (ball.yInit < this.box.y) {
-        ball.ay += 0.09;
+        ball.ay += this.acceleration;
       }
 
       let speedX = ball.vx + ball.ax;
       let speedY = ball.vy + ball.ay;
-      if (Math.abs(speedX) > 3) {
-        speedX = (speedX > 0 ? 1 : -1) * 3;
+      if (Math.abs(speedX) > this.maxVelocity) {
+        speedX = (speedX > 0 ? 1 : -1) * this.maxVelocity;
       }
-      if (Math.abs(speedY) > 3) {
-        speedY = (speedY > 0 ? 1 : -1) * 3;
+      if (Math.abs(speedY) > this.maxVelocity) {
+        speedY = (speedY > 0 ? 1 : -1) * this.maxVelocity;
       }
 
       // Update position
