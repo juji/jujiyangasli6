@@ -8,10 +8,11 @@
   margin: 3rem 0;
 
   --border-color: rgb(from var(--foreground) r g b / 0.8);
+  --image-height: 60%;
 
   .techGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 0.6rem;
     margin-top: 2rem;
 
@@ -34,7 +35,7 @@
 
       img {
         display: block;
-        height: 50%;
+        height: var(--image-height);
         width: auto;
 
         /* display: none;; */
@@ -58,7 +59,7 @@
           height: 100%;
           background-image: var(--mask-image);
           background-position: center center;
-          background-size: auto 50%;
+          background-size: auto var(--image-height);
           opacity: 0.3;
         }
 
