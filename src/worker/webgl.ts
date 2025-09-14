@@ -34,15 +34,6 @@ function initializeHandler() {
   }
 }
 
-const colors = [
-  [255, 0, 0],
-  [0, 255, 0],
-  [0, 0, 255],
-  [0, 255, 255],
-  [255, 255, 0],
-  [255, 0, 255],
-];
-
 const box = {
   width: 0,
   height: 0,
@@ -54,26 +45,31 @@ const balls: Ball[] = [
   // {"x":1019.5706044767663,"y":438.192647400654,"yInit":438.192647400654,"vx":-1.669198319132604,"vy":0.26029553680936246,"ax":-0.01,"ay":-0.01,"radius":829.4512132162898,"color":[0.9176470588235294,0.12549019607843137,0.15294117647058825],"colorIndex":4,"translateEffect":0},{"x":1270.3983753069715,"y":735.8526446472124,"yInit":735.8526446472124,"vx":2.9683667799690046,"vy":-0.8764287158035868,"ax":-0.01,"ay":-0.01,"radius":842.263273518769,"color":[0.9294117647058824,0.2980392156862745,0.403921568627451],"colorIndex":0,"translateEffect":1},{"x":1047.5046388433148,"y":663.0568886125682,"yInit":663.0568886125682,"vx":0.8791546093249947,"vy":1.0412336965114424,"ax":-0.01,"ay":-0.01,"radius":827.7206605374356,"color":[0.023529411764705882,0.3215686274509804,0.8666666666666667],"colorIndex":5,"translateEffect":2},{"x":837.2380260882485,"y":551.7837787706251,"yInit":551.7837787706251,"vx":-1.0101335351337053,"vy":1.4870102428971474,"ax":0.01,"ay":-0.01,"radius":536.7491560821566,"color":[0.9333333333333333,0.35294117647058826,0.1411764705882353],"colorIndex":2,"translateEffect":3}
 ];
 
-function randomColor(current: Ball[]) {
-  const index = Math.floor(Math.random() * colors.length);
-  // check if the index is already used
-  if (current.find((ball) => ball.colorIndex === index) !== undefined) {
-    return randomColor(current);
-  }
-  return {
-    color: colors[index],
-    colorIndex: index,
-  };
-}
+const colors = [
+  [255, 0, 0],
+  [0, 255, 0],
+  [0, 0, 255],
+  [0, 255, 255],
+  [255, 255, 0],
+  [255, 0, 255],
+];
+
+const BallColorCombinations = [
+  [5, 2, 4],
+  [0, 2, 4],
+  [0, 4, 5],
+  [2, 5, 0],
+  [0, 5, 1],
+  [5, 2, 1],
+  [3, 2, 5],
+];
 
 function createBall(
   colorIndex: number,
   small?: boolean,
   translateEffect?: number,
 ): Ball {
-  const colorData = colors[colorIndex]
-    ? { color: colors[colorIndex], colorIndex }
-    : randomColor(balls);
+  const colorData = { color: colors[colorIndex], colorIndex };
 
   const radius =
     Math.random() * (radiusRange[1] - radiusRange[0]) +
@@ -96,37 +92,15 @@ function createBall(
   } as Ball;
 }
 
-const BallColorCombinations = [
-  [5, 2, 4],
-  [0, 2, 4],
-  [0, 4, 5],
-  [2, 5, 0],
-  [0, 5, 1],
-  [5, 2, 1],
-  [3, 2, 5],
-];
-
 function initializeBalls() {
   const combination =
     BallColorCombinations[
       Math.floor(Math.random() * BallColorCombinations.length)
     ];
-  // randomly shuffle the combination
-  // combination = combination.sort(() => Math.random() - 0.5);
 
   for (let i = 0; i < combination.length; i++) {
     balls.push(createBall(combination[i], i >= bigBallNumber, i + 1));
   }
-
-  // 5, 2, 4
-  // 0, 2, 4
-  // 0, 4, 5
-  // 2, 5, 0
-  // 0, 5, 1
-  // 5, 2, 1
-  // 3, 2, 5
-
-  // console.log(balls.map(v => v.colorIndex));
 
   // Position balls randomly within the box
   for (const ball of balls) {
