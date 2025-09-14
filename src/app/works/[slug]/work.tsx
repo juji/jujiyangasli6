@@ -63,7 +63,7 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
     <main className={styles.workPage}>
       <div className={styles.workPageContent}>
         <div className={styles.workText} ref={workTextRef}>
-          <h1>{work.title}</h1>
+          <h3>{work.title}</h3>
           <a href={work.url} target="_blank" rel="noopener noreferrer">
             {work.url}
           </a>
