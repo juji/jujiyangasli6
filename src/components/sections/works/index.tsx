@@ -85,32 +85,14 @@ export function Works() {
                 className={styles.workLink}
                 aria-label={work.title}
               ></Link>
-              <picture>
-                <source
-                  media="(width < 500px)"
-                  srcSet={work.images[0].small}
-                  width={work.images[0].dimension.small.width}
-                  height={work.images[0].dimension.small.height}
-                />
-                <source
-                  media="(width < 700px)"
-                  srcSet={work.images[0].thumbnail}
-                  width={work.images[0].dimension.thumb.width}
-                  height={work.images[0].dimension.thumb.height}
-                />
-                <source
-                  media="(width >= 700px)"
-                  srcSet={work.images[0].url}
-                  width={work.images[0].dimension.image.width}
-                  height={work.images[0].dimension.image.height}
-                />
-                <img
-                  src={work.images[0].url}
-                  alt={work.title}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </picture>
+              <img
+                src={work.images[0].small}
+                alt={work.title}
+                width={work.images[0].dimension.small.width}
+                height={work.images[0].dimension.small.height}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
         ))}
