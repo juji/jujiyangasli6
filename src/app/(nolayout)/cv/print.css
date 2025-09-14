@@ -11,10 +11,20 @@
   body {
     margin: 0;
     padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Set document colors to print properly */
+  body {
+    color: #000;
+    background-color: #fff;
   }
 
   /* Hide any unwanted elements when printing */
-  .printButton {
+  nav,
+  header:not(.cv header),
+  footer {
     display: none;
   }
 }

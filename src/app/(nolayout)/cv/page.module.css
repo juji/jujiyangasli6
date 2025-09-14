@@ -280,18 +280,6 @@
 
 /* Print styles */
 @media print {
-  /* Page setup to remove browser headers/footers */
-  @page {
-    margin: 0;
-    size: auto;
-  }
-
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-  }
-
   .main {
     padding: 1.5cm 1.5cm 2cm;
     font-size: 12pt;
