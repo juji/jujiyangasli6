@@ -64,18 +64,23 @@
         bottom: 7px;
         right: 0px;
         font-weight: 600;
-        font-size: 1.7rem;
         letter-spacing: -0.05em;
         background-color: rgb(from var(--accent-color) r g b / 1);
         color: white;
         border: 1px solid rgb(from var(--foreground) r g b / 0.3);
         border-right: 0px;
 
-        padding: 5px 16px;
+        font-size: 1.8rem;
+        padding: 3px 16px;
+        scale: 1;
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
         z-index: 2;
-        transition: background-color 0.5s;
+        transition:
+          background-color 0.5s,
+          padding 0.2s ease,
+          scale 0.2s ease;
+        transform-origin: right bottom;
       }
 
       a {
@@ -103,19 +108,23 @@
 
       @media (hover: hover) and (pointer: fine) {
         img {
-          filter: grayscale(100%);
+          filter: grayscale(100%) contrast(0.6);
         }
 
         span {
           background-color: red;
+          padding: 7px 15px;
+          scale: 0.9;
         }
 
         &:hover {
           img {
-            filter: grayscale(0%);
+            filter: grayscale(0%) contrast(1);
           }
 
           span {
+            padding: 2px 18px;
+            scale: 1;
             background-color: rgb(from var(--accent-color) r g b / 1);
           }
         }
