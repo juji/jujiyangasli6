@@ -128,6 +128,7 @@ export default function CV3Page() {
                     Integrate{" "}
                     <a
                       href="https://algolia.com"
+                      className={styles.projectLink}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -139,6 +140,7 @@ export default function CV3Page() {
                     Migrate DNS entries to{" "}
                     <a
                       href="https://cloudflare.com"
+                      className={styles.projectLink}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -151,6 +153,7 @@ export default function CV3Page() {
                     Use a self-hosted{" "}
                     <a
                       href="https://www.min.io"
+                      className={styles.projectLink}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
