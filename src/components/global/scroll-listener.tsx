@@ -23,7 +23,5 @@ export function ScrollListener() {
     };
   }, [pathname]);
 
-  // asdf
-
   return null;
 }
