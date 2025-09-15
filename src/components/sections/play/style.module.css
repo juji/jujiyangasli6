@@ -27,8 +27,11 @@
       }
 
       @media (hover: hover) {
-        &:hover img {
-          scale: 2;
+        &:hover {
+          border: 3px solid var(--link-color);
+          img {
+            scale: 2;
+          }
         }
       }
     }
