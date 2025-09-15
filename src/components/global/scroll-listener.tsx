@@ -16,6 +16,7 @@ export function ScrollListener() {
     });
 
     return () => {
+      lenis.stop();
       lenis.destroy();
     };
   }, []);
