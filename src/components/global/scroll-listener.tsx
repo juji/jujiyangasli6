@@ -11,7 +11,7 @@ export function ScrollListener() {
   // otherwise it will keep the scroll position from previous page
   const pathname = usePathname();
 
-  // biome-ignore-start lint/correctness/useExhaustiveDependencies: because it is what we want
+  // biome-ignore lint/correctness/useExhaustiveDependencies: because it is what we want
   useEffect(() => {
     const lenis = new Lenis({
       autoRaf: true,
@@ -22,7 +22,6 @@ export function ScrollListener() {
       lenis.destroy();
     };
   }, [pathname]);
-  // biome-ignore-end lint/correctness/useExhaustiveDependencies: because it is what we want
 
   return null;
 }
