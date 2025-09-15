@@ -2,8 +2,6 @@ export const wheeleasy = `
 
 > WheelEasy is an access information web app for people with mobility needs, their families and friends.
 
-Great times..!!
-
 I met [Max Burt](https://www.maxburt.com/) online, and
 he needed someone to continue developing WheelEasy with him.
 

@@ -72,7 +72,6 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
           <div className={styles.workContentText}>
             <Markdown rehypePlugins={[externalLinks]}>{content}</Markdown>
           </div>
-          ``
         </div>
         <div className={styles.workGallery}>
           <BlockGallery images={work.images} title={work.title} />
