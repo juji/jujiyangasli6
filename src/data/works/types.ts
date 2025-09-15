@@ -28,6 +28,7 @@ export type WorkLogo = {
 type WorkBase = {
   id: string;
   title: string;
+  shortTitle: string;
   year: string;
   url: string;
   logo: WorkLogo;

@@ -4,6 +4,7 @@ export const amber: Work = {
   zombie: true,
   id: "amber",
   title: "Amber Video",
+  shortTitle: "Amber",
   year: "2018",
   url: "https://www.linkedin.com/company/ambervideo",
   gradientColor: "rgb(255 147 0 / 50%)",

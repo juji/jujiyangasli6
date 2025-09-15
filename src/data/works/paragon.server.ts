@@ -4,6 +4,7 @@ export const paragon: Work = {
   id: "paragon",
   year: "2012 est.",
   title: "Solo Paragon Hotel",
+  shortTitle: "Solo Paragon",
   url: "https://soloparagonhotel.com",
   gradientColor: "rgba(207,27,14,0.5)",
   logo: {

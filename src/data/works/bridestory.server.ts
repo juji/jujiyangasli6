@@ -4,6 +4,7 @@ export const bridestory: Work = {
   id: "bridestory",
   year: "2015 - 2016",
   title: "Bridestory - Career",
+  shortTitle: "Bridestory",
   url: "https://careers.bridestory.com",
   gradientColor: "rgb(255 118 107 / 52%)",
   logo: {

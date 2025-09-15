@@ -93,7 +93,85 @@ export function Footer() {
 
   return (
     <footer className={styles.footer} ref={footerRef}>
-      <div className={styles.content}>© 2025 Juji</div>
+      <div className={styles.content}>
+        <h5>About Me</h5>
+        <br />
+        <p>my name is Tri Rahmat Gunadi</p>
+        <p>But people call me juji..</p>
+        <br />
+        <address>
+          <p>
+            <a href="mailto:him@jujiyangasli.com">him@jujiyangasli.com</a>
+          </p>
+          <p>Tangerang, Indonesia</p>
+        </address>
+        <br />
+
+        <div>
+          <a
+            href="https://jujiplay.com"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            https://jujiplay.com
+          </a>
+        </div>
+        <div>
+          <a
+            href="https://blog.jujiyangasli.com"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            https://blog.jujiyangasli.com
+          </a>
+        </div>
+        <br />
+
+        <div className={styles.icons}>
+          <div className={styles.icon}>
+            <a
+              href="https://github.com/juji"
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="github link"
+            >
+              <img
+                src="/images/contact-logo/github.svg"
+                width="98"
+                height="96"
+                alt="github"
+              />
+            </a>
+          </div>
+          <div className={styles.icon}>
+            <a
+              href="https://www.npmjs.com/~juji_"
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="npm link"
+            >
+              <img
+                src="/images/contact-logo/npm.svg"
+                width="540"
+                height="210"
+                alt="npm"
+              />
+            </a>
+          </div>
+        </div>
+        <br />
+        <p>@ {new Date().getFullYear()} by Tri Rahmat Gunadi</p>
+        <p>
+          Made with ♥️ +{" "}
+          <a
+            href="https://nextjs.org/"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            Next.js
+          </a>
+        </p>
+      </div>
     </footer>
   );
 }

@@ -2,7 +2,7 @@
   --gradient-glow: 0.1;
 
   position: relative;
-  padding: 2rem 0;
+  padding: var(--page-padding) 0;
   margin-top: 4rem;
   border-top: 1px solid rgb(55, 55, 55);
   z-index: 2;
@@ -19,5 +19,17 @@
     margin: 0 auto;
     max-width: var(--page-width);
     padding: 0 var(--page-padding);
+
+    .icons {
+      display: flex;
+      gap: 1.5rem;
+      padding: 2rem 0;
+
+      .icon img {
+        height: 42px;
+        width: auto;
+        display: block;
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import type { Work } from "./types";
 export const wheeleasy: Work = {
   id: "wheeleasy",
   title: "WheelEasy",
+  shortTitle: "WheelEasy",
   year: "2019 - 2023",
   url: "https://wheeleasy.org",
   gradientColor: "rgb(41 131 153 / 50%)",
