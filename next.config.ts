@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   // Add any custom Next.js config here if needed
   devIndicators: false,
 
+  experimental:{
+    viewTransition: true,
+  },
+
   // Note: With output: 'export', the headers won't be automatically applied to the static files.
   // You'll need to configure these headers in your hosting provider/server instead.
   async headers() {

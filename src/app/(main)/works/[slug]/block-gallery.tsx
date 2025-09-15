@@ -6,13 +6,15 @@ import type { WorkImage } from "@/data/works/types";
 import "photoswipe/style.css";
 import styles from "./block-gallery.module.css";
 import "./pswp.css";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 interface BlockGalleryProps {
   images: WorkImage[];
   title: string;
+  workId: string;
 }
 
-export function BlockGallery({ images, title }: BlockGalleryProps) {
+export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
   const lightboxRef = useRef<PhotoSwipeLightbox | null>(null);
 
   useEffect(() => {
@@ -56,26 +58,51 @@ export function BlockGallery({ images, title }: BlockGalleryProps) {
           target="_blank"
           rel="noreferrer"
         >
-          <picture>
-            <source
-              media="(width < 500px)"
-              srcSet={img.small}
-              width={img.dimension.small.width}
-              height={img.dimension.small.height}
-            />
-            <source
-              media="(width >= 500px)"
-              srcSet={img.thumbnail}
-              width={img.dimension.thumb.width}
-              height={img.dimension.thumb.height}
-            />
-            <img
-              src={img.url}
-              alt={`${title} - ${img.title || `Image ${idx + 1}`}`}
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
+          {idx ? (
+            <picture>
+              <source
+                media="(width < 500px)"
+                srcSet={img.small}
+                width={img.dimension.small.width}
+                height={img.dimension.small.height}
+              />
+              <source
+                media="(width >= 500px)"
+                srcSet={img.thumbnail}
+                width={img.dimension.thumb.width}
+                height={img.dimension.thumb.height}
+              />
+              <img
+                src={img.url}
+                alt={`${title} - ${img.title || `Image ${idx + 1}`}`}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          ) : (
+            <ViewTransition name={`work-transition-${workId}`}>
+              <picture>
+                <source
+                  media="(width < 500px)"
+                  srcSet={img.small}
+                  width={img.dimension.small.width}
+                  height={img.dimension.small.height}
+                />
+                <source
+                  media="(width >= 500px)"
+                  srcSet={img.thumbnail}
+                  width={img.dimension.thumb.width}
+                  height={img.dimension.thumb.height}
+                />
+                <img
+                  src={img.url}
+                  alt={`${title} - ${img.title || `Image ${idx + 1}`}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </ViewTransition>
+          )}
         </a>
       ))}
     </div>

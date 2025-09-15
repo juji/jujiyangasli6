@@ -14,6 +14,26 @@ export const wheeleasy: Work = {
   },
   images: [
     {
+      thumbnail: "/images/works/thumb/wez4-700.avif",
+      small: "/images/works/small/wez4-500.avif",
+      url: "/images/works/wez4.avif",
+      dimension: {
+        thumb: {
+          width: 700,
+          height: 347,
+        },
+        small: {
+          width: 500,
+          height: 248,
+        },
+        image: {
+          width: 1905,
+          height: 944,
+        },
+      },
+      title: "Search Page",
+    },
+    {
       thumbnail: "/images/works/thumb/wez1-700.avif",
       small: "/images/works/small/wez1-500.avif",
       url: "/images/works/wez1.avif",
@@ -72,26 +92,6 @@ export const wheeleasy: Work = {
         },
       },
       title: "Hotspot",
-    },
-    {
-      thumbnail: "/images/works/thumb/wez4-700.avif",
-      small: "/images/works/small/wez4-500.avif",
-      url: "/images/works/wez4.avif",
-      dimension: {
-        thumb: {
-          width: 700,
-          height: 347,
-        },
-        small: {
-          width: 500,
-          height: 248,
-        },
-        image: {
-          width: 1905,
-          height: 944,
-        },
-      },
-      title: "Place Page",
     },
     {
       thumbnail: "/images/works/thumb/wez5-700.avif",

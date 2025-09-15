@@ -1,7 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import {
+  useEffect,
+  useRef,
+  unstable_ViewTransition as ViewTransition,
+} from "react";
 import { works } from "@/data/works";
 import styles from "./style.module.css";
 
@@ -80,14 +84,16 @@ export function Works() {
           {works.map((work) => (
             <div key={work.id} className={styles.workContainer}>
               <div className={styles.workItem}>
-                <img
-                  src={work.images[0].small}
-                  alt={work.title}
-                  width={work.images[0].dimension.small.width}
-                  height={work.images[0].dimension.small.height}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <ViewTransition name={`work-transition-${work.id}`}>
+                  <img
+                    src={work.images[0].small}
+                    alt={work.title}
+                    width={work.images[0].dimension.small.width}
+                    height={work.images[0].dimension.small.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </ViewTransition>
                 <span
                   style={{ ["--accent-color" as string]: work.gradientColor }}
                 >

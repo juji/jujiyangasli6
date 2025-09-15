@@ -74,7 +74,11 @@ export function WorkPage({ content, work }: { content: string; work: Work }) {
           </div>
         </div>
         <div className={styles.workGallery}>
-          <BlockGallery images={work.images} title={work.title} />
+          <BlockGallery
+            images={work.images}
+            title={work.title}
+            workId={work.id}
+          />
         </div>
       </div>
     </main>
