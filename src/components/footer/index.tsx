@@ -93,7 +93,7 @@ export function Footer() {
 
   return (
     <footer className={styles.footer} ref={footerRef}>
-      <div className={styles.content}>
+      <div className={styles.content} id="contact">
         <h5>About Me</h5>
         <br />
         <p>my name is Tri Rahmat Gunadi</p>

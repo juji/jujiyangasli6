@@ -1,7 +1,7 @@
 "use client";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname /* useRouter */ } from "next/navigation";
 import { useRef } from "react";
 import { getManualChange, setHeaderShown } from "@/lib/headerVisibility";
 import { Brace } from "../svgs/brace";
@@ -16,6 +16,7 @@ export function Header() {
     target: scrollRef,
     offset: ["start end", "start start"],
   });
+
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (getManualChange()) {
       console.log("manual change, skip auto header show/hide");
@@ -30,19 +31,27 @@ export function Header() {
   });
 
   const pathname = usePathname();
+  // const router = useRouter();
   const isHome = pathname === "/";
-  function goBack() {
-    if (typeof window === "undefined") return;
-    window.history.back();
-  }
+  // function goBack() {
+  //   // if (typeof window === "undefined") return;
+  //   // window.history.back();
+  //   router.back();
+  // }
 
   return (
     <>
       <header className={styles.header}>
         <div className={styles.content}>
           <div className={styles.left}>
-            <button
-              onClick={goBack}
+            <Link
+              // just a quick way to go back to home, while preserving the view transition
+              // ideally we would use router.back() or window.history.back()
+              // but the view transition won't work if we use history.back or router.back
+              // i guess this is the way for react? hopefully something better in the future
+              // like, make it work with the native history.back ... like svelte does
+              href="/#work"
+              // onClick={goBack}
               aria-label="go back"
               type="button"
               className={`${styles.backButton} ${isHome ? "" : styles.visible}`}
@@ -62,7 +71,7 @@ export function Header() {
                   fill="currentColor"
                 ></path>
               </svg>
-            </button>
+            </Link>
             <Link href="/" aria-label="Home">
               <span className={styles.logo}>
                 <Juji />
