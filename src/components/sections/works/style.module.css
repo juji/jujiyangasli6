@@ -63,8 +63,9 @@
         position: absolute;
         bottom: 7px;
         right: 0px;
-        font-weight: 900;
+        font-weight: 600;
         font-size: 1.7rem;
+        letter-spacing: -0.05em;
         background-color: rgb(from var(--accent-color) r g b / 1);
         color: white;
         border: 1px solid rgb(from var(--foreground) r g b / 0.3);
