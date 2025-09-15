@@ -5,7 +5,7 @@
 }
 
 .techs {
-  margin: 3rem 0;
+  padding: var(--section-padding) 0;
 
   --border-color: rgb(from var(--foreground) r g b / 0.8);
   --image-height: 50%;

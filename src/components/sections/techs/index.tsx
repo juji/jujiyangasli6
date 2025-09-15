@@ -90,8 +90,7 @@ export function Techs() {
         <h2>Techs</h2>
         <br />
         <p>
-          Some techs I manage to get my hands on, still learning a bunch of
-          stuff..
+          Some techs I manage to work with. Still learning a bunch of stuff..
         </p>
         <div className={styles.techGrid}>
           {techs.map((item) => (

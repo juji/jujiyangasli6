@@ -1,7 +1,7 @@
 .works {
   --circle-opacity: 0;
 
-  padding: 2rem 0rem;
+  padding: var(--section-padding) 0;
 
   h2 {
     margin-bottom: 1rem;
