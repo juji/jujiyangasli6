@@ -115,18 +115,14 @@
 }
 
 .skillsList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0;
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .skillItem {
-  background-color: rgba(255, 255, 255, 0.1);
   color: var(--foreground);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+  padding: 0.25rem 0;
   font-size: var(--text-size-sm);
 }
 
