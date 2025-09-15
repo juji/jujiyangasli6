@@ -46,7 +46,7 @@ export function Hero() {
               >
                 {char.char}
               </span>
-            ))}{" "}
+            ))}
             .
           </span>
         </span>

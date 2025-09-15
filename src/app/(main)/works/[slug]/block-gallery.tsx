@@ -26,6 +26,7 @@ export function BlockGallery({ images, title }: BlockGalleryProps) {
       lightboxRef.current.on("openingAnimationEnd", () => {
         document.querySelector(".pswp__container")?.classList.add("stabilized");
       });
+
       lightboxRef.current.on("closingAnimationStart", () => {
         document
           .querySelector(".pswp__container")
@@ -63,16 +64,10 @@ export function BlockGallery({ images, title }: BlockGalleryProps) {
               height={img.dimension.small.height}
             />
             <source
-              media="(width < 700px)"
+              media="(width >= 500px)"
               srcSet={img.thumbnail}
               width={img.dimension.thumb.width}
               height={img.dimension.thumb.height}
-            />
-            <source
-              media="(width >= 700px)"
-              srcSet={img.url}
-              width={img.dimension.image.width}
-              height={img.dimension.image.height}
             />
             <img
               src={img.url}
