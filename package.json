@@ -28,7 +28,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,ts,tsx,css}": [
-      "biome check",
+      "biome lint --write",
       "biome format --write"
     ]
   },
