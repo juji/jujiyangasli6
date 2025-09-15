@@ -17,9 +17,6 @@ importers:
       lenis:
         specifier: ^1.3.11
         version: 1.3.11(react@19.1.0)
-      lightgallery:
-        specifier: 2.9.0-beta.1
-        version: 2.9.0-beta.1
       motion:
         specifier: ^12.23.12
         version: 12.23.12(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -773,10 +770,6 @@ packages:
         optional: true
       vue:
         optional: true
-
-  lightgallery@2.9.0-beta.1:
-    resolution: {integrity: sha512-4Bl1vsYGOsI6RsPyephAUFW8bbZuZlLrpxU59cfKYKPDEX5Mhxfo1DUoUIJ+j5QPNrHEqrd+QeQtnGUCCwqK2g==}
-    engines: {node: '>=6.0.0'}
 
   lilconfig@3.1.3:
     resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
@@ -1799,8 +1792,6 @@ snapshots:
   lenis@1.3.11(react@19.1.0):
     optionalDependencies:
       react: 19.1.0
-
-  lightgallery@2.9.0-beta.1: {}
 
   lilconfig@3.1.3: {}
 
