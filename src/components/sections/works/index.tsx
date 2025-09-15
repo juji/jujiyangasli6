@@ -80,11 +80,6 @@ export function Works() {
           {works.map((work) => (
             <div key={work.id} className={styles.workContainer}>
               <div className={styles.workItem}>
-                <Link
-                  href={`/works/${work.id}`}
-                  className={styles.workLink}
-                  aria-label={work.title}
-                ></Link>
                 <img
                   src={work.images[0].small}
                   alt={work.title}
@@ -93,6 +88,16 @@ export function Works() {
                   loading="lazy"
                   decoding="async"
                 />
+                <span
+                  style={{ ["--accent-color" as string]: work.gradientColor }}
+                >
+                  {work.shortTitle}
+                </span>
+                <Link
+                  href={`/works/${work.id}`}
+                  className={styles.workLink}
+                  aria-label={work.title}
+                ></Link>
               </div>
             </div>
           ))}
