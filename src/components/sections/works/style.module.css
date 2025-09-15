@@ -100,7 +100,6 @@
         display: block;
         filter: grayscale(0%);
         transition: filter 0.5s;
-        /* sadf */
       }
 
       &:active {
