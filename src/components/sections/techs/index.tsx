@@ -112,6 +112,7 @@ export function Techs() {
                 style={{ ["--mask-image" as string]: `url(${item.image})` }}
                 className={"metalic matte"}
               ></span>
+              <p className={styles.itemTitle}>{item.title}</p>
             </a>
           ))}
         </div>

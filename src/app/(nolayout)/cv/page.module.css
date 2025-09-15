@@ -51,6 +51,21 @@
   gap: 0.5rem;
 }
 
+@media (max-width: 600px) {
+  .headerNamePrint {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .printButton {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
 .printButton:hover {
   background-color: var(--button-hover, #0058c7);
 }

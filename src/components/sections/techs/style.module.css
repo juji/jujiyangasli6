@@ -8,7 +8,8 @@
   margin: 3rem 0;
 
   --border-color: rgb(from var(--foreground) r g b / 0.8);
-  --image-height: 60%;
+  --image-height: 50%;
+  --image-top: -8px;
 
   .techGrid {
     display: grid;
@@ -37,14 +38,30 @@
         display: block;
         height: var(--image-height);
         width: auto;
+        position: relative;
+        top: var(--image-top);
 
         /* display: none;; */
+      }
+
+      .itemTitle {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.8rem;
+        color: var(--foreground);
+        background-color: transparent;
+        padding: 0;
+        pointer-events: none;
+        user-select: none;
+        white-space: nowrap;
       }
 
       span {
         filter: url(#gootech);
         position: absolute;
-        top: 0;
+        top: var(--image-top);
         right: 0;
         width: 100%;
         height: 100%;
@@ -80,13 +97,12 @@
         */
 
         &:global(.matte:before) {
-          /* light should make things bigger */
-          top: -2px;
-          left: -2px;
-          width: calc(100% + 4px);
-          height: calc(100% + 4px);
+          top: 0px;
+          left: 0px;
+          width: 100%;
+          height: 100%;
           /* give some blur for the matte effect */
-          filter: blur(3px);
+          filter: blur(2px);
         }
 
         &:global(.spotuv:after) {

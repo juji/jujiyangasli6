@@ -20,11 +20,4 @@
     color: #000;
     background-color: #fff;
   }
-
-  /* Hide any unwanted elements when printing */
-  nav,
-  header:not(.cv header),
-  footer {
-    display: none;
-  }
 }

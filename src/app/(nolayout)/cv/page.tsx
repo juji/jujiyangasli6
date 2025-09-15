@@ -68,7 +68,7 @@ export default function CV() {
           </div>
           <div className={styles.contactInfo}>
             <div>jujiyangasli@gmail.com</div>
-            <div>Tangerang, ID</div>
+            <div>Tangerang, Indonesia</div>
             <div>
               <a
                 className={styles.linkItem}
