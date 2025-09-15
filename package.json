@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "biome check --write --unsafe",
+    "lint": "biome check",
     "format": "biome format --write",
     "prepare": "husky || true",
     "lint-staged": "lint-staged"
