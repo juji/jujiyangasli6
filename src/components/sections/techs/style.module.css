@@ -9,7 +9,7 @@
 
   --border-color: rgb(from var(--foreground) r g b / 0.8);
   --image-height: 50%;
-  --image-top: -8px;
+  --image-top: -9px;
 
   .techGrid {
     display: grid;
@@ -49,8 +49,9 @@
         bottom: 5px;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: var(--foreground);
+        opacity: 0.6;
         background-color: transparent;
         padding: 0;
         pointer-events: none;
