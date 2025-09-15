@@ -9,28 +9,13 @@
 }
 
 .header {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
   align-items: center;
   margin-bottom: 3rem;
   padding-top: 2rem;
   position: relative;
-}
-
-.headerBackground {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    var(--shadow-color) 0%,
-    transparent 100%
-  );
-  opacity: 0.4;
-  z-index: -1;
-  border-radius: 0 0 50% 50% / 0 0 100px 100px;
 }
 
 .profileImage {
@@ -39,8 +24,8 @@
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid var(--foreground);
-  margin-bottom: 1.5rem;
   filter: var(--drop-shadow);
+  justify-self: end;
 }
 
 .name {
@@ -61,7 +46,6 @@
 
 .contactLinks {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1rem;
@@ -84,9 +68,7 @@
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 2rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
 }
 
 .section {
@@ -166,15 +148,18 @@
 }
 
 .projectContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  display: block;
 }
 
 .project {
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.project:first-child {
+  margin-top: 1.5rem;
 }
 
 .projectTitle {
@@ -256,11 +241,20 @@
 @media (max-width: 768px) {
   .header {
     margin-bottom: 2rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    justify-items: center;
+    text-align: center;
   }
 
   .profileImage {
     width: 150px;
     height: 150px;
+    justify-self: center;
+  }
+
+  .contactLinks {
+    justify-content: center;
   }
 
   .name {
@@ -275,10 +269,6 @@
     /* Keep the three columns */
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1rem;
-  }
-
-  .projectContainer {
-    grid-template-columns: 1fr;
   }
 
   .skillItem {
@@ -325,13 +315,9 @@
   }
 
   .header {
-    flex-direction: row;
+    grid-template-columns: auto 1fr;
     gap: 2rem;
     align-items: flex-start;
-  }
-
-  .headerBackground {
-    display: none;
   }
 
   .profileImage {
@@ -361,13 +347,11 @@
     color: black;
   }
 
-  .projectContainer {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .project {
     background-color: transparent;
-    box-shadow: none;
+    border: 1px solid #eee;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
   }
 
   .printButton {

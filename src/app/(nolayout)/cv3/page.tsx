@@ -4,7 +4,6 @@ export default function CV3Page() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.headerBackground}></div>
         <img
           src="/images/juji-face.jpg"
           alt="Tri Rahmat Gunadi"
