@@ -9,7 +9,9 @@ export function ScrollListener() {
   // so that it resets the scroll position to top
   // and also re-calculate the scroll position
   // otherwise it will keep the scroll position from previous page
-  const _pathname = usePathname();
+  const pathname = usePathname();
+
+  // biome-ignore-start lint/correctness/useExhaustiveDependencies: because it is what we want
   useEffect(() => {
     const lenis = new Lenis({
       autoRaf: true,
@@ -19,7 +21,8 @@ export function ScrollListener() {
       lenis.stop();
       lenis.destroy();
     };
-  }, []);
+  }, [pathname]);
+  // biome-ignore-end lint/correctness/useExhaustiveDependencies: because it is what we want
 
   return null;
 }
