@@ -2,7 +2,7 @@
 import { useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
 import { usePathname /* useRouter */ } from "next/navigation";
-import { useRef } from "react";
+import { useRef /* startTransition */ } from "react";
 import { getManualChange, setHeaderShown } from "@/lib/headerVisibility";
 import { Brace } from "../svgs/brace";
 import { Juji } from "../svgs/juji";
@@ -31,12 +31,14 @@ export function Header() {
   });
 
   const pathname = usePathname();
-  // const router = useRouter();
   const isHome = pathname === "/";
+  // const router = useRouter();
   // function goBack() {
   //   // if (typeof window === "undefined") return;
-  //   // window.history.back();
-  //   router.back();
+  //   startTransition(() => {
+  //     // window.history.back();
+  //     router.back();
+  //   });
   // }
 
   return (
