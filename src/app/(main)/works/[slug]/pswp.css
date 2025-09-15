@@ -122,7 +122,8 @@
 }
 
 .pswp__container.stabilized {
-  transition: transform 500ms ease;
+  /* biome-ignore lint: important is needed here */
+  transition: transform 500ms ease !important;
   @media screen and (hover: none) {
     transition: none;
   }
