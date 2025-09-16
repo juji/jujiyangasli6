@@ -87,6 +87,17 @@ export function Hero() {
           Checkout the source of this site on GitHub.
         </a>
       </p>
+
+      <p className={styles.cv}>
+        <a
+          href="/juji-cv.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`outgoing`}
+        >
+          Download CV
+        </a>
+      </p>
     </section>
   );
 }
