@@ -78,6 +78,16 @@ export function Menu() {
         >
           GitHub
         </Link>
+        <Link
+          href="/juji-cv.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`outgoing`}
+          onClick={close}
+          style={{ ["--i" as string]: 8 }}
+        >
+          Download CV
+        </Link>
       </div>
 
       <button
