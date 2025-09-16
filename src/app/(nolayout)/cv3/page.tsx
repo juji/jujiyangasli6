@@ -231,11 +231,13 @@ export default function CV3Page() {
           <p className={styles.experienceDuration}>2014 - 2017</p>
           <div className={styles.experienceDescription}>
             <p>Internal-Application developer & Data engineer</p>
+            <br />
             <p>
               Responsible in developing and maintaining internal applications
-              like HR- employee application, Investor and Management Report App,
+              like HR-employee application, Investor and Management Report App,
               and Bridestory's career page.
             </p>
+            <br />
             <p>
               As a Data Engineer, I develop and maintain data warehouse,
               creating data pipeline to support operational aspects in finance,
@@ -291,9 +293,7 @@ export default function CV3Page() {
         </div>
       </section>
 
-      <footer className={styles.footer}>
-        <p>Last Updated: September 2025</p>
-      </footer>
+      <p className={styles.lastUpdated}>Last Updated: September 2025</p>
     </div>
   );
 }
