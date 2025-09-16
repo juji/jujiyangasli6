@@ -106,7 +106,16 @@ export function Footer() {
           <p>Tangerang, Indonesia</p>
         </address>
         <br />
-
+        <a
+          href="/juji-cv.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`outgoing`}
+        >
+          Download CV
+        </a>
+        <br />
+        <br />
         <div>
           <a
             href="https://jujiplay.com"
