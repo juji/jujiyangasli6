@@ -73,7 +73,7 @@ function createBall(
 
   const radius =
     Math.random() * (radiusRange[1] - radiusRange[0]) +
-    radiusRange[0] * (small ? 0.6 : 1);
+    radiusRange[0] * (small ? 0.8 : 1);
 
   return {
     x: 150,
@@ -113,8 +113,8 @@ function initializeBalls() {
 function initializeBoxLocation() {
   if (width === null || height === null) return;
 
-  box.width = width * 0.5;
-  box.height = height * 0.5;
+  box.width = Math.min(width * 0.5, 600);
+  box.height = Math.min(height * 0.5, 400);
   box.x = width - width / 2;
   box.y = height - height / 2;
 }
