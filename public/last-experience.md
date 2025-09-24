@@ -1,5 +1,7 @@
 WheelEasy
 
+2019-2025
+
 https://wheeleasy.org is an access information web app for people with mobility needs, their
 families and friends.
 
@@ -14,3 +16,31 @@ What i did:
 - Created mechanisms for Volunteers to be tracked based on participation in data collection, by assigning points as rewards for successful contributions.
 - Created Hotspot sections as a way to group places based on custom polygonal-area, and the admin interface to manage them.
 - Enhanced the user experience by implementing an asynchronous eager-upload system with progress tracking, reducing perceived waiting times by 90%.
+
+Amber Video
+
+2017-2019
+
+ambervideois a platform to detect fake videos.
+
+- Created the UI to detect the difference between edited and Original video, with visual cues depicting the difference in the frame.
+- Manage Auth using Auth0 with RBAC.
+
+
+bridestory.com
+
+2014-2017
+
+Internal-Application developer & Data engineer
+
+Responsible in developing and maintaining internal applications like HR-employee
+application, Investor and Management Report App, and Bridestory's career page.
+
+As a Data Engineer, I develop and maintain data warehouse, creating data pipeline to support
+operational aspects in finance, e-mail marketing, sales.2014 - 2017
+
+VISIOUS Graphic Studio
+2011-2014
+
+Responsible for Web Development Projects.
+
