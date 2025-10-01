@@ -2,6 +2,14 @@ import type { Play } from "./types";
 
 export const play: Play[] = [
   {
+    title: "Better Auth",
+    id: "betterauth",
+    image: "/images/play/better-auth.avif",
+    width: 600,
+    height: 289,
+    url: "https://better-auth.jujiplay.com/",
+  },
+  {
     title: "Chaos Canvas",
     id: "ChaosCanvas",
     image: "/images/play/clifford-dejong-600.avif",

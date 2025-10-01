@@ -9,7 +9,8 @@
     "format": "biome format --write",
     "prepare": "husky || true",
     "lint-staged": "lint-staged",
-    "generate-cv": "node ./utils/generate-cv-pdf.js"
+    "generate-cv": "node ./utils/generate-cv-pdf.js",
+    "resize-play": "node ./utils/resize-play-images.js"
   },
   "dependencies": {
     "@serwist/next": "^9.2.1",
