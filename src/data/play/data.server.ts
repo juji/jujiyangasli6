@@ -2,6 +2,14 @@ import type { Play } from "./types";
 
 export const play: Play[] = [
   {
+    title: "Strange Attractors",
+    id: "strange-attractors",
+    image: "/images/play/strange-attractor-lorenz.avif",
+    width: 600,
+    height: 292,
+    url: "https://strange-attractors.jujiplay.com/",
+  },
+  {
     title: "Better Auth",
     id: "betterauth",
     image: "/images/play/better-auth.avif",
