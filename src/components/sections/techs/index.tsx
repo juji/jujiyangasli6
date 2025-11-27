@@ -82,47 +82,45 @@ export function Techs() {
         </filter>
       </svg>
 
-      <AnimDiv out={false}>
-        {/* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */}
-        <section
-          onMouseEnter={setBorderColor}
-          className={styles.techs}
-          ref={containerRef}
-          id="techs"
-        >
-          <h2>Techs</h2>
-          <br />
-          <p>
-            Some techs I manage to work with. Still learning a bunch of stuff..
-          </p>
-          <div className={styles.techGrid}>
-            {techs.map((item) => (
-              <a
-                key={item.id}
-                className={styles.techItem}
-                href={item.url}
-                target="_blank"
-                rel="noreferrer noopener"
-                onMouseEnter={onMouseEnter}
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  width={item.width}
-                  height={item.height}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <span
-                  style={{ ["--mask-image" as string]: `url(${item.image})` }}
-                  className={"metalic matte"}
-                ></span>
-                <p className={styles.itemTitle}>{item.title}</p>
-              </a>
-            ))}
-          </div>
-        </section>
-      </AnimDiv>
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */}
+      <section
+        onMouseEnter={setBorderColor}
+        className={styles.techs}
+        ref={containerRef}
+        id="techs"
+      >
+        <h2>Techs</h2>
+        <br />
+        <p>
+          Some techs I manage to work with. Still learning a bunch of stuff..
+        </p>
+        <div className={styles.techGrid}>
+          {techs.map((item) => (
+            <a
+              key={item.id}
+              className={styles.techItem}
+              href={item.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              onMouseEnter={onMouseEnter}
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                width={item.width}
+                height={item.height}
+                loading="lazy"
+                decoding="async"
+              />
+              <span
+                style={{ ["--mask-image" as string]: `url(${item.image})` }}
+                className={"metalic matte"}
+              ></span>
+              <p className={styles.itemTitle}>{item.title}</p>
+            </a>
+          ))}
+        </div>
+      </section>
     </>
   );
 }
