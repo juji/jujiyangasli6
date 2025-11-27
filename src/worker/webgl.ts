@@ -14,10 +14,9 @@ let height: number | null = null;
 let translateY = 0;
 let ready = false;
 let bigBallNumber = 2;
-const acceleration = 0.1;
 const radiusRange = [0, 0];
-const velocityRange = [-3, 3];
-const maxVelocity = 3;
+const velocityRange = [-1, 1];
+const maxVelocity = 2;
 
 // Initialize handler
 function initializeHandler() {
@@ -28,7 +27,6 @@ function initializeHandler() {
       translateY,
       ready,
       notifiedInit,
-      acceleration, // Pass the acceleration variable
       maxVelocity, // Pass the maxVelocity variable
     );
   }
@@ -113,8 +111,8 @@ function initializeBalls() {
 function initializeBoxLocation() {
   if (width === null || height === null) return;
 
-  box.width = Math.min(width * 0.5, 600);
-  box.height = Math.min(height * 0.5, 400);
+  box.width = Math.min(width * 0.5, 300);
+  box.height = Math.min(height * 0.5, 200);
   box.x = width - width / 2;
   box.y = height - height / 2;
 }

@@ -55,7 +55,6 @@ export class WebGLHandler {
   private gain: number;
   private exposure: number;
   private clarity: number;
-  private acceleration: number;
   private maxVelocity: number;
 
   constructor(
@@ -64,7 +63,6 @@ export class WebGLHandler {
     translateY: number,
     ready: boolean,
     notifiedInit: boolean,
-    acceleration: number = 0.09, // Default to 0.09 for backward compatibility
     maxVelocity: number = 3, // Default to 3 for backward compatibility
   ) {
     this.balls = balls;
@@ -72,7 +70,7 @@ export class WebGLHandler {
     this.translateY = translateY;
     this.ready = ready;
     this.notifiedInit = notifiedInit;
-    this.blurWidth = 1200;
+    this.blurWidth = 1500;
     this.drawBox = false;
     this.outline = { color: [23, 23, 23], width: 5, opacity: 1 };
     this.whiteBalanceTemp = 0.0;
@@ -86,7 +84,6 @@ export class WebGLHandler {
     this.gain = 1.0;
     this.exposure = 0.0;
     this.clarity = 0.0;
-    this.acceleration = acceleration;
     this.maxVelocity = maxVelocity;
   }
 
