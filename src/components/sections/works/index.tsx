@@ -6,6 +6,7 @@ import {
   useRef,
   unstable_ViewTransition as ViewTransition,
 } from "react";
+import { AnimDiv } from "@/components/anim";
 import { works } from "@/data/works";
 import styles from "./style.module.css";
 
@@ -70,7 +71,7 @@ export function Works() {
   }
 
   return (
-    <>
+    <AnimDiv>
       {/* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */}
       <section
         className={styles.works}
@@ -109,6 +110,6 @@ export function Works() {
           ))}
         </div>
       </section>
-    </>
+    </AnimDiv>
   );
 }
