@@ -59,7 +59,6 @@ export class WebGLHandler {
 
   private translateX: number = 0;
   private currentTranslateX: number = 0;
-  private translateXTimeout: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     balls: Ball[],
@@ -781,8 +780,14 @@ export class WebGLHandler {
       }
 
       // current translateX effect
-      const gap = this.translateX - this.currentTranslateX;
-      this.currentTranslateX += gap * 0.001;
+      if (this.translateX !== this.currentTranslateX) {
+        const gap = (this.translateX - this.currentTranslateX) * 0.001;
+        if (Math.round(gap) < 0.0001) {
+          this.currentTranslateX = this.translateX;
+        } else {
+          this.currentTranslateX += gap;
+        }
+      }
 
       // Update position
       ball.xInit += speedX;
