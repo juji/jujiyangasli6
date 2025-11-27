@@ -10,7 +10,8 @@
     "prepare": "husky || true",
     "lint-staged": "lint-staged",
     "generate-cv": "node ./utils/generate-cv-pdf.js",
-    "resize-play": "node ./utils/resize-play-images.js"
+    "resize-play": "node ./utils/resize-play-images.js",
+    "tunnel": "cloudflared tunnel --url http://localhost:3000"
   },
   "dependencies": {
     "@serwist/next": "^9.2.1",
