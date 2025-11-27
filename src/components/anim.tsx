@@ -50,7 +50,6 @@ export function AnimDiv(
     <div
       style={{
         perspective: "1000px",
-        perspectiveOrigin: "50% 0%",
         // outline: '1px solid red',
       }}
     >
@@ -62,6 +61,7 @@ export function AnimDiv(
           scale,
           opacity,
           translateY,
+          // outline: '1px solid yellow',
         }}
       />
     </div>

@@ -19,7 +19,10 @@ export function Hero() {
   }, []);
 
   return (
-    <section className={styles.hero}>
+    <section
+      className={styles.hero}
+      // style={{outline: '1px solid blue'}}
+    >
       <h1 className={styles.heading} aria-label="Juji, Web Developer">
         <Link href="/" aria-label="Home">
           <span className={styles.logo}>
