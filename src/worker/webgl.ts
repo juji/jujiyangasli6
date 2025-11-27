@@ -15,7 +15,7 @@ let translateY = 0;
 let ready = false;
 let bigBallNumber = 2;
 const radiusRange = [0, 0];
-const velocityRange = [-1, 1];
+const velocityRange = [-1.55, 1.55];
 const maxVelocity = 2;
 
 // Initialize handler
