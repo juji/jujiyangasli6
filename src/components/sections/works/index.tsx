@@ -6,7 +6,6 @@ import {
   useRef,
   unstable_ViewTransition as ViewTransition,
 } from "react";
-import { AnimDiv } from "@/components/anim";
 import { works } from "@/data/works";
 import styles from "./style.module.css";
 
@@ -71,45 +70,43 @@ export function Works() {
   }
 
   return (
-    <AnimDiv>
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */}
-      <section
-        className={styles.works}
-        id="works"
-        ref={containerRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <h2>Works</h2>
-        <div className={styles.worksContainer}>
-          {works.map((work) => (
-            <div key={work.id} className={styles.workContainer}>
-              <div className={styles.workItem}>
-                <ViewTransition name={`work-transition-${work.id}`}>
-                  <img
-                    src={work.images[0].small}
-                    alt={work.title}
-                    width={work.images[0].dimension.small.width}
-                    height={work.images[0].dimension.small.height}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </ViewTransition>
-                <span
-                  style={{ ["--accent-color" as string]: work.gradientColor }}
-                >
-                  {work.shortTitle}
-                </span>
-                <Link
-                  href={`/works/${work.id}`}
-                  className={styles.workLink}
-                  aria-label={work.title}
-                ></Link>
-              </div>
+    /* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */
+    <section
+      className={styles.works}
+      id="works"
+      ref={containerRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <h2>Works</h2>
+      <div className={styles.worksContainer}>
+        {works.map((work) => (
+          <div key={work.id} className={styles.workContainer}>
+            <div className={styles.workItem}>
+              <ViewTransition name={`work-transition-${work.id}`}>
+                <img
+                  src={work.images[0].small}
+                  alt={work.title}
+                  width={work.images[0].dimension.small.width}
+                  height={work.images[0].dimension.small.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </ViewTransition>
+              <span
+                style={{ ["--accent-color" as string]: work.gradientColor }}
+              >
+                {work.shortTitle}
+              </span>
+              <Link
+                href={`/works/${work.id}`}
+                className={styles.workLink}
+                aria-label={work.title}
+              ></Link>
             </div>
-          ))}
-        </div>
-      </section>
-    </AnimDiv>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
