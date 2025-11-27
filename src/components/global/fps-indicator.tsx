@@ -7,13 +7,23 @@ export function FPSIndicator() {
   // Method 1: Using the React hook (recommended for React components)
   const isAbove60 = useFPSAbove60();
 
+  const getStatus = () => {
+    if (isAbove60 === null) return "Measuring...";
+    return isAbove60 ? "≥60 FPS" : "<60 FPS";
+  };
+
+  const getColor = () => {
+    if (isAbove60 === null) return "gray";
+    return isAbove60 ? "green" : "red";
+  };
+
   return (
     <div
       style={{
         position: "fixed",
         bottom: 10,
         right: 10,
-        backgroundColor: isAbove60 ? "green" : "red",
+        backgroundColor: getColor(),
         color: "white",
         padding: "8px 12px",
         borderRadius: "4px",
@@ -21,7 +31,7 @@ export function FPSIndicator() {
         zIndex: 9999,
       }}
     >
-      FPS: {isAbove60 ? "≥60" : "<60"}
+      FPS: {getStatus()}
     </div>
   );
 }
@@ -29,7 +39,14 @@ export function FPSIndicator() {
 // Alternative: Direct usage without React hook (for non-React code)
 export function logFPSToConsole() {
   const unsubscribe = fpsState.subscribe((isAbove60) => {
-    console.log(`FPS ${isAbove60 ? "above" : "below"} 60:`, fpsState.getFPS());
+    if (isAbove60 === null) {
+      console.log("FPS: Measuring...");
+    } else {
+      console.log(
+        `FPS ${isAbove60 ? "above" : "below"} 60:`,
+        fpsState.getFPS(),
+      );
+    }
   });
 
   // Call unsubscribe() when you want to stop listening

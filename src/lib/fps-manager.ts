@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 // Simple FPS state management without React context
 class FPSManager {
   private fps = 0;
-  private isAbove60 = true;
-  private listeners: Set<(isAbove60: boolean) => void> = new Set();
+  private isAbove60: boolean | null = null;
+  private listeners: Set<(isAbove60: boolean | null) => void> = new Set();
   private performanceRef = [] as number[];
   private idleCallbackRef: number | null = null;
   private isRunning = false;
@@ -78,7 +78,7 @@ class FPSManager {
   }
 
   // Public API
-  getIsAbove60(): boolean {
+  getIsAbove60(): boolean | null {
     return this.isAbove60;
   }
 
@@ -86,7 +86,7 @@ class FPSManager {
     return this.fps;
   }
 
-  subscribe(callback: (isAbove60: boolean) => void): () => void {
+  subscribe(callback: (isAbove60: boolean | null) => void): () => void {
     this.listeners.add(callback);
     return () => {
       this.listeners.delete(callback);
@@ -104,7 +104,9 @@ const fpsManager = new FPSManager();
 
 // React hook for easy usage
 export function useFPSAbove60() {
-  const [isAbove60, setIsAbove60] = useState(fpsManager.getIsAbove60());
+  const [isAbove60, setIsAbove60] = useState<boolean | null>(
+    fpsManager.getIsAbove60(),
+  );
 
   useEffect(() => {
     const unsubscribe = fpsManager.subscribe(setIsAbove60);
@@ -118,7 +120,7 @@ export function useFPSAbove60() {
 export const fpsState = {
   getIsAbove60: () => fpsManager.getIsAbove60(),
   getFPS: () => fpsManager.getFPS(),
-  subscribe: (callback: (isAbove60: boolean) => void) =>
+  subscribe: (callback: (isAbove60: boolean | null) => void) =>
     fpsManager.subscribe(callback),
   destroy: () => fpsManager.destroy(),
 };
