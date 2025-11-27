@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   // Add any custom Next.js config here if needed
   devIndicators: false,
 
-  experimental:{
+  experimental: {
     viewTransition: true,
   },
 
