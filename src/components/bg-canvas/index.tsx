@@ -65,6 +65,31 @@ export function BgCanvas() {
   });
 
   useEffect(() => {
+    // capture pointer movement
+    // as percentage of window size
+    function onPointerMove(event: PointerEvent) {
+      const x =
+        (event.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+      const y =
+        (event.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+      workerRef.current?.postMessage({
+        type: "pointer",
+        payload: {
+          x: x,
+          y: y,
+        },
+      });
+    }
+
+    window.addEventListener("pointermove", onPointerMove);
+
+    return () => {
+      window.removeEventListener("pointermove", onPointerMove);
+    };
+  }, []);
+
+  useEffect(() => {
     function onResize() {
       if (canvasInit.current && workerRef.current) {
         workerRef.current.postMessage({

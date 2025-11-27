@@ -11,6 +11,7 @@ export type Ball = {
   x: number;
   y: number;
   yInit: number;
+  xInit: number;
   vx: number;
   vy: number;
   ax: number;

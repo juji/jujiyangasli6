@@ -77,6 +77,7 @@ function createBall(
     x: 150,
     y: 150,
     yInit: 150,
+    xInit: 150,
     vx:
       Math.random() * (velocityRange[1] - velocityRange[0]) + velocityRange[0],
     vy:
@@ -105,6 +106,7 @@ function initializeBalls() {
     ball.x = Math.random() * box.width + box.x;
     ball.y = Math.random() * box.height + box.y;
     ball.yInit = ball.y;
+    ball.xInit = ball.x;
   }
 }
 
@@ -202,6 +204,10 @@ self.addEventListener("message", (event: MessageEvent) => {
   if (type === "close") {
     closeOperation();
     return;
+  }
+
+  if (type === "pointer") {
+    webglHandler && webglHandler.setTranslateX(payload.x);
   }
 
   if (type === "start") {

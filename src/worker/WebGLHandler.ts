@@ -57,6 +57,10 @@ export class WebGLHandler {
   private clarity: number;
   private maxVelocity: number;
 
+  private translateX: number = 0;
+  private currentTranslateX: number = 0;
+  private translateXTimeout: ReturnType<typeof setInterval> | null = null;
+
   constructor(
     balls: Ball[],
     box: { width: number; height: number; x: number; y: number },
@@ -98,6 +102,10 @@ export class WebGLHandler {
 
   setTranslateY(translateY: number) {
     this.translateY = translateY;
+  }
+
+  setTranslateX(translateX: number) {
+    this.translateX = translateX;
   }
 
   setReady(ready: boolean) {
@@ -744,11 +752,11 @@ export class WebGLHandler {
       let xAccell = ball.ax;
       let yAccell = ball.ay;
 
-      if (ball.x <= this.box.x) {
+      if (ball.xInit <= this.box.x) {
         xAccell += reboundForce;
       }
 
-      if (ball.x > this.box.x + this.box.width) {
+      if (ball.xInit > this.box.x + this.box.width) {
         xAccell -= reboundForce;
       }
 
@@ -772,9 +780,14 @@ export class WebGLHandler {
         speedY = (speedY > 0 ? 1 : -1) * this.maxVelocity;
       }
 
+      // current translateX effect
+      const gap = this.translateX - this.currentTranslateX;
+      this.currentTranslateX += gap * 0.001;
+
       // Update position
-      ball.x += speedX;
+      ball.xInit += speedX;
       ball.yInit += speedY;
+      ball.x = ball.xInit + ball.translateEffect * this.currentTranslateX * 250;
       ball.y = ball.yInit - ball.translateEffect * this.translateY * 500;
     }
   }
