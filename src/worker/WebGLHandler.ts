@@ -737,7 +737,7 @@ export class WebGLHandler {
   }
 
   private update() {
-    const reboundForce = 0.03;
+    const reboundForce = 0.01;
 
     // Update all balls within box boundaries
     for (const ball of this.balls) {
