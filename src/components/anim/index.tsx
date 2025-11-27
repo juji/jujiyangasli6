@@ -21,14 +21,19 @@ type MotionDivProps = {
 
 export function AnimDiv(props: AnimDivProps & MotionDivProps) {
   const { children } = props;
-  const [isMobile, setIsMobile] = useState(true);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
-  // check screen size
   useEffect(() => {
-    setIsMobile(Math.min(window.innerWidth, window.innerHeight) < 768);
+    // Check if animations should be enabled
+    const isMobile = Math.min(window.innerWidth, window.innerHeight) < 768;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    setShouldAnimate(!isMobile && !prefersReducedMotion);
   }, []);
 
-  if (isMobile) {
+  if (!shouldAnimate) {
     return <>{children}</>;
   }
 
