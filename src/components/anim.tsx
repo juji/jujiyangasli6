@@ -50,6 +50,7 @@ export function AnimDiv(
     <div
       style={{
         perspective: "1000px",
+        perspectiveOrigin: "center top",
         // outline: '1px solid red',
       }}
     >
