@@ -25,6 +25,8 @@ export function AnimDiv(props: AnimDivProps & MotionDivProps) {
 
   useEffect(() => {
     // Check if animations should be enabled
+    // We use native window.matchMedia instead of motion's useReducedMotion
+    // to avoid importing motion when animations aren't needed (mobile/reduced motion)
     const isMobile = Math.min(window.innerWidth, window.innerHeight) < 768;
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
