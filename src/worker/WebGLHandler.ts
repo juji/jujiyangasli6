@@ -740,23 +740,31 @@ export class WebGLHandler {
   }
 
   private update() {
+    const reboundForce = 0.03;
+
     // Update all balls within box boundaries
     for (const ball of this.balls) {
+      let xAccell = ball.ax;
+      let yAccell = ball.ay;
+
       if (ball.x <= this.box.x) {
-        ball.ax += this.acceleration;
+        xAccell += reboundForce;
       }
 
       if (ball.x > this.box.x + this.box.width) {
-        ball.ax -= this.acceleration;
-      }
-
-      if (ball.yInit >= this.box.y + this.box.height) {
-        ball.ay -= this.acceleration;
+        xAccell -= reboundForce;
       }
 
       if (ball.yInit < this.box.y) {
-        ball.ay += this.acceleration;
+        yAccell += reboundForce;
       }
+
+      if (ball.yInit > this.box.y + this.box.height) {
+        yAccell -= reboundForce;
+      }
+
+      ball.ax = xAccell;
+      ball.ay = yAccell;
 
       let speedX = ball.vx + ball.ax;
       let speedY = ball.vy + ball.ay;
