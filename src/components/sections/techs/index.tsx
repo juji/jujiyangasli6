@@ -1,6 +1,5 @@
 "use client";
 import { useRef } from "react";
-import { AnimDiv } from "@/components/anim";
 import { techs } from "@/data/techs/data.server";
 import styles from "./style.module.css";
 
