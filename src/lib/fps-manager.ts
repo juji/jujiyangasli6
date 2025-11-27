@@ -20,7 +20,7 @@ class FPSManager {
       return requestIdleCallback(callback);
     } else {
       // Fallback: use setTimeout with a small delay (~60fps)
-      return setTimeout(callback, 16) as any;
+      return setTimeout(callback, 16) as unknown as number;
     }
   }
 
@@ -100,27 +100,37 @@ class FPSManager {
 }
 
 // Singleton instance
-const fpsManager = new FPSManager();
+let fpsManager: FPSManager | null = null;
+
+function useFPSManager() {
+  if (!fpsManager) {
+    fpsManager = new FPSManager();
+  }
+  return fpsManager;
+}
 
 // React hook for easy usage
 export function useFPSAbove60() {
+  const fpsManager = useFPSManager();
   const [isAbove60, setIsAbove60] = useState<boolean | null>(
     fpsManager.getIsAbove60(),
   );
 
   useEffect(() => {
-    const unsubscribe = fpsManager.subscribe(setIsAbove60);
+    const unsubscribe = fpsManager.subscribe((newState) => {
+      setIsAbove60(newState);
+    });
     return unsubscribe;
-  }, []);
+  }, [fpsManager]);
 
   return isAbove60;
 }
 
 // Direct access functions for non-React usage
 export const fpsState = {
-  getIsAbove60: () => fpsManager.getIsAbove60(),
-  getFPS: () => fpsManager.getFPS(),
+  getIsAbove60: () => useFPSManager().getIsAbove60(),
+  getFPS: () => useFPSManager().getFPS(),
   subscribe: (callback: (isAbove60: boolean | null) => void) =>
-    fpsManager.subscribe(callback),
-  destroy: () => fpsManager.destroy(),
+    useFPSManager().subscribe(callback),
+  destroy: () => useFPSManager().destroy(),
 };
