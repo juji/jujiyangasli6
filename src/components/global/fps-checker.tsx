@@ -60,12 +60,9 @@ export function FPSProvider({ children }: { children: ReactNode }) {
         );
         performanceRef.current = [];
 
-        // Schedule next check when idle
-        idleCallbackRef.current = scheduleIdleCallback(checkFPS);
+        // Don't schedule next check - run only once
       }
-    }
-
-    // Start FPS checking when idle
+    } // Start FPS checking when idle
     idleCallbackRef.current = scheduleIdleCallback(checkFPS);
 
     return () => {
