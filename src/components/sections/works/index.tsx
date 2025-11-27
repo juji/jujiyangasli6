@@ -71,11 +71,10 @@ export function Works() {
   }
 
   return (
-    <AnimDivChild>
+    <AnimDivChild id="works">
       {/* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */}
       <section
         className={styles.works}
-        id="works"
         ref={containerRef}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

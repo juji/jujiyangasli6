@@ -4,8 +4,8 @@ import styles from "./style.module.css";
 
 export function Play() {
   return (
-    <AnimDiv out={false}>
-      <div className={styles.play} id="play">
+    <AnimDiv out={false} id="play">
+      <div className={styles.play}>
         <h2>Play</h2>
         <div className={styles.playGrid}>
           {play.map((item) => (

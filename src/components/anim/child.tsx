@@ -11,7 +11,7 @@ import type { AnimDivProps } from "./type";
 export function AnimDivChild(
   props: AnimDivProps & React.ComponentPropsWithoutRef<typeof motion.div>,
 ) {
-  const { in: inProp = true, out = true, ...restProps } = props;
+  const { in: inProp = true, out = true, id, ...restProps } = props;
 
   const ref = useRef(null);
   const { scrollYProgress: scrollYProgressShow } = useScroll({
@@ -44,6 +44,7 @@ export function AnimDivChild(
 
   return (
     <div
+      id={id}
       style={{
         perspective: "1000px",
         perspectiveOrigin: "center top",
