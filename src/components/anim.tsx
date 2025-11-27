@@ -5,14 +5,14 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type AnimDivProps = {
   in?: boolean;
   out?: boolean;
 };
 
-export function AnimDiv(
+export function AnimDivChild(
   props: AnimDivProps & React.ComponentPropsWithoutRef<typeof motion.div>,
 ) {
   const { in: inProp = true, out = true, ...restProps } = props;
@@ -67,4 +67,22 @@ export function AnimDiv(
       />
     </div>
   );
+}
+
+export function AnimDiv(
+  props: AnimDivProps & React.ComponentPropsWithoutRef<typeof motion.div>,
+) {
+  const { children } = props;
+  const [isMobile, setIsMobile] = useState(true);
+
+  // check screen size
+  useEffect(() => {
+    setIsMobile(Math.min(window.innerWidth, window.innerHeight) < 768);
+  }, []);
+
+  if (isMobile) {
+    return <>{children}</>;
+  }
+
+  return <AnimDivChild {...props} />;
 }
