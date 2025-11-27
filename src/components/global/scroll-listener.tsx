@@ -15,7 +15,7 @@ export function ScrollListener() {
   useEffect(() => {
     const lenis = new Lenis({
       autoRaf: true,
-      lerp: 0.05,
+      // lerp: 0.05,
     });
 
     return () => {
