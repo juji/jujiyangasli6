@@ -780,19 +780,13 @@ export class WebGLHandler {
       }
 
       // current translateX effect
-      if (this.translateX !== this.currentTranslateX) {
-        const gap = (this.translateX - this.currentTranslateX) * 0.001;
-        if (Math.round(gap) < 0.0001) {
-          this.currentTranslateX = this.translateX;
-        } else {
-          this.currentTranslateX += gap;
-        }
-      }
+      const gap = (this.translateX - this.currentTranslateX) * 0.005;
+      this.currentTranslateX += gap;
 
       // Update position
       ball.xInit += speedX;
       ball.yInit += speedY;
-      ball.x = ball.xInit + ball.translateEffect * this.currentTranslateX * 250;
+      ball.x = ball.xInit + ball.translateEffect * this.currentTranslateX * 150;
       ball.y = ball.yInit - ball.translateEffect * this.translateY * 500;
     }
   }
