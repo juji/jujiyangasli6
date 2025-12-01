@@ -23,13 +23,23 @@
   .pswp__button {
     background: rgb(0 0 0 / 0.9);
     backdrop-filter: blur(10px);
+  }
+}
 
-    &.pswp__button--zoom {
-      border-bottom-left-radius: 0.7rem;
-    }
-    &.pswp__button--close {
-      border-bottom-right-radius: 0.7rem;
-    }
+.pswp {
+  .pswp__button--close {
+    border-bottom-left-radius: 0.7rem;
+    border-bottom-right-radius: 0.7rem;
+  }
+}
+
+.pswp.pswp--zoom-allowed {
+  .pswp__button--zoom {
+    border-bottom-left-radius: 0.7rem;
+  }
+  .pswp__button--close {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0.7rem;
   }
 }
 
