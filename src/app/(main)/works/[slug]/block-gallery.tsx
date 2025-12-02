@@ -14,6 +14,27 @@ interface BlockGalleryProps {
   workId: string;
 }
 
+function postOpenPhotoSwipe(lightbox: PhotoSwipeLightbox) {
+  // Add animated class to container on arrow button clicks
+  lightbox.on("openingAnimationEnd", () => {
+    document
+      .querySelectorAll(
+        ".pswp__button--arrow--prev, .pswp__button--arrow--next",
+      )
+      .forEach((btn) => {
+        (btn as HTMLElement).addEventListener("click", (e) => {
+          e.preventDefault();
+          document.querySelector(".pswp__container")?.classList.add("animated");
+          setTimeout(() => {
+            document
+              .querySelector(".pswp__container")
+              ?.classList.remove("animated");
+          }, 500);
+        });
+      });
+  });
+}
+
 export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
   const lightboxRef = useRef<PhotoSwipeLightbox | null>(null);
 
@@ -25,25 +46,7 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
         pswpModule: () => import("photoswipe"),
       });
 
-      lightboxRef.current.on("openingAnimationEnd", () => {
-        document
-          .querySelectorAll(
-            ".pswp__button--arrow--prev, .pswp__button--arrow--next",
-          )
-          .forEach((btn) => {
-            (btn as HTMLElement).addEventListener("click", (e) => {
-              e.preventDefault();
-              document
-                .querySelector(".pswp__container")
-                ?.classList.add("animated");
-              setTimeout(() => {
-                document
-                  .querySelector(".pswp__container")
-                  ?.classList.remove("animated");
-              }, 500);
-            });
-          });
-      });
+      postOpenPhotoSwipe(lightboxRef.current);
 
       lightboxRef.current.init();
     }
