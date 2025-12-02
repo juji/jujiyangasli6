@@ -17,18 +17,31 @@ interface BlockGalleryProps {
 function postOpenPhotoSwipe(lightbox: PhotoSwipeLightbox) {
   // Add animated class to container on arrow button clicks
   lightbox.on("openingAnimationEnd", () => {
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
     document
       .querySelectorAll(
         ".pswp__button--arrow--prev, .pswp__button--arrow--next",
       )
       .forEach((btn) => {
-        (btn as HTMLElement).addEventListener("click", (e) => {
+        (btn as HTMLElement).addEventListener("pointerdown", (e) => {
           e.preventDefault();
-          document.querySelector(".pswp__container")?.classList.add("animated");
-          setTimeout(() => {
+          if (timeoutId) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
             document
               .querySelector(".pswp__container")
               ?.classList.remove("animated");
+          }
+
+          document.querySelector(".pswp__container")?.classList.add("animated");
+        });
+        (btn as HTMLElement).addEventListener("pointerup", (e) => {
+          e.preventDefault();
+          timeoutId = setTimeout(() => {
+            document
+              .querySelector(".pswp__container")
+              ?.classList.remove("animated");
+            timeoutId = null;
           }, 500);
         });
       });
