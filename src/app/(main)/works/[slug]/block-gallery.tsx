@@ -26,13 +26,23 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
       });
 
       lightboxRef.current.on("openingAnimationEnd", () => {
-        document.querySelector(".pswp__container")?.classList.add("stabilized");
-      });
-
-      lightboxRef.current.on("closingAnimationStart", () => {
         document
-          .querySelector(".pswp__container")
-          ?.classList.remove("stabilized");
+          .querySelectorAll(
+            ".pswp__button--arrow--prev, .pswp__button--arrow--next",
+          )
+          .forEach((btn) => {
+            (btn as HTMLElement).addEventListener("click", (e) => {
+              e.preventDefault();
+              document
+                .querySelector(".pswp__container")
+                ?.classList.add("stabilized");
+              setTimeout(() => {
+                document
+                  .querySelector(".pswp__container")
+                  ?.classList.remove("stabilized");
+              }, 500);
+            });
+          });
       });
 
       lightboxRef.current.init();
