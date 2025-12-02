@@ -131,7 +131,7 @@
   stroke: transparent;
 }
 
-.pswp__container.stabilized {
+.pswp__container.animated {
   /* biome-ignore lint: important is needed here */
   transition: transform 333ms ease !important;
   @media screen and (hover: none) {

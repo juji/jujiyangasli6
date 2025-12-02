@@ -35,11 +35,11 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
               e.preventDefault();
               document
                 .querySelector(".pswp__container")
-                ?.classList.add("stabilized");
+                ?.classList.add("animated");
               setTimeout(() => {
                 document
                   .querySelector(".pswp__container")
-                  ?.classList.remove("stabilized");
+                  ?.classList.remove("animated");
               }, 500);
             });
           });
