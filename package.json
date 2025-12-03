@@ -14,12 +14,12 @@
     "tunnel": "cloudflared tunnel --url http://localhost:3000"
   },
   "dependencies": {
+    "@juji/photoswipe": "^5.4.7",
     "@serwist/next": "^9.2.1",
     "@types/photoswipe": "^5.2.5",
     "lenis": "^1.3.11",
     "motion": "^12.23.12",
     "next": "15.5.2",
-    "photoswipe": "^5.4.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-markdown": "^10.1.0",

@@ -1,51 +1,17 @@
 "use client";
 
-import PhotoSwipeLightbox from "photoswipe/lightbox";
+import PhotoSwipeLightbox from "@juji/photoswipe/lightbox";
 import { useEffect, useRef } from "react";
 import type { WorkImage } from "@/data/works/types";
-import "photoswipe/style.css";
+import "@juji/photoswipe/style.css";
 import styles from "./block-gallery.module.css";
-import "./pswp.css";
+import "@juji/photoswipe/basic-dark.css";
 import { unstable_ViewTransition as ViewTransition } from "react";
 
 interface BlockGalleryProps {
   images: WorkImage[];
   title: string;
   workId: string;
-}
-
-function postOpenPhotoSwipe(lightbox: PhotoSwipeLightbox) {
-  // Add animated class to container on arrow button clicks
-  lightbox.on("openingAnimationEnd", () => {
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
-    document
-      .querySelectorAll(
-        ".pswp__button--arrow--prev, .pswp__button--arrow--next",
-      )
-      .forEach((btn) => {
-        (btn as HTMLElement).addEventListener("pointerdown", (e) => {
-          e.preventDefault();
-          if (timeoutId) {
-            clearTimeout(timeoutId);
-            timeoutId = null;
-            document
-              .querySelector(".pswp__container")
-              ?.classList.remove("animated");
-          }
-
-          document.querySelector(".pswp__container")?.classList.add("animated");
-        });
-        (btn as HTMLElement).addEventListener("pointerup", (e) => {
-          e.preventDefault();
-          timeoutId = setTimeout(() => {
-            document
-              .querySelector(".pswp__container")
-              ?.classList.remove("animated");
-            timeoutId = null;
-          }, 500);
-        });
-      });
-  });
 }
 
 export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
@@ -56,10 +22,8 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
       lightboxRef.current = new PhotoSwipeLightbox({
         gallery: "#block-gallery",
         children: "a",
-        pswpModule: () => import("photoswipe"),
+        pswpModule: () => import("@juji/photoswipe"),
       });
-
-      postOpenPhotoSwipe(lightboxRef.current);
 
       lightboxRef.current.init();
     }
