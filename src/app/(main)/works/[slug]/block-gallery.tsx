@@ -54,11 +54,14 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
         if (galleryAnchorEl.length <= 1) return;
 
         timeoutId = setInterval(() => {
+          if (!blockGallery) return;
           currentIndex = (currentIndex + 1) % galleryAnchorEl.length;
-          galleryAnchorEl[currentIndex].scrollIntoView({
+          const targetEl = galleryAnchorEl[currentIndex] as HTMLElement;
+          const centerOffset =
+            (blockGallery.clientWidth - targetEl.clientWidth) / 2;
+          blockGallery.scrollTo({
+            left: targetEl.offsetLeft - centerOffset,
             behavior: "smooth",
-            inline: "center",
-            block: "nearest",
           });
         }, 3000);
       } else {
