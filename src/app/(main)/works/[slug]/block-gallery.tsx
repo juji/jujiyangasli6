@@ -143,7 +143,7 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
                 height={img.dimension.small.height}
               />
               <source
-                media="(width >= 500px)"
+                media="(width >= 500px and width < 768px)"
                 srcSet={img.thumbnail}
                 width={img.dimension.thumb.width}
                 height={img.dimension.thumb.height}
@@ -171,7 +171,7 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
                   height={img.dimension.small.height}
                 />
                 <source
-                  media="(width >= 500px)"
+                  media="(width >= 500px and width < 768px)"
                   srcSet={img.thumbnail}
                   width={img.dimension.thumb.width}
                   height={img.dimension.thumb.height}
