@@ -148,6 +148,12 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
                 width={img.dimension.thumb.width}
                 height={img.dimension.thumb.height}
               />
+              <source
+                media="(width >= 768px)"
+                srcSet={img.small}
+                width={img.dimension.small.width}
+                height={img.dimension.small.height}
+              />
               <img
                 src={img.url}
                 alt={`${title} - ${img.title || `Image ${idx + 1}`}`}
@@ -169,6 +175,12 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
                   srcSet={img.thumbnail}
                   width={img.dimension.thumb.width}
                   height={img.dimension.thumb.height}
+                />
+                <source
+                  media="(width >= 768px)"
+                  srcSet={img.small}
+                  width={img.dimension.small.width}
+                  height={img.dimension.small.height}
                 />
                 <img
                   src={img.url}
