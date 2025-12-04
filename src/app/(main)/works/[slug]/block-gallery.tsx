@@ -36,6 +36,89 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
     };
   }, []);
 
+  useEffect(() => {
+    // auto scroll
+    let currentIndex = 0;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    const blockGallery = document.getElementById("block-gallery");
+    const windowWidthLimit = 768;
+
+    function listener() {
+      if (timeoutId) {
+        clearInterval(timeoutId);
+        timeoutId = null;
+      }
+
+      if (window.innerWidth < windowWidthLimit) {
+        const galleryAnchorEl = document.querySelectorAll("#block-gallery a");
+        if (galleryAnchorEl.length <= 1) return;
+
+        timeoutId = setInterval(() => {
+          currentIndex = (currentIndex + 1) % galleryAnchorEl.length;
+          galleryAnchorEl[currentIndex].scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest",
+          });
+        }, 3000);
+      } else {
+        currentIndex = 0;
+      }
+    }
+
+    let redoAutoScrollTimeoutId: ReturnType<typeof setTimeout> | null = null;
+    function cancelAutoScroll() {
+      if (window.innerWidth >= windowWidthLimit) return;
+
+      if (timeoutId) {
+        clearInterval(timeoutId);
+        timeoutId = null;
+      }
+
+      if (redoAutoScrollTimeoutId) {
+        clearTimeout(redoAutoScrollTimeoutId);
+        redoAutoScrollTimeoutId = null;
+      }
+
+      redoAutoScrollTimeoutId = setTimeout(() => {
+        redoAutoScroll();
+      }, 5000); // resume auto scroll after 5 seconds of inactivity
+    }
+
+    function redoAutoScroll() {
+      if (window.innerWidth >= windowWidthLimit) return;
+
+      // get current visible image index
+      const galleryAnchorEl = document.querySelectorAll("#block-gallery a");
+      if (galleryAnchorEl.length <= 1) return;
+
+      let visibleIndex = 0;
+      galleryAnchorEl.forEach((el, idx) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.left >= 0 && rect.right <= window.innerWidth) {
+          visibleIndex = idx;
+        }
+      });
+
+      currentIndex = visibleIndex;
+
+      listener();
+    }
+
+    blockGallery?.addEventListener("pointerdown", cancelAutoScroll);
+    window.addEventListener("resize", listener);
+    listener();
+
+    return () => {
+      window.removeEventListener("resize", listener);
+      blockGallery?.removeEventListener("pointerdown", cancelAutoScroll);
+      if (timeoutId) {
+        clearInterval(timeoutId);
+        timeoutId = null;
+      }
+    };
+  }, []);
+
   return (
     <div id="block-gallery" className={styles.blockGallery}>
       {images.map((img, idx) => (

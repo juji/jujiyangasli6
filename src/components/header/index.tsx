@@ -19,7 +19,7 @@ export function Header() {
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (getManualChange()) {
-      console.log("manual change, skip auto header show/hide");
+      console.info("manual change, skip auto header show/hide");
       return;
     }
 
