@@ -14,7 +14,7 @@ export const techs: TechItem[] = [
     width: 24,
     height: 24,
     title: "CSS",
-    image: "/images/tech/css3.svg",
+    image: "/images/tech/css.svg",
     url: "https://en.wikipedia.org/wiki/CSS",
   },
   {
