@@ -141,7 +141,7 @@ export function BlockGallery({ images, title, workId }: BlockGalleryProps) {
         <a
           key={img.url}
           href={img.url}
-          data-vistaview-srcSet={`${img.small} 500w, ${img.thumbnail} 700w, ${img.url} 1024w`}
+          data-vistaview-srcset={`${img.small} 500w, ${img.thumbnail} 700w, ${img.url} 1024w`}
           target="_blank"
           rel="noreferrer"
         >
