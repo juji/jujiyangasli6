@@ -5,7 +5,7 @@ import Markdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
 import type { Work } from "@/data/works/types";
 import { setHeaderShown } from "@/lib/headerVisibility";
-import { BlockGallery } from "./block-gallery";
+import { BlockGallery } from "./block-gallery-vistaview";
 
 import styles from "./style.module.css";
 

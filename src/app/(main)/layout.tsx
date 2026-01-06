@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { Footer } from "@/components/footer";
-// import { FPSProvider } from "@/components/global/fps-checker";
 import { ScrollListener } from "@/components/global/scroll-listener";
 import { VersionPrinter } from "@/components/global/version-printer";
 import { Header } from "@/components/header";
@@ -19,7 +18,6 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      {/* <FPSProvider>{children}</FPSProvider> */}
       {children}
       <Footer />
       <ScrollListener />
