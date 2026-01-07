@@ -2,6 +2,14 @@ import type { Play } from "./types";
 
 export const play: Play[] = [
   {
+    title: "VistaView",
+    id: "vista-view",
+    image: "/images/play/vistaview-600.avif",
+    width: 600,
+    height: 259,
+    url: "https://vistaview.jujiplay.com/",
+  },
+  {
     title: "Strange Attractors",
     id: "strange-attractors",
     image: "/images/play/strange-attractor-lorenz.avif",
