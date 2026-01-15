@@ -71,7 +71,7 @@ export function Works() {
   }
 
   return (
-    <AnimDiv id="works">
+    <AnimDiv id="works" out={false}>
       {/* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */}
       <section
         className={styles.works}
