@@ -1,6 +1,5 @@
 "use client";
 import { useRef } from "react";
-// import { AnimDiv } from "@/components/anim";
 import { techs } from "@/data/techs/data.server";
 import styles from "./style.module.css";
 
@@ -82,7 +81,6 @@ export function Techs() {
         </filter>
       </svg>
 
-      {/* <AnimDiv id="techs" out={false}> */}
       {/* biome-ignore lint/a11y/noStaticElementInteractions: This section is interactive and requires mouse events */}
       <section
         onMouseEnter={setBorderColor}
@@ -121,7 +119,6 @@ export function Techs() {
           ))}
         </div>
       </section>
-      {/* </AnimDiv> */}
     </>
   );
 }

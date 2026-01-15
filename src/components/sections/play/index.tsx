@@ -1,10 +1,8 @@
-// import { AnimDiv } from "@/components/anim";
 import { play } from "@/data/play/data.server";
 import styles from "./style.module.css";
 
 export function Play() {
   return (
-    // <AnimDiv out={false} id="play">
     <div className={styles.play}>
       <h2>Play</h2>
       <div className={styles.playGrid}>
@@ -39,6 +37,5 @@ export function Play() {
         </a>
       </p>
     </div>
-    // </AnimDiv>
   );
 }
