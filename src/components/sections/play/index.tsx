@@ -3,7 +3,7 @@ import styles from "./style.module.css";
 
 export function Play() {
   return (
-    <div className={styles.play}>
+    <div className={styles.play} id="play">
       <h2>Play</h2>
       <div className={styles.playGrid}>
         {play.map((item) => (

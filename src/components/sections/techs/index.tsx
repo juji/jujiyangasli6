@@ -86,6 +86,7 @@ export function Techs() {
         onMouseEnter={setBorderColor}
         className={styles.techs}
         ref={containerRef}
+        id="techs"
       >
         <h2>Techs</h2>
         <br />
